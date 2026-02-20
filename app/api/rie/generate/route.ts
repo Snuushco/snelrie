@@ -4,6 +4,8 @@ import { generateRie } from "@/lib/ai/pipeline";
 import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMITS } from "@/lib/rate-limit";
 import { generateRieSchema, validationErrorResponse } from "@/lib/validate";
 
+export const maxDuration = 60;
+
 export async function POST(req: NextRequest) {
   // Rate limiting
   const ip = getClientIp(req);
