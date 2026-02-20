@@ -4,15 +4,17 @@ import { loadKennisbank } from "@/lib/kennisbank/loader";
 
 // Model selection based on tier
 function getModelConfig(tier: string) {
+  // Haiku 4.5 for all tiers — fast enough for serverless, quality is excellent
+  // Sonnet takes >120s for large JSON which exceeds Vercel Pro function limit
   switch (tier) {
     case "ENTERPRISE":
-      return { model: "anthropic/claude-sonnet-4.6", maxTokens: 16000 };
+      return { model: "anthropic/claude-haiku-4.5", maxTokens: 8000 };
     case "PROFESSIONAL":
-      return { model: "anthropic/claude-sonnet-4.6", maxTokens: 12000 };
+      return { model: "anthropic/claude-haiku-4.5", maxTokens: 6000 };
     case "BASIS":
-      return { model: "anthropic/claude-sonnet-4.6", maxTokens: 8000 };
+      return { model: "anthropic/claude-haiku-4.5", maxTokens: 4000 };
     default: // GRATIS
-      return { model: "anthropic/claude-3.5-haiku", maxTokens: 3000 };
+      return { model: "anthropic/claude-haiku-4.5", maxTokens: 2500 };
   }
 }
 
