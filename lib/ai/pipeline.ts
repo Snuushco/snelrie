@@ -1,11 +1,6 @@
-import Anthropic from "@anthropic-ai/sdk";
 import { buildRiePrompt } from "./prompts";
 import { prisma } from "@/lib/db";
 import { loadKennisbank } from "@/lib/kennisbank/loader";
-
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY!,
-});
 
 export async function generateRie(reportId: string) {
   const report = await prisma.rieReport.findUniqueOrThrow({
@@ -24,24 +19,39 @@ export async function generateRie(reportId: string) {
     const intakeData = report.intakeData as any;
     const { system, user } = buildRiePrompt(kennisbank, intakeData, report.tier);
 
-    const response = await anthropic.messages.create({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 8000,
-      system,
-      messages: [{ role: "user", content: user }],
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "anthropic/claude-sonnet-4-20250514",
+        max_tokens: 8000,
+        messages: [
+          { role: "system", content: system },
+          { role: "user", content: user },
+        ],
+      }),
     });
 
-    const content = response.content[0];
-    if (content.type !== "text") throw new Error("Unexpected response type");
+    if (!response.ok) {
+      const errBody = await response.text();
+      throw new Error(`OpenRouter API error ${response.status}: ${errBody}`);
+    }
+
+    const data = await response.json();
+    const text = data.choices[0]?.message?.content;
+    if (!text) throw new Error("No content in OpenRouter response");
 
     // Extract JSON from response (handle markdown code blocks)
-    let jsonStr = content.text;
+    let jsonStr = text;
     const jsonMatch = jsonStr.match(/```(?:json)?\s*([\s\S]*?)```/);
     if (jsonMatch) jsonStr = jsonMatch[1];
 
     const generatedContent = JSON.parse(jsonStr.trim());
     const generationTimeMs = Date.now() - startTime;
-    const tokensUsed = response.usage.input_tokens + response.usage.output_tokens;
+    const tokensUsed = (data.usage?.prompt_tokens || 0) + (data.usage?.completion_tokens || 0);
 
     await prisma.rieReport.update({
       where: { id: reportId },
