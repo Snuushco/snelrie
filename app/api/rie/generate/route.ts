@@ -69,8 +69,8 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Generate async (don't await in request)
-    generateRie(report.id).catch(console.error);
+    // Generate in-request (serverless won't reliably continue after response)
+    await generateRie(report.id);
 
     return NextResponse.json({ reportId: report.id });
   } catch (error) {
