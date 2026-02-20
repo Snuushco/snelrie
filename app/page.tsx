@@ -66,9 +66,9 @@ const pricingTiers = [
     features: [
       "Alles van Professional",
       "Uitgebreide rapportage",
-      "Prioritaire support",
+      "AI Expert Chat (24/7)",
       "Jaarlijkse update-herinnering",
-      "Telefonische toelichting",
+      "Persoonlijke AI-assistent met volledige kennis van uw RI&E",
     ],
     cta: "Bestel Enterprise",
     href: "/scan?tier=ENTERPRISE",

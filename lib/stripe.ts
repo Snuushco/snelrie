@@ -28,6 +28,6 @@ export const PRICING = {
   ENTERPRISE: {
     price: 49900,
     label: "Enterprise RI&E",
-    description: "Uitgebreide RI&E + PvA + prioritair support",
+    description: "Uitgebreide RI&E + PvA + 24/7 AI Expert Chat",
   },
 } as const;
