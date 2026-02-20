@@ -174,11 +174,24 @@ export async function generateRie(reportId: string) {
       wettelijkeVerplichtingen,
     };
 
-    // Validate compliance
+    // Validate compliance gate (hard block)
     const validation = validateRie(generatedContent, tier);
     if (!validation.valid) {
-      console.warn(`[${reportId}] Validation warnings:`, validation.errors);
-      // Store but mark as needing review if critical errors
+      const reason = `VALIDATIE_GEFAALD: ${validation.errors.join(" | ")}`;
+      console.warn(`[${reportId}] ${reason}`);
+
+      await prisma.rieReport.update({
+        where: { id: reportId },
+        data: {
+          generatedContent,
+          samenvatting: reason,
+          status: "FAILED",
+          tokensUsed: totalTokens,
+          generationTimeMs: Date.now() - startTime,
+        },
+      });
+
+      throw new Error(reason);
     }
 
     const generationTimeMs = Date.now() - startTime;
