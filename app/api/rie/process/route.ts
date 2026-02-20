@@ -2,8 +2,8 @@ import { NextRequest } from "next/server";
 import { generateRie } from "@/lib/ai/pipeline";
 import { prisma } from "@/lib/db";
 
-// Dedicated 60s for AI generation
-export const maxDuration = 60;
+// Pro plan allows up to 120s proxy timeout
+export const maxDuration = 120;
 
 export async function POST(req: NextRequest) {
   try {
