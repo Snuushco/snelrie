@@ -137,6 +137,14 @@ export default function ScanForm() {
       }
 
       const { reportId } = await res.json();
+
+      // Trigger AI generation in background (separate route with its own 60s timeout)
+      fetch("/api/rie/process", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reportId }),
+      }).catch(() => {}); // fire-and-forget
+
       router.push(`/scan/resultaat/${reportId}`);
     } catch (e: any) {
       setError(e.message);

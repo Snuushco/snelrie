@@ -1,11 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { generateRie } from "@/lib/ai/pipeline";
 import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMITS } from "@/lib/rate-limit";
 import { generateRieSchema, validationErrorResponse } from "@/lib/validate";
-import { after } from "next/server";
-
-export const maxDuration = 60;
 
 export async function POST(req: NextRequest) {
   // Rate limiting
@@ -39,7 +35,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Create report
+    // Create report record (fast DB operation only)
     const report = await prisma.rieReport.create({
       data: {
         userId: user.id,
@@ -72,17 +68,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Fire AI generation in background using Next.js after()
-    // This continues running after the response is sent
-    after(async () => {
-      try {
-        await generateRie(report.id);
-      } catch (error) {
-        console.error("Background generation failed:", error);
-      }
-    });
-
-    // Return immediately with reportId — client polls /api/rie/[id] for status
+    // Return immediately — client calls /api/rie/process to start generation
     return NextResponse.json({ reportId: report.id, status: "PENDING" });
   } catch (error) {
     console.error("Generate error:", error);
