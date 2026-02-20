@@ -6,7 +6,7 @@ import { loadKennisbank } from "@/lib/kennisbank/loader";
 function getModelConfig(tier: string) {
   switch (tier) {
     case "ENTERPRISE":
-      return { model: "anthropic/claude-haiku-4.5", maxTokens: 8000 };
+      return { model: "anthropic/claude-haiku-4.5", maxTokens: 6000 };
     case "PROFESSIONAL":
       return { model: "anthropic/claude-haiku-4.5", maxTokens: 6000 };
     case "BASIS":
