@@ -12,6 +12,7 @@ import {
   Lock,
   ArrowRight,
   FileText,
+  MessageCircle,
 } from "lucide-react";
 
 type Report = {
@@ -400,6 +401,15 @@ export default function ResultaatPage() {
               <Download className="h-5 w-5" />
               Download PDF Rapport
             </button>
+            {report.tier === "ENTERPRISE" && (
+              <Link
+                href={`/chat/${id}`}
+                className="inline-flex items-center gap-2 bg-white text-brand-600 border-2 border-brand-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-brand-50 transition mt-4"
+              >
+                <MessageCircle className="h-5 w-5" />
+                💬 AI Expert Chat
+              </Link>
+            )}
           </div>
         )}
       </div>
