@@ -4,7 +4,6 @@ import { loadKennisbank } from "@/lib/kennisbank/loader";
 
 // Model selection based on tier
 function getModelConfig(tier: string) {
-  // Haiku 4.5 for all tiers — fast enough for serverless (120s limit)
   switch (tier) {
     case "ENTERPRISE":
       return { model: "anthropic/claude-haiku-4.5", maxTokens: 8000 };
@@ -12,12 +11,55 @@ function getModelConfig(tier: string) {
       return { model: "anthropic/claude-haiku-4.5", maxTokens: 6000 };
     case "BASIS":
       return { model: "anthropic/claude-haiku-4.5", maxTokens: 4000 };
-    default: // GRATIS
+    default:
       return { model: "anthropic/claude-haiku-4.5", maxTokens: 2500 };
   }
 }
 
-// Attempt to repair truncated JSON
+// Sanitize model output to valid JSON - fix common LLM issues
+function sanitizeJsonString(str: string): string {
+  // Fix unescaped control characters inside JSON strings
+  let result = "";
+  let inString = false;
+  let escape = false;
+
+  for (let i = 0; i < str.length; i++) {
+    const ch = str[i];
+
+    if (escape) {
+      result += ch;
+      escape = false;
+      continue;
+    }
+
+    if (ch === "\\" && inString) {
+      result += ch;
+      escape = true;
+      continue;
+    }
+
+    if (ch === '"') {
+      inString = !inString;
+      result += ch;
+      continue;
+    }
+
+    if (inString) {
+      // Escape control characters that are invalid in JSON strings
+      if (ch === "\n") { result += "\\n"; continue; }
+      if (ch === "\r") { result += "\\r"; continue; }
+      if (ch === "\t") { result += "\\t"; continue; }
+      const code = ch.charCodeAt(0);
+      if (code < 32) { result += "\\u" + code.toString(16).padStart(4, "0"); continue; }
+    }
+
+    result += ch;
+  }
+
+  return result;
+}
+
+// Repair truncated JSON by closing open structures
 function repairJson(str: string): string {
   let openBraces = 0;
   let openBrackets = 0;
@@ -43,94 +85,6 @@ function repairJson(str: string): string {
   return repaired;
 }
 
-// Stream response from OpenRouter with proper SSE line buffering
-async function streamOpenRouterResponse(
-  model: string,
-  maxTokens: number,
-  system: string,
-  user: string
-): Promise<{ text: string; promptTokens: number; completionTokens: number }> {
-  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model,
-      max_tokens: maxTokens,
-      stream: true,
-      messages: [
-        { role: "system", content: system },
-        { role: "user", content: user + "\n\nANTWOORD UITSLUITEND MET VALIDE JSON. Geen tekst ervoor of erna. Begin direct met {" },
-      ],
-    }),
-  });
-
-  if (!response.ok) {
-    const errBody = await response.text();
-    throw new Error(`OpenRouter API error ${response.status}: ${errBody}`);
-  }
-
-  const reader = response.body?.getReader();
-  if (!reader) throw new Error("No response body stream");
-
-  const decoder = new TextDecoder();
-  let fullText = "";
-  let promptTokens = 0;
-  let completionTokens = 0;
-  let buffer = ""; // Buffer for partial SSE lines
-
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-
-    // Append new chunk to buffer and process complete lines
-    buffer += decoder.decode(value, { stream: true });
-    const lines = buffer.split("\n");
-    // Keep last element as it may be incomplete
-    buffer = lines.pop() || "";
-
-    for (const line of lines) {
-      const trimmed = line.trim();
-      if (!trimmed.startsWith("data: ")) continue;
-      const data = trimmed.slice(6);
-      if (data === "[DONE]") continue;
-
-      try {
-        const parsed = JSON.parse(data);
-        const delta = parsed.choices?.[0]?.delta?.content;
-        if (delta) fullText += delta;
-
-        if (parsed.usage) {
-          promptTokens = parsed.usage.prompt_tokens || 0;
-          completionTokens = parsed.usage.completion_tokens || 0;
-        }
-      } catch {
-        // Skip unparseable SSE events
-      }
-    }
-  }
-
-  // Process any remaining buffer
-  if (buffer.trim().startsWith("data: ")) {
-    const data = buffer.trim().slice(6);
-    if (data !== "[DONE]") {
-      try {
-        const parsed = JSON.parse(data);
-        const delta = parsed.choices?.[0]?.delta?.content;
-        if (delta) fullText += delta;
-        if (parsed.usage) {
-          promptTokens = parsed.usage.prompt_tokens || 0;
-          completionTokens = parsed.usage.completion_tokens || 0;
-        }
-      } catch {}
-    }
-  }
-
-  return { text: fullText, promptTokens, completionTokens };
-}
-
 export async function generateRie(reportId: string) {
   const report = await prisma.rieReport.findUniqueOrThrow({
     where: { id: reportId },
@@ -149,10 +103,30 @@ export async function generateRie(reportId: string) {
     const { system, user } = buildRiePrompt(kennisbank, intakeData, report.tier);
     const { model, maxTokens } = getModelConfig(report.tier);
 
-    const { text, promptTokens, completionTokens } = await streamOpenRouterResponse(
-      model, maxTokens, system, user
-    );
+    // Non-streaming call — Haiku is fast enough (<60s)
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model,
+        max_tokens: maxTokens,
+        messages: [
+          { role: "system", content: system },
+          { role: "user", content: user + "\n\nANTWOORD UITSLUITEND MET VALIDE JSON. Geen tekst ervoor of erna. Begin direct met {" },
+        ],
+      }),
+    });
 
+    if (!response.ok) {
+      const errBody = await response.text();
+      throw new Error(`OpenRouter API error ${response.status}: ${errBody}`);
+    }
+
+    const data = await response.json();
+    const text = data.choices[0]?.message?.content;
     if (!text) throw new Error("No content in OpenRouter response");
 
     // Extract JSON from response
@@ -167,23 +141,26 @@ export async function generateRie(reportId: string) {
       jsonStr = jsonStr.slice(firstBrace);
     }
 
+    // Sanitize control characters in string values
+    jsonStr = sanitizeJsonString(jsonStr);
+
     let generatedContent: any;
     try {
       generatedContent = JSON.parse(jsonStr);
     } catch (parseError) {
-      console.warn("JSON parse failed, attempting repair...", (parseError as Error).message);
+      console.warn("JSON parse failed after sanitize, attempting repair...", (parseError as Error).message);
       const repaired = repairJson(jsonStr);
       generatedContent = JSON.parse(repaired);
     }
 
     const generationTimeMs = Date.now() - startTime;
-    const tokensUsed = promptTokens + completionTokens;
+    const tokensUsed = (data.usage?.prompt_tokens || 0) + (data.usage?.completion_tokens || 0);
 
     await prisma.rieReport.update({
       where: { id: reportId },
       data: {
         generatedContent,
-        samenvatting: generatedContent.samenvatting || "RI&E gegenereerd — samenvatting niet beschikbaar.",
+        samenvatting: generatedContent.samenvatting || "RI&E gegenereerd.",
         status: "COMPLETED",
         tokensUsed,
         generationTimeMs,
