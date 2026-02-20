@@ -45,6 +45,7 @@ export async function generateRie(reportId: string) {
         messages: [
           { role: "system", content: system },
           { role: "user", content: user },
+          { role: "assistant", content: "```json\n{" },
         ],
       }),
     });
@@ -58,12 +59,17 @@ export async function generateRie(reportId: string) {
     const text = data.choices[0]?.message?.content;
     if (!text) throw new Error("No content in OpenRouter response");
 
-    // Extract JSON from response (handle markdown code blocks)
-    let jsonStr = text;
+    // Extract JSON from response — we prefilled with ```json\n{ so prepend that
+    let jsonStr = "{" + text;
+    // Remove any trailing markdown code block markers
+    jsonStr = jsonStr.replace(/```\s*$/, "").trim();
+    // Also handle if model included its own code block
     const jsonMatch = jsonStr.match(/```(?:json)?\s*([\s\S]*?)```/);
-    if (jsonMatch) jsonStr = jsonMatch[1];
+    if (jsonMatch) jsonStr = jsonMatch[1].trim();
+    // Ensure it ends with }
+    if (!jsonStr.endsWith("}")) jsonStr += "}";
 
-    const generatedContent = JSON.parse(jsonStr.trim());
+    const generatedContent = JSON.parse(jsonStr);
     const generationTimeMs = Date.now() - startTime;
     const tokensUsed = (data.usage?.prompt_tokens || 0) + (data.usage?.completion_tokens || 0);
 
