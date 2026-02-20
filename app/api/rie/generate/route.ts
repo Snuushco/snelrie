@@ -1,10 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { generateRie } from "@/lib/ai/pipeline";
+import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMITS } from "@/lib/rate-limit";
+import { generateRieSchema, validationErrorResponse } from "@/lib/validate";
 
 export async function POST(req: NextRequest) {
+  // Rate limiting
+  const ip = getClientIp(req);
+  const rl = checkRateLimit(RATE_LIMITS.generate, ip);
+  if (!rl.allowed) return rateLimitResponse(rl.retryAfter);
+
   try {
     const body = await req.json();
+
+    // Validate & sanitize input
+    const parsed = generateRieSchema.safeParse(body);
+    if (!parsed.success) return validationErrorResponse(parsed.error);
+
     const {
       bedrijfsnaam,
       branche,
@@ -14,14 +26,7 @@ export async function POST(req: NextRequest) {
       naam,
       tier,
       ...werkplekData
-    } = body;
-
-    if (!bedrijfsnaam || !branche || !aantalMedewerkers || !email) {
-      return NextResponse.json(
-        { error: "Vul alle verplichte velden in" },
-        { status: 400 }
-      );
-    }
+    } = parsed.data;
 
     // Find or create user
     let user = await prisma.user.findUnique({ where: { email } });

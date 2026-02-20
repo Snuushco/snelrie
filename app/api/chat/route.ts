@@ -1,16 +1,22 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/db";
+import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMITS } from "@/lib/rate-limit";
+import { chatSchema, validationErrorResponse, stripHtml } from "@/lib/validate";
 
 export async function POST(req: NextRequest) {
-  try {
-    const { reportId, messages } = await req.json();
+  // Rate limiting (per IP)
+  const ip = getClientIp(req);
+  const rl = checkRateLimit(RATE_LIMITS.chat, ip);
+  if (!rl.allowed) return rateLimitResponse(rl.retryAfter);
 
-    if (!reportId || !messages) {
-      return new Response(JSON.stringify({ error: "Missende velden" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
+  try {
+    const body = await req.json();
+
+    // Validate input
+    const parsed = chatSchema.safeParse(body);
+    if (!parsed.success) return validationErrorResponse(parsed.error);
+
+    const { reportId, messages } = parsed.data;
 
     const report = await prisma.rieReport.findUnique({
       where: { id: reportId },
@@ -38,6 +44,19 @@ export async function POST(req: NextRequest) {
         { status: 403, headers: { "Content-Type": "application/json" } }
       );
     }
+
+    // Sanitize messages: strip role manipulation attempts, limit to last 50
+    const sanitizedMessages = messages
+      .filter((m) => m.role === "user" || m.role === "assistant")
+      .map((m) => ({
+        role: m.role,
+        content: m.role === "user"
+          ? stripHtml(m.content)
+              .replace(/^(system|assistant):/gi, "")
+              .slice(0, 500)
+          : m.content,
+      }))
+      .slice(-50); // Keep last 50 messages only
 
     const intake = report.intakeData as any;
     const content = report.generatedContent as any;
@@ -99,11 +118,11 @@ Beantwoord vragen over de RI&E, risico's, maatregelen, en Arbo-wetgeving. Wees s
         },
         body: JSON.stringify({
           model: "anthropic/claude-sonnet-4-20250514",
-          max_tokens: 2000,
+          max_tokens: 1000,
           stream: true,
           messages: [
             { role: "system", content: systemPrompt },
-            ...messages,
+            ...sanitizedMessages,
           ],
         }),
       }
@@ -121,7 +140,6 @@ Beantwoord vragen over de RI&E, risico's, maatregelen, en Arbo-wetgeving. Wees s
     const stream = new ReadableStream({
       async start(controller) {
         const reader = response.body!.getReader();
-        const decoder = new TextDecoder();
 
         try {
           while (true) {

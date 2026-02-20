@@ -413,9 +413,9 @@ export default function HomePage() {
             <a href="#" className="hover:text-white transition">
               Privacy
             </a>
-            <a href="#" className="hover:text-white transition">
+            <Link href="/voorwaarden" className="hover:text-white transition">
               Voorwaarden
-            </a>
+            </Link>
             <a href="#" className="hover:text-white transition">
               Contact
             </a>

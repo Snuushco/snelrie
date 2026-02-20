@@ -27,7 +27,7 @@ export async function generateRie(reportId: string) {
       },
       body: JSON.stringify({
         model: "anthropic/claude-sonnet-4-20250514",
-        max_tokens: 8000,
+        max_tokens: 4000,
         messages: [
           { role: "system", content: system },
           { role: "user", content: user },

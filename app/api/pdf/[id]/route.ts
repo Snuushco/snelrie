@@ -1,10 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMITS } from "@/lib/rate-limit";
 
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  // Rate limiting
+  const ip = getClientIp(req);
+  const rl = checkRateLimit(RATE_LIMITS.pdf, ip);
+  if (!rl.allowed) return rateLimitResponse(rl.retryAfter);
+
   const { id } = await params;
 
   const report = await prisma.rieReport.findUnique({

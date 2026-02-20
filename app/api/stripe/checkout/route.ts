@@ -1,12 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getStripe, PRICING } from "@/lib/stripe";
 import { prisma } from "@/lib/db";
+import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMITS } from "@/lib/rate-limit";
+import { checkoutSchema, validationErrorResponse } from "@/lib/validate";
 
 export async function POST(req: NextRequest) {
-  try {
-    const { reportId, tier } = await req.json();
+  // Rate limiting
+  const ip = getClientIp(req);
+  const rl = checkRateLimit(RATE_LIMITS.checkout, ip);
+  if (!rl.allowed) return rateLimitResponse(rl.retryAfter);
 
-    if (!reportId || !tier || !PRICING[tier as keyof typeof PRICING]) {
+  try {
+    const body = await req.json();
+
+    // Validate input
+    const parsed = checkoutSchema.safeParse(body);
+    if (!parsed.success) return validationErrorResponse(parsed.error);
+
+    const { reportId, tier } = parsed.data;
+
+    if (!PRICING[tier as keyof typeof PRICING]) {
       return NextResponse.json({ error: "Ongeldige tier" }, { status: 400 });
     }
 
