@@ -1,0 +1,135 @@
+{
+  "slug": "beveiliging",
+  "naam": "Beveiligingsbranche",
+  "beschrijving": "Particuliere beveiligingsorganisaties: objectbeveiliging, evenementenbeveiliging, mobiele surveillance, receptiediensten, horecabeveiliging, persoonsbeveiliging.",
+  "sbiCodes": ["80.10", "80.20", "80.30"],
+  "arbocatalogus": "Arbocatalogus Particuliere Beveiliging (door VBe NL)",
+  "cao": "CAO Particuliere Beveiliging",
+  "wettelijkeKaders": [
+    { "wet": "Arbowet", "artikel": "Artikel 5", "beschrijving": "Verplichting tot het opstellen van een RI&E en Plan van Aanpak" },
+    { "wet": "Arbowet", "artikel": "Artikel 3 lid 2", "beschrijving": "Agressie en geweld beleid" },
+    { "wet": "Arbowet", "artikel": "Artikel 8", "beschrijving": "Voorlichting en onderricht werknemers" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 6, afdeling 4", "beschrijving": "Persoonlijke beschermingsmiddelen" },
+    { "wet": "Arbeidstijdenwet", "artikel": "Artikel 5:8", "beschrijving": "Nachtarbeid" },
+    { "wet": "Wet particuliere beveiligingsorganisaties", "artikel": "Wpbr", "beschrijving": "Vergunning, legitimatie, betrouwbaarheidstoets" }
+  ],
+  "risicoCategorieën": [
+    {
+      "id": "agressie_geweld",
+      "categorie": "Agressie en geweld",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Fysiek geweld bij aanhoudingen", "Verbale agressie en bedreigingen", "Wapeninzet door derden", "Intimidatie na incidenten"],
+      "standaardMaatregelen": [
+        { "maatregel": "Training conflicthantering en de-escalatie (jaarlijks)", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Agressieprotocol met meldingsprocedure en opvang", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Portofoon of bodycam voor communicatie en registratie", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Koppelwerk bij hoog-risico locaties", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Nazorg en psychische ondersteuning na incidenten", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "nachtwerk",
+      "categorie": "Nacht- en onregelmatige diensten",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Chronische vermoeidheid", "Slaapstoornissen", "Verminderde alertheid", "Sociaal isolement"],
+      "standaardMaatregelen": [
+        { "maatregel": "Roosterplanning conform Arbeidstijdenwet", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Voorwaartse roosterrotatie", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "PAGO voor nachtwerkers", "type": "organisatorisch", "termijn": "middel" },
+        { "maatregel": "Voorlichting slaaphygiëne", "type": "organisatorisch", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "psychosociale_belasting",
+      "categorie": "Psychosociale arbeidsbelasting (PSA)",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Werkstress", "Eentonigheid", "Sociaal isolement", "Burn-out", "PTSS na geweldsincidenten"],
+      "standaardMaatregelen": [
+        { "maatregel": "Vertrouwenspersoon aanstellen", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Regelmatige check-ins door leidinggevende", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Toegang tot bedrijfsmaatschappelijk werk", "type": "organisatorisch", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "alleen_werken",
+      "categorie": "Alleen werken",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Geen directe hulp bij incident", "Medische noodsituatie zonder collega's", "Verhoogd risico op overvallen"],
+      "standaardMaatregelen": [
+        { "maatregel": "Man-down systeem of alarmknop", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Periodieke incheck met meldkamer", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "GPS tracking mobiele surveillanten", "type": "collectief", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "fysieke_belasting",
+      "categorie": "Fysieke belasting",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Klachten rug/knieën/voeten door lang staan", "Blessures bij fysiek ingrijpen", "Overbelasting door uitrusting"],
+      "standaardMaatregelen": [
+        { "maatregel": "Goed schoeisel met demping", "type": "individueel", "termijn": "direct" },
+        { "maatregel": "Afwisseling staan/lopen/zitten", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "verkeersveiligheid",
+      "categorie": "Verkeersveiligheid",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Verkeersongevallen door vermoeidheid", "Tijdsdruk bij alarmopvolging", "Afleiding door communicatie"],
+      "standaardMaatregelen": [
+        { "maatregel": "Rijvaardigheidstraining", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Handsfree communicatie", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Periodieke voertuigkeuring", "type": "collectief", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "bhv",
+      "categorie": "BHV en noodprocedures",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Onvoldoende BHV'ers", "Onbekendheid ontruimingsplan", "Geen EHBO materiaal"],
+      "standaardMaatregelen": [
+        { "maatregel": "BHV-certificering voor alle beveiligers", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "EHBO-kit op elke post", "type": "collectief", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "klimaat",
+      "categorie": "Klimaat en weersomstandigheden",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Onderkoeling bij buitenwerk", "Hittestress", "Nat worden"],
+      "standaardMaatregelen": [
+        { "maatregel": "Weersbestendige werkkleding", "type": "individueel", "termijn": "direct" },
+        { "maatregel": "Hitteprotocol bij >30°C", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "beeldschermwerk",
+      "categorie": "Beeldschermwerk en camerabewaking",
+      "prioriteit": "laag",
+      "typischeRisicos": ["Oogvermoeidheid", "RSI-klachten", "Concentratieverlies"],
+      "standaardMaatregelen": [
+        { "maatregel": "Ergonomische werkplek", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Max 4 uur aaneengesloten beeldschermwerk", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "pbm",
+      "categorie": "Persoonlijke beschermingsmiddelen",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Geen of verkeerde PBM's", "PBM's niet onderhouden", "Medewerkers dragen PBM's niet"],
+      "standaardMaatregelen": [
+        { "maatregel": "PBM-inventarisatie per functie", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Instructie en toezicht op PBM-gebruik", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    }
+  ],
+  "intakeVragen": [
+    { "id": "type_beveiliging", "vraag": "Welk type beveiligingsdiensten verleent uw organisatie?", "type": "meerkeuze_multi", "opties": ["Objectbeveiliging", "Mobiele surveillance", "Evenementenbeveiliging", "Horecabeveiliging", "Receptie/toegangscontrole", "Persoonsbeveiliging", "Geld- en waardetransport", "Meldkamer/camerabewaking"] },
+    { "id": "nachtdiensten", "vraag": "Werken uw medewerkers in nachtdiensten?", "type": "ja_nee" },
+    { "id": "alleen_werken", "vraag": "Werken medewerkers regelmatig alleen?", "type": "ja_nee" },
+    { "id": "bewapening", "vraag": "Welke verdedigingsmiddelen dragen uw medewerkers?", "type": "meerkeuze_multi", "opties": ["Geen", "Wapenstok", "Pepperspray", "Handboeien", "Steekwerend vest"] },
+    { "id": "geweldsincidenten", "vraag": "Hoe vaak komen geweldsincidenten voor per jaar?", "type": "keuze", "opties": ["Zelden (0-2)", "Regelmatig (3-10)", "Frequent (10+)"] },
+    { "id": "voertuigen", "vraag": "Maken medewerkers gebruik van bedrijfsvoertuigen?", "type": "ja_nee" },
+    { "id": "buitenwerk", "vraag": "Werken medewerkers regelmatig buiten?", "type": "ja_nee" }
+  ]
+}

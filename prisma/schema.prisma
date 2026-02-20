@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ReportStatus {
+  PENDING
+  GENERATING
+  COMPLETED
+  FAILED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum PricingTier {
+  GRATIS
+  BASIS
+  PROFESSIONAL
+  ENTERPRISE
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  naam      String?
+  reports   RieReport[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+}
+
+model RieReport {
+  id              String       @id @default(cuid())
+  user            User         @relation(fields: [userId], references: [id])
+  userId          String
+
+  // Company info
+  bedrijfsnaam    String
+  branche         String
+  aantalMedewerkers Int
+  aantalLocaties  Int          @default(1)
+
+  // Intake
+  intakeData      Json
+
+  // AI output
+  generatedContent Json?
+  samenvatting    String?
+
+  // Status
+  status          ReportStatus @default(PENDING)
+  tier            PricingTier  @default(GRATIS)
+
+  // PDF
+  pdfGenerated    Boolean      @default(false)
+
+  // AI metadata
+  tokensUsed      Int?
+  generationTimeMs Int?
+
+  // Payment
+  payments        Payment[]
+
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@index([userId])
+}
+
+model Payment {
+  id                  String        @id @default(cuid())
+  stripeSessionId     String        @unique
+  stripePaymentIntent String?
+  amount              Int           // cents
+  currency            String        @default("eur")
+  status              PaymentStatus @default(PENDING)
+  tier                PricingTier
+  email               String
+
+  report              RieReport?    @relation(fields: [reportId], references: [id])
+  reportId            String?
+
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+
+  @@index([stripeSessionId])
+  @@index([reportId])
+}
