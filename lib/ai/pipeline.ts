@@ -6,10 +6,11 @@ import { loadKennisbank } from "@/lib/kennisbank/loader";
 function getModelConfig(tier: string) {
   switch (tier) {
     case "ENTERPRISE":
+      return { model: "anthropic/claude-sonnet-4.6", maxTokens: 8000 };
     case "PROFESSIONAL":
-      return { model: "anthropic/claude-sonnet-4.6", maxTokens: 4000 };
+      return { model: "anthropic/claude-sonnet-4.6", maxTokens: 6000 };
     case "BASIS":
-      return { model: "anthropic/claude-sonnet-4.6", maxTokens: 3000 };
+      return { model: "anthropic/claude-sonnet-4.6", maxTokens: 5000 };
     default: // GRATIS
       return { model: "anthropic/claude-3.5-haiku", maxTokens: 2500 };
   }

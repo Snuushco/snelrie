@@ -76,8 +76,11 @@ OUTPUT FORMAT (JSON):
   ]
 }
 
-${tier === 'BASIS' ? 'BELANGRIJK: Genereer GEEN Plan van Aanpak voor de Basis tier. Laat planVanAanpak als lege array.' : ''}
-Genereer een volledige, professionele RI&E. Minimaal 8 risico categorieën, elk met minimaal 2 maatregelen.`;
+${tier === 'GRATIS' ? 'BELANGRIJK: Genereer een beknopte RI&E. Maximaal 5 risico categorieën, elk met 1-2 maatregelen. Laat planVanAanpak en wettelijkeVerplichtingen als lege arrays.' : ''}
+${tier === 'BASIS' ? 'BELANGRIJK: Genereer GEEN Plan van Aanpak voor de Basis tier. Laat planVanAanpak als lege array. Maximaal 8 risico categorieën.' : ''}
+${tier === 'PROFESSIONAL' ? 'Genereer een volledige, professionele RI&E. Minimaal 8 risico categorieën, elk met minimaal 2 maatregelen. Inclusief Plan van Aanpak.' : ''}
+${tier === 'ENTERPRISE' ? 'Genereer een uitgebreide, professionele RI&E. Minimaal 10 risico categorieën, elk met minimaal 3 maatregelen. Inclusief uitgebreid Plan van Aanpak en wettelijke verplichtingen.' : ''}
+BELANGRIJK: Antwoord UITSLUITEND met valide JSON. Geen tekst ervoor of erna.`;
 
   const user = `Genereer een RI&E voor het volgende bedrijf:
 
