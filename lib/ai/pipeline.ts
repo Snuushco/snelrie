@@ -2,7 +2,7 @@ import { buildRiePrompt } from "./prompts";
 import { prisma } from "@/lib/db";
 import { loadKennisbank } from "@/lib/kennisbank/loader";
 
-// Model selection based on tier — high token limits to prevent truncation
+// Model selection based on tier
 function getModelConfig(tier: string) {
   switch (tier) {
     case "ENTERPRISE":
@@ -34,17 +34,79 @@ function repairJson(str: string): string {
     else if (ch === ']') openBrackets--;
   }
 
-  // Remove trailing comma before closing
   let repaired = str.replace(/,\s*$/, '');
-
-  // Close any unclosed strings
   if (inString) repaired += '"';
-
-  // Close open brackets and braces
   for (let i = 0; i < openBrackets; i++) repaired += ']';
   for (let i = 0; i < openBraces; i++) repaired += '}';
 
   return repaired;
+}
+
+// Stream response from OpenRouter to avoid idle timeout
+async function streamOpenRouterResponse(
+  model: string,
+  maxTokens: number,
+  system: string,
+  user: string
+): Promise<{ text: string; promptTokens: number; completionTokens: number }> {
+  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model,
+      max_tokens: maxTokens,
+      stream: true,
+      messages: [
+        { role: "system", content: system },
+        { role: "user", content: user + "\n\nANTWOORD UITSLUITEND MET VALIDE JSON. Geen tekst ervoor of erna. Begin direct met {" },
+      ],
+    }),
+  });
+
+  if (!response.ok) {
+    const errBody = await response.text();
+    throw new Error(`OpenRouter API error ${response.status}: ${errBody}`);
+  }
+
+  const reader = response.body?.getReader();
+  if (!reader) throw new Error("No response body stream");
+
+  const decoder = new TextDecoder();
+  let fullText = "";
+  let promptTokens = 0;
+  let completionTokens = 0;
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+
+    const chunk = decoder.decode(value, { stream: true });
+    const lines = chunk.split("\n").filter((l) => l.startsWith("data: "));
+
+    for (const line of lines) {
+      const data = line.slice(6).trim();
+      if (data === "[DONE]") continue;
+
+      try {
+        const parsed = JSON.parse(data);
+        const delta = parsed.choices?.[0]?.delta?.content;
+        if (delta) fullText += delta;
+
+        // Capture usage from final chunk
+        if (parsed.usage) {
+          promptTokens = parsed.usage.prompt_tokens || 0;
+          completionTokens = parsed.usage.completion_tokens || 0;
+        }
+      } catch {
+        // Skip unparseable chunks
+      }
+    }
+  }
+
+  return { text: fullText, promptTokens, completionTokens };
 }
 
 export async function generateRie(reportId: string) {
@@ -65,46 +127,22 @@ export async function generateRie(reportId: string) {
     const { system, user } = buildRiePrompt(kennisbank, intakeData, report.tier);
     const { model, maxTokens } = getModelConfig(report.tier);
 
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model,
-        max_tokens: maxTokens,
-        messages: [
-          { role: "system", content: system },
-          { role: "user", content: user + "\n\nANTWOORD UITSLUITEND MET VALIDE JSON. Geen tekst ervoor of erna. Begin direct met {" },
-        ],
-      }),
-    });
+    // Use streaming to avoid serverless idle timeout
+    const { text, promptTokens, completionTokens } = await streamOpenRouterResponse(
+      model, maxTokens, system, user
+    );
 
-    if (!response.ok) {
-      const errBody = await response.text();
-      throw new Error(`OpenRouter API error ${response.status}: ${errBody}`);
-    }
-
-    const data = await response.json();
-    const text = data.choices[0]?.message?.content;
     if (!text) throw new Error("No content in OpenRouter response");
 
-    // Check if output was truncated (finish_reason != "stop")
-    const finishReason = data.choices[0]?.finish_reason;
-    const wasTruncated = finishReason === "length";
-
-    // Extract JSON from response (handle markdown code blocks)
+    // Extract JSON from response
     let jsonStr = text.trim();
     const jsonMatch = jsonStr.match(/```(?:json)?\s*([\s\S]*?)```/);
     if (jsonMatch) jsonStr = jsonMatch[1].trim();
-    // Find first { and last }
     const firstBrace = jsonStr.indexOf("{");
     const lastBrace = jsonStr.lastIndexOf("}");
     if (firstBrace !== -1 && lastBrace !== -1) {
       jsonStr = jsonStr.slice(firstBrace, lastBrace + 1);
     } else if (firstBrace !== -1) {
-      // Truncated — no closing brace found
       jsonStr = jsonStr.slice(firstBrace);
     }
 
@@ -112,14 +150,13 @@ export async function generateRie(reportId: string) {
     try {
       generatedContent = JSON.parse(jsonStr);
     } catch (parseError) {
-      // Try to repair truncated JSON
       console.warn("JSON parse failed, attempting repair...", (parseError as Error).message);
       const repaired = repairJson(jsonStr);
       generatedContent = JSON.parse(repaired);
     }
 
     const generationTimeMs = Date.now() - startTime;
-    const tokensUsed = (data.usage?.prompt_tokens || 0) + (data.usage?.completion_tokens || 0);
+    const tokensUsed = promptTokens + completionTokens;
 
     await prisma.rieReport.update({
       where: { id: reportId },
