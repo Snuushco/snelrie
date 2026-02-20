@@ -3,8 +3,9 @@ import { prisma } from "@/lib/db";
 import { generateRie } from "@/lib/ai/pipeline";
 import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMITS } from "@/lib/rate-limit";
 import { generateRieSchema, validationErrorResponse } from "@/lib/validate";
+import { after } from "next/server";
 
-export const maxDuration = 60; // Pro plan: up to 60s for AI generation
+export const maxDuration = 60;
 
 export async function POST(req: NextRequest) {
   // Rate limiting
@@ -71,10 +72,18 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Generate in-request (serverless won't reliably continue after response)
-    await generateRie(report.id);
+    // Fire AI generation in background using Next.js after()
+    // This continues running after the response is sent
+    after(async () => {
+      try {
+        await generateRie(report.id);
+      } catch (error) {
+        console.error("Background generation failed:", error);
+      }
+    });
 
-    return NextResponse.json({ reportId: report.id });
+    // Return immediately with reportId — client polls /api/rie/[id] for status
+    return NextResponse.json({ reportId: report.id, status: "PENDING" });
   } catch (error) {
     console.error("Generate error:", error);
     return NextResponse.json(
