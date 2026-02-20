@@ -6,6 +6,7 @@ import {
 } from "./prompts";
 import { prisma } from "@/lib/db";
 import { loadKennisbank } from "@/lib/kennisbank/loader";
+import { jsonrepair } from "jsonrepair";
 
 const MODEL = "anthropic/claude-haiku-4.5";
 
@@ -47,73 +48,30 @@ async function aiCall(system: string, user: string, maxTokens: number): Promise<
 
   const tokens = (data.usage?.prompt_tokens || 0) + (data.usage?.completion_tokens || 0);
 
-  // Extract and parse JSON
+  // Extract and parse JSON using jsonrepair for robustness
   let jsonStr = text.trim();
   // Remove markdown code blocks
   const codeMatch = jsonStr.match(/```(?:json)?\s*([\s\S]*?)```/);
   if (codeMatch) jsonStr = codeMatch[1].trim();
-  // Find JSON structure
+  // Find JSON structure start
   const firstBrace = jsonStr.indexOf("{");
   const firstBracket = jsonStr.indexOf("[");
   const start = firstBrace === -1 ? firstBracket :
                 firstBracket === -1 ? firstBrace :
                 Math.min(firstBrace, firstBracket);
   if (start > 0) jsonStr = jsonStr.slice(start);
-  // Find matching end
-  const isArray = jsonStr.startsWith("[");
-  const lastClose = jsonStr.lastIndexOf(isArray ? "]" : "}");
-  if (lastClose !== -1) jsonStr = jsonStr.slice(0, lastClose + 1);
-
-  // Sanitize control characters inside strings
-  jsonStr = sanitizeJsonString(jsonStr);
 
   try {
+    // Try direct parse first
     return { parsed: JSON.parse(jsonStr), tokens };
-  } catch (e) {
-    // Try repair
-    const repaired = repairJson(jsonStr);
+  } catch {
+    // Use jsonrepair to fix common LLM JSON issues
+    const repaired = jsonrepair(jsonStr);
     return { parsed: JSON.parse(repaired), tokens };
   }
 }
 
-// Sanitize unescaped control chars in JSON string values
-function sanitizeJsonString(str: string): string {
-  let result = "";
-  let inStr = false;
-  let esc = false;
-  for (let i = 0; i < str.length; i++) {
-    const ch = str[i];
-    if (esc) { result += ch; esc = false; continue; }
-    if (ch === "\\" && inStr) { result += ch; esc = true; continue; }
-    if (ch === '"') { inStr = !inStr; result += ch; continue; }
-    if (inStr) {
-      if (ch === "\n") { result += "\\n"; continue; }
-      if (ch === "\r") { result += "\\r"; continue; }
-      if (ch === "\t") { result += "\\t"; continue; }
-      if (ch.charCodeAt(0) < 32) { result += "\\u" + ch.charCodeAt(0).toString(16).padStart(4, "0"); continue; }
-    }
-    result += ch;
-  }
-  return result;
-}
-
-// Close unclosed JSON structures
-function repairJson(str: string): string {
-  let braces = 0, brackets = 0, inStr = false, esc = false;
-  for (const ch of str) {
-    if (esc) { esc = false; continue; }
-    if (ch === '\\' && inStr) { esc = true; continue; }
-    if (ch === '"') { inStr = !inStr; continue; }
-    if (inStr) continue;
-    if (ch === '{') braces++; else if (ch === '}') braces--;
-    if (ch === '[') brackets++; else if (ch === ']') brackets--;
-  }
-  let r = str.replace(/,\s*$/, '');
-  if (inStr) r += '"';
-  for (let i = 0; i < brackets; i++) r += ']';
-  for (let i = 0; i < braces; i++) r += '}';
-  return r;
-}
+// jsonrepair handles all JSON repair (unescaped chars, truncation, etc.)
 
 // Compliance validator
 function validateRie(content: any, tier: string): { valid: boolean; errors: string[] } {
