@@ -4,8 +4,7 @@ import { loadKennisbank } from "@/lib/kennisbank/loader";
 
 // Model selection based on tier
 function getModelConfig(tier: string) {
-  // Haiku 4.5 for all tiers — fast enough for serverless, quality is excellent
-  // Sonnet takes >120s for large JSON which exceeds Vercel Pro function limit
+  // Haiku 4.5 for all tiers — fast enough for serverless (120s limit)
   switch (tier) {
     case "ENTERPRISE":
       return { model: "anthropic/claude-haiku-4.5", maxTokens: 8000 };
@@ -18,7 +17,7 @@ function getModelConfig(tier: string) {
   }
 }
 
-// Attempt to repair truncated JSON by closing open brackets/braces
+// Attempt to repair truncated JSON
 function repairJson(str: string): string {
   let openBraces = 0;
   let openBrackets = 0;
@@ -44,7 +43,7 @@ function repairJson(str: string): string {
   return repaired;
 }
 
-// Stream response from OpenRouter to avoid idle timeout
+// Stream response from OpenRouter with proper SSE line buffering
 async function streamOpenRouterResponse(
   model: string,
   maxTokens: number,
@@ -80,16 +79,22 @@ async function streamOpenRouterResponse(
   let fullText = "";
   let promptTokens = 0;
   let completionTokens = 0;
+  let buffer = ""; // Buffer for partial SSE lines
 
   while (true) {
     const { done, value } = await reader.read();
     if (done) break;
 
-    const chunk = decoder.decode(value, { stream: true });
-    const lines = chunk.split("\n").filter((l) => l.startsWith("data: "));
+    // Append new chunk to buffer and process complete lines
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split("\n");
+    // Keep last element as it may be incomplete
+    buffer = lines.pop() || "";
 
     for (const line of lines) {
-      const data = line.slice(6).trim();
+      const trimmed = line.trim();
+      if (!trimmed.startsWith("data: ")) continue;
+      const data = trimmed.slice(6);
       if (data === "[DONE]") continue;
 
       try {
@@ -97,14 +102,29 @@ async function streamOpenRouterResponse(
         const delta = parsed.choices?.[0]?.delta?.content;
         if (delta) fullText += delta;
 
-        // Capture usage from final chunk
         if (parsed.usage) {
           promptTokens = parsed.usage.prompt_tokens || 0;
           completionTokens = parsed.usage.completion_tokens || 0;
         }
       } catch {
-        // Skip unparseable chunks
+        // Skip unparseable SSE events
       }
+    }
+  }
+
+  // Process any remaining buffer
+  if (buffer.trim().startsWith("data: ")) {
+    const data = buffer.trim().slice(6);
+    if (data !== "[DONE]") {
+      try {
+        const parsed = JSON.parse(data);
+        const delta = parsed.choices?.[0]?.delta?.content;
+        if (delta) fullText += delta;
+        if (parsed.usage) {
+          promptTokens = parsed.usage.prompt_tokens || 0;
+          completionTokens = parsed.usage.completion_tokens || 0;
+        }
+      } catch {}
     }
   }
 
@@ -129,7 +149,6 @@ export async function generateRie(reportId: string) {
     const { system, user } = buildRiePrompt(kennisbank, intakeData, report.tier);
     const { model, maxTokens } = getModelConfig(report.tier);
 
-    // Use streaming to avoid serverless idle timeout
     const { text, promptTokens, completionTokens } = await streamOpenRouterResponse(
       model, maxTokens, system, user
     );
