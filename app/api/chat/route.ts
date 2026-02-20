@@ -117,7 +117,7 @@ Beantwoord vragen over de RI&E, risico's, maatregelen, en Arbo-wetgeving. Wees s
           Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
         },
         body: JSON.stringify({
-          model: "anthropic/claude-sonnet-4-20250514",
+          model: "anthropic/claude-sonnet-4.6",
           max_tokens: 1000,
           stream: true,
           messages: [

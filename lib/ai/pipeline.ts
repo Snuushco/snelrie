@@ -26,7 +26,7 @@ export async function generateRie(reportId: string) {
         "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "anthropic/claude-sonnet-4-20250514",
+        model: "anthropic/claude-sonnet-4.6",
         max_tokens: 4000,
         messages: [
           { role: "system", content: system },
