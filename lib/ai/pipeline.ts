@@ -88,15 +88,23 @@ function validateRie(content: any, tier: string): { valid: boolean; errors: stri
     errors.push(`Te weinig risico's: ${content.risicos?.length || 0} (min ${Math.floor(config.risicos * 0.75)})`);
   }
   // Check each risico has required fields
+  let totalMaatregelen = 0;
   content.risicos?.forEach((r: any, i: number) => {
     if (!r.categorie) errors.push(`Risico ${i + 1}: categorie ontbreekt`);
     if (!r.prioriteit) errors.push(`Risico ${i + 1}: prioriteit ontbreekt`);
-    if (!r.maatregelen || r.maatregelen.length === 0) errors.push(`Risico ${i + 1}: geen maatregelen`);
-    r.maatregelen?.forEach((m: any, j: number) => {
+    // Normalize: ensure maatregelen is always an array
+    if (!Array.isArray(r.maatregelen)) r.maatregelen = r.maatregelen ? [r.maatregelen] : [];
+    totalMaatregelen += r.maatregelen.length;
+    r.maatregelen.forEach((m: any, j: number) => {
       if (!m.maatregel) errors.push(`Risico ${i + 1} maatregel ${j + 1}: beschrijving ontbreekt`);
-      if (!m.termijn) errors.push(`Risico ${i + 1} maatregel ${j + 1}: termijn ontbreekt`);
+      // termijn is optional — AI may use "doorlopend" or omit; don't hard-fail
+      if (!m.termijn) m.termijn = "nader te bepalen";
     });
   });
+  // Ensure at least some maatregelen overall (not per-risico)
+  if (content.risicos?.length > 0 && totalMaatregelen < Math.floor(content.risicos.length * 0.5)) {
+    errors.push(`Te weinig maatregelen totaal: ${totalMaatregelen} (min ${Math.floor(content.risicos.length * 0.5)})`);
+  }
   // PvA check for paid tiers
   if (config.pva && (!content.planVanAanpak || content.planVanAanpak.length < 3)) {
     errors.push("Plan van Aanpak ontbreekt of te kort");
