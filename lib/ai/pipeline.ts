@@ -2,6 +2,19 @@ import { buildRiePrompt } from "./prompts";
 import { prisma } from "@/lib/db";
 import { loadKennisbank } from "@/lib/kennisbank/loader";
 
+// Model selection based on tier
+function getModelConfig(tier: string) {
+  switch (tier) {
+    case "ENTERPRISE":
+    case "PROFESSIONAL":
+      return { model: "anthropic/claude-sonnet-4.6", maxTokens: 4000 };
+    case "BASIS":
+      return { model: "anthropic/claude-sonnet-4.6", maxTokens: 3000 };
+    default: // GRATIS
+      return { model: "anthropic/claude-3.5-haiku", maxTokens: 2500 };
+  }
+}
+
 export async function generateRie(reportId: string) {
   const report = await prisma.rieReport.findUniqueOrThrow({
     where: { id: reportId },
@@ -18,6 +31,7 @@ export async function generateRie(reportId: string) {
     const kennisbank = await loadKennisbank(report.branche);
     const intakeData = report.intakeData as any;
     const { system, user } = buildRiePrompt(kennisbank, intakeData, report.tier);
+    const { model, maxTokens } = getModelConfig(report.tier);
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
@@ -26,8 +40,8 @@ export async function generateRie(reportId: string) {
         "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "anthropic/claude-sonnet-4.6",
-        max_tokens: 4000,
+        model,
+        max_tokens: maxTokens,
         messages: [
           { role: "system", content: system },
           { role: "user", content: user },

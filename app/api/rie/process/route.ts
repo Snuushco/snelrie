@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { generateRie } from "@/lib/ai/pipeline";
 import { prisma } from "@/lib/db";
 
-// This route has its own 60s timeout dedicated to AI generation
+// Dedicated 60s for AI generation
 export const maxDuration = 60;
 
 export async function POST(req: NextRequest) {
@@ -10,35 +10,70 @@ export async function POST(req: NextRequest) {
     const { reportId } = await req.json();
 
     if (!reportId || typeof reportId !== "string") {
-      return NextResponse.json({ error: "reportId is required" }, { status: 400 });
+      return new Response(JSON.stringify({ error: "reportId is required" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
-    // Check report exists and is in PENDING state
     const report = await prisma.rieReport.findUnique({
       where: { id: reportId },
     });
 
     if (!report) {
-      return NextResponse.json({ error: "Report niet gevonden" }, { status: 404 });
+      return new Response(JSON.stringify({ error: "Report niet gevonden" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     if (report.status === "COMPLETED") {
-      return NextResponse.json({ reportId, status: "COMPLETED" });
+      return new Response(JSON.stringify({ reportId, status: "COMPLETED" }), {
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
-    if (report.status === "GENERATING") {
-      return NextResponse.json({ reportId, status: "GENERATING" });
-    }
+    // Use streaming response to keep connection alive during AI generation
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+      async start(controller) {
+        // Send initial status
+        controller.enqueue(encoder.encode(`data: {"status":"GENERATING"}\n\n`));
 
-    // Run AI generation (this is the heavy operation)
-    await generateRie(reportId);
+        // Send heartbeat every 5s to prevent timeout
+        const heartbeat = setInterval(() => {
+          try {
+            controller.enqueue(encoder.encode(`data: {"status":"GENERATING","heartbeat":true}\n\n`));
+          } catch {
+            clearInterval(heartbeat);
+          }
+        }, 5000);
 
-    return NextResponse.json({ reportId, status: "COMPLETED" });
+        try {
+          await generateRie(reportId);
+          clearInterval(heartbeat);
+          controller.enqueue(encoder.encode(`data: {"status":"COMPLETED","reportId":"${reportId}"}\n\n`));
+        } catch (error) {
+          clearInterval(heartbeat);
+          controller.enqueue(encoder.encode(`data: {"status":"FAILED","error":"${String(error).replace(/"/g, '\\"')}"}\n\n`));
+        } finally {
+          controller.close();
+        }
+      },
+    });
+
+    return new Response(stream, {
+      headers: {
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        "Connection": "keep-alive",
+      },
+    });
   } catch (error) {
     console.error("Process error:", error);
-    return NextResponse.json(
-      { error: "Generatie mislukt", details: String(error) },
-      { status: 500 }
-    );
+    return new Response(JSON.stringify({ error: "Generatie mislukt" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }
