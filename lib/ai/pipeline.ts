@@ -92,12 +92,73 @@ function validateRie(content: any, tier: string): { valid: boolean; errors: stri
   content.risicos?.forEach((r: any, i: number) => {
     if (!r.categorie) errors.push(`Risico ${i + 1}: categorie ontbreekt`);
     if (!r.prioriteit) errors.push(`Risico ${i + 1}: prioriteit ontbreekt`);
-    // Normalize: ensure maatregelen is always an array
-    if (!Array.isArray(r.maatregelen)) r.maatregelen = r.maatregelen ? [r.maatregelen] : [];
+
+    // Normalize maatregelen to robust object[] and ignore "geen maatregelen" placeholders
+    const rawSource = r.maatregelen ?? r.maatregel;
+    const raw = Array.isArray(rawSource)
+      ? rawSource
+      : rawSource && typeof rawSource === "object"
+        ? Object.values(rawSource)
+        : rawSource
+          ? [rawSource]
+          : [];
+
+    const normalizeMaatregel = (item: any): any[] => {
+      if (Array.isArray(item)) {
+        return item.flatMap((nested) => normalizeMaatregel(nested));
+      }
+
+      if (typeof item === "string") {
+        const parts = item
+          .split(/\n|;|\u2022|(?=\s*\d+[\).]\s+)/)
+          .map((p) => p.replace(/^\s*\d+[\).]\s*/, "").trim())
+          .filter(Boolean);
+
+        return parts.map((text) => ({ maatregel: text, termijn: "nader te bepalen" }));
+      }
+
+      if (!item || typeof item !== "object") return [];
+
+      // Some models return `{ maatregelen: [...] }` or object maps; normalize recursively.
+      if (Array.isArray(item.maatregelen)) {
+        return item.maatregelen.flatMap((nested: any) => normalizeMaatregel({ ...item, ...nested }));
+      }
+
+      const maatregelSource =
+        item.maatregel ??
+        item.beschrijving ??
+        item.actie ??
+        item.maatregelTekst ??
+        item.measure;
+
+      const maatregel = typeof maatregelSource === "string" ? maatregelSource.trim() : "";
+      if (!maatregel || /^geen\s+maatregel(en)?/i.test(maatregel)) return [];
+
+      const termijnSource =
+        item.termijn ??
+        item.deadline ??
+        item.planning ??
+        item.implementatieTermijn ??
+        item.streefdatum ??
+        r.termijn ??
+        r.deadline;
+
+      const termijn = (typeof termijnSource === "string" || typeof termijnSource === "number") && String(termijnSource).trim()
+        ? String(termijnSource).trim()
+        : "nader te bepalen";
+
+      return [{ ...item, maatregel, termijn }];
+    };
+
+    const normalized = raw
+      .flatMap((m: any) => normalizeMaatregel(m))
+      .filter((m: any) => m?.maatregel && !/^geen\s+maatregel(en)?/i.test(m.maatregel));
+
+    r.maatregelen = normalized;
     totalMaatregelen += r.maatregelen.length;
+
     r.maatregelen.forEach((m: any, j: number) => {
       if (!m.maatregel) errors.push(`Risico ${i + 1} maatregel ${j + 1}: beschrijving ontbreekt`);
-      // termijn is optional — AI may use "doorlopend" or omit; don't hard-fail
       if (!m.termijn) m.termijn = "nader te bepalen";
     });
   });
