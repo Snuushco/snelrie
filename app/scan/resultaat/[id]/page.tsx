@@ -14,6 +14,7 @@ import {
   FileText,
   MessageCircle,
 } from "lucide-react";
+import UpgradePopup from "@/components/UpgradePopup";
 
 type Report = {
   id: string;
@@ -145,6 +146,9 @@ export default function ResultaatPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Upgrade popup for gratis tier after completion */}
+      {isGratis && report.status === "DONE" && <UpgradePopup delayMs={2000} />}
+
       {/* Header */}
       <nav className="bg-white border-b border-gray-100">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
