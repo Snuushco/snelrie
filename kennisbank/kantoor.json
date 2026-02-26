@@ -1,0 +1,111 @@
+{
+  "slug": "kantoor",
+  "naam": "Kantoor en Administratie",
+  "beschrijving": "Kantoorwerk, administratie, ICT, financiële dienstverlening, juridische dienstverlening, consultancy, call centers, overheid.",
+  "sbiCodes": ["62.01", "62.02", "62.09", "63.11", "63.12", "64.19", "64.91", "64.92", "66.11", "66.12", "66.19", "69.10", "69.20", "70.10", "70.21", "70.22", "73.11", "73.12", "82.11", "82.19", "82.20", "84.11"],
+  "arbocatalogus": "Arbocatalogus Kantoren (diverse brancheorganisaties)",
+  "cao": "Diverse (afhankelijk van branche, bijv. CAO Kantoormeubelindustrie, CAO Verzekeringsbedrijf)",
+  "wettelijkeKaders": [
+    { "wet": "Arbowet", "artikel": "Artikel 5", "beschrijving": "Verplichting tot het opstellen van een RI&E en Plan van Aanpak" },
+    { "wet": "Arbowet", "artikel": "Artikel 3", "beschrijving": "Algemene zorgplicht werkgever voor veiligheid en gezondheid" },
+    { "wet": "Arbowet", "artikel": "Artikel 8", "beschrijving": "Voorlichting en onderricht werknemers" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 5, afdeling 2", "beschrijving": "Beeldschermwerk – inrichting werkplek en pauzes" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 3, afdeling 2", "beschrijving": "Binnenklimaat – temperatuur, ventilatie, verlichting" },
+    { "wet": "Arbowet", "artikel": "Artikel 3 lid 2", "beschrijving": "Beleid psychosociale arbeidsbelasting (PSA)" }
+  ],
+  "risicoCategorieën": [
+    {
+      "id": "beeldschermwerk",
+      "categorie": "Beeldschermwerk en RSI",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["RSI/CANS door langdurig beeldschermwerk", "Oogvermoeidheid en hoofdpijn", "Nek- en schouderklachten door verkeerde werkhouding", "Muisarm bij intensief computergebruik"],
+      "standaardMaatregelen": [
+        { "maatregel": "Ergonomische werkplekcheck voor elke medewerker", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Verstelbaar bureau (zit-sta) en ergonomische bureaustoel", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Extern beeldscherm, los toetsenbord en muis bij laptopwerk", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Pauzesoftware of bewustmaking 20-20-20 regel", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Beeldschermbril vergoeding via werkgever", "type": "individueel", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "psychosociale_belasting",
+      "categorie": "Psychosociale arbeidsbelasting (PSA)",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Werkdruk en deadlinestress", "Burn-out en overspannenheid", "Ongewenst gedrag (pesten, discriminatie, seksuele intimidatie)", "Hybride werken: vervaging werk-privébalans", "Sociale isolatie bij thuiswerk"],
+      "standaardMaatregelen": [
+        { "maatregel": "Vertrouwenspersoon aanstellen (intern of extern)", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Klachtenprocedure ongewenst gedrag vaststellen", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Periodiek medewerkertevredenheidsonderzoek (MTO)", "type": "organisatorisch", "termijn": "middel" },
+        { "maatregel": "Training leidinggevenden in signaleren werkstress", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Duidelijke afspraken over bereikbaarheid buiten werktijd", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "binnenklimaat",
+      "categorie": "Binnenklimaat",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Te hoge of te lage temperatuur op kantoor", "Onvoldoende ventilatie en frisse lucht", "Tocht door airconditioning of open ramen", "Droge lucht door verwarming in de winter"],
+      "standaardMaatregelen": [
+        { "maatregel": "Klimaatbeheersing met temperatuur tussen 20-24°C", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "CO2-meting en adequate ventilatie (min. 30 m³/uur per persoon)", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Regelmatig onderhoud van HVAC-systemen", "type": "collectief", "termijn": "middel" },
+        { "maatregel": "Mogelijkheid tot individueel temperatuurregeling of aanpassing", "type": "collectief", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "thuiswerk",
+      "categorie": "Thuiswerkplek",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Onergonomische thuiswerkplek", "Gebrek aan goede bureaustoel of bureau", "Langdurig werken op laptop zonder extern scherm", "Geen scheiding werk-privé"],
+      "standaardMaatregelen": [
+        { "maatregel": "Thuiswerkplekcheck (digitale vragenlijst)", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Thuiswerkvergoeding of budget voor thuiswerkplek", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Ergonomische middelen beschikbaar stellen (stoel, scherm, toetsenbord)", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Arbobeleid dat ook thuiswerk omvat", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "bhv",
+      "categorie": "BHV en noodprocedures",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Onvoldoende BHV'ers bij wisselende bezetting (thuiswerk)", "Geen actueel ontruimingsplan", "Onbekendheid medewerkers met nooduitgangen", "AED niet beschikbaar of medewerkers niet opgeleid"],
+      "standaardMaatregelen": [
+        { "maatregel": "BHV-organisatie afstemmen op actuele bezetting", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Jaarlijkse ontruimingsoefening", "type": "organisatorisch", "termijn": "middel" },
+        { "maatregel": "AED beschikbaar met getrainde gebruikers", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Vluchtroutebordjes en plattegronden up-to-date houden", "type": "collectief", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "fysieke_belasting",
+      "categorie": "Fysieke belasting",
+      "prioriteit": "laag",
+      "typischeRisicos": ["Langdurig zitten zonder beweging", "Gebrek aan lichaamsbeweging", "Klachten door statische houding"],
+      "standaardMaatregelen": [
+        { "maatregel": "Zit-sta werkplekken aanbieden", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Beweegprogramma of vitaliteitsbeleid", "type": "organisatorisch", "termijn": "middel" },
+        { "maatregel": "Traplopen stimuleren in plaats van lift", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "agressie",
+      "categorie": "Agressie (klantcontact / callcenter)",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Verbale agressie aan telefoon of balie", "Bedreiging via e-mail of sociale media", "Fysieke agressie bij baliefuncties"],
+      "standaardMaatregelen": [
+        { "maatregel": "Protocol omgaan met agressieve klanten", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Training de-escalatie voor klantcontactmedewerkers", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Fysieke scheiding (balie, beveiligd glas) bij risicolocaties", "type": "collectief", "termijn": "middel" },
+        { "maatregel": "Meldingssysteem en nazorg na incidenten", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    }
+  ],
+  "intakeVragen": [
+    { "id": "type_kantoor", "vraag": "Welk type kantoorwerk betreft het?", "type": "meerkeuze_multi", "opties": ["Administratie/financiën", "ICT/softwareontwikkeling", "Juridisch/advies", "Callcenter/klantenservice", "Overheid", "Marketing/communicatie", "Consultancy"] },
+    { "id": "beeldschermwerk", "vraag": "Werken medewerkers meer dan 4 uur per dag achter een beeldscherm?", "type": "ja_nee" },
+    { "id": "thuiswerk", "vraag": "Werken medewerkers (deels) thuis of hybride?", "type": "ja_nee" },
+    { "id": "klantcontact", "vraag": "Is er direct klantcontact (balie, telefoon)?", "type": "ja_nee" },
+    { "id": "flexplekken", "vraag": "Wordt er gewerkt met flexplekken of open kantoortuinen?", "type": "ja_nee" },
+    { "id": "avondwerk", "vraag": "Worden er avond- of weekenddiensten gedraaid?", "type": "ja_nee" }
+  ]
+}

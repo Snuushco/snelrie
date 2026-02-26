@@ -1,0 +1,115 @@
+{
+  "slug": "bouw",
+  "naam": "Bouw en Infra",
+  "beschrijving": "Bouwbedrijven, aannemers, installatietechniek, grond-, weg- en waterbouw, sloop, renovatie, dakdekkers, schilders, stukadoors.",
+  "sbiCodes": ["41.10", "41.20", "42.11", "42.12", "42.13", "42.21", "42.22", "42.91", "42.99", "43.11", "43.12", "43.21", "43.22", "43.29", "43.31", "43.32", "43.33", "43.34", "43.39", "43.91", "43.99"],
+  "arbocatalogus": "Arbocatalogus Bouw & Infra (door Volandis)",
+  "cao": "CAO Bouwnijverheid",
+  "wettelijkeKaders": [
+    { "wet": "Arbowet", "artikel": "Artikel 5", "beschrijving": "Verplichting tot het opstellen van een RI&E en Plan van Aanpak" },
+    { "wet": "Arbowet", "artikel": "Artikel 3", "beschrijving": "Algemene zorgplicht werkgever voor veiligheid en gezondheid" },
+    { "wet": "Arbowet", "artikel": "Artikel 8", "beschrijving": "Voorlichting en onderricht werknemers" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 3, afdeling 5", "beschrijving": "Valgevaar – werken op hoogte" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 7, afdeling 1", "beschrijving": "Arbeidsmiddelen – keuringen en gebruik" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 4, afdeling 5", "beschrijving": "Asbest – sloop en verwijdering" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 2, afdeling 5", "beschrijving": "Bouwproces – V&G-plan, coördinatie" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 6, afdeling 4", "beschrijving": "Persoonlijke beschermingsmiddelen" }
+  ],
+  "risicoCategorieën": [
+    {
+      "id": "vallen_hoogte",
+      "categorie": "Vallen van hoogte",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Vallen van steigers, ladders of daken", "Vallen door onbeschermde vloeropeningen", "Instorten van onvoldoende ondersteunde constructies", "Vallen bij trappen en hellingen"],
+      "standaardMaatregelen": [
+        { "maatregel": "Steigers en randbeveiliging conform richtlijnen", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Vangnet of valbeveiligingssysteem bij werken boven 2,5 meter", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Keuringscertificaat steigers (door gecertificeerd steigerbouwer)", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Instructie veilig werken op hoogte voor alle medewerkers", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Persoonlijk valharnas als laatste redmiddel", "type": "individueel", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "fysieke_belasting",
+      "categorie": "Fysieke belasting",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Tillen van zware materialen (stenen, buizen, platen)", "Langdurig werken in ongunstige houdingen (bukken, knielen)", "Trillingen door gebruik van gereedschap (boor, breekhamers)", "Hand-armtrillingen bij slijpen en boren"],
+      "standaardMaatregelen": [
+        { "maatregel": "Mechanische hulpmiddelen (hijskranen, steenwagens, zuignappen)", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Trillingsarm gereedschap gebruiken", "type": "bronmaatregel", "termijn": "kort" },
+        { "maatregel": "Taakroulatie om langdurige belasting te voorkomen", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Kniebeschermers bij kniewerk", "type": "individueel", "termijn": "direct" },
+        { "maatregel": "PAGO gericht op fysieke belasting en trillingen", "type": "organisatorisch", "termijn": "middel" }
+      ]
+    },
+    {
+      "id": "gevaarlijke_stoffen",
+      "categorie": "Gevaarlijke stoffen en stof",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Kwartsstof bij zagen, slijpen en boren in steen/beton", "Houtstof bij houtbewerking", "Asbest bij sloop en renovatie van oudere gebouwen", "Oplosmiddelen in verven, lijmen en kitten", "Uitlaatgassen van machines in afgesloten ruimtes"],
+      "standaardMaatregelen": [
+        { "maatregel": "Stofafzuiging aan de bron bij zaag- en slijpwerk", "type": "bronmaatregel", "termijn": "direct" },
+        { "maatregel": "Asbestinventarisatie vóór sloop of renovatie", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Adembescherming (FFP2/FFP3) bij stofblootstelling", "type": "individueel", "termijn": "direct" },
+        { "maatregel": "Werken met oplosmiddelvrije alternatieven waar mogelijk", "type": "bronmaatregel", "termijn": "kort" },
+        { "maatregel": "Veiligheidsinformatiebladen (VIB) op de bouwplaats beschikbaar", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "machines_gereedschap",
+      "categorie": "Machines en gereedschap",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Beknelling door machines en mobiel materieel", "Snijwonden door elektrisch gereedschap", "Getroffen worden door vallende voorwerpen", "Aanrijdgevaar door bouwverkeer op de locatie"],
+      "standaardMaatregelen": [
+        { "maatregel": "Machinekeuring en onderhoudsschema", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "VCA-certificering voor alle medewerkers op de bouwplaats", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Bouwhelm en veiligheidsschoenen verplicht", "type": "individueel", "termijn": "direct" },
+        { "maatregel": "Afzetting en signalering rond werkzones", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Bouwplaatsinrichtingsplan met verkeersroutes", "type": "collectief", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "geluid",
+      "categorie": "Geluid",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Gehoorschade door lawaai van machines en gereedschap", "Langdurige blootstelling boven 80 dB(A)", "Plotse piekgeluiden bij heien of sloopwerk"],
+      "standaardMaatregelen": [
+        { "maatregel": "Geluidsarme machines en gereedschappen selecteren", "type": "bronmaatregel", "termijn": "kort" },
+        { "maatregel": "Gehoorbescherming verplicht boven 85 dB(A)", "type": "individueel", "termijn": "direct" },
+        { "maatregel": "Geluidsmeting op werkplek en registratie blootstelling", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Audiometrisch onderzoek in PAGO", "type": "organisatorisch", "termijn": "middel" }
+      ]
+    },
+    {
+      "id": "weer_klimaat",
+      "categorie": "Weersomstandigheden",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Hittestress bij buitenwerk in de zomer", "Onderkoeling en bevriezing bij winterwerk", "Gladheid door ijs en sneeuw op de bouwplaats", "UV-straling bij langdurig buitenwerk"],
+      "standaardMaatregelen": [
+        { "maatregel": "Hitteprotocol met extra pauzes en water boven 30°C", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Warme beschermende kleding en windschermen in de winter", "type": "individueel", "termijn": "direct" },
+        { "maatregel": "Gladheidbestrijding op de bouwplaats", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "UV-beschermende kleding en zonnebrand", "type": "individueel", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "bhv",
+      "categorie": "BHV en noodprocedures",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Onvoldoende BHV op wisselende bouwlocaties", "Geen ontruimingsplan per locatie", "Beperkte toegang voor hulpdiensten op bouwplaats"],
+      "standaardMaatregelen": [
+        { "maatregel": "BHV'ers per bouwplaats aanwijzen", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "EHBO-kit op elke bouwlocatie", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Noodprocedure en meldpunt per project vastleggen", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    }
+  ],
+  "intakeVragen": [
+    { "id": "type_bouw", "vraag": "Welk type bouwwerkzaamheden voert uw bedrijf uit?", "type": "meerkeuze_multi", "opties": ["Nieuwbouw woningen", "Nieuwbouw utiliteit", "Renovatie/verbouw", "Sloopwerk", "Grond-, weg- en waterbouw", "Installatietechniek", "Dakdekken", "Schilderwerk/afwerking"] },
+    { "id": "werken_hoogte", "vraag": "Wordt er gewerkt op hoogte (boven 2,5 meter)?", "type": "ja_nee" },
+    { "id": "asbest", "vraag": "Komt uw bedrijf in aanraking met asbesthoudende materialen?", "type": "ja_nee" },
+    { "id": "machines", "vraag": "Wordt er met zware machines gewerkt (kranen, graafmachines)?", "type": "ja_nee" },
+    { "id": "onderaannemers", "vraag": "Werkt u met onderaannemers of ZZP'ers op de bouwplaats?", "type": "ja_nee" },
+    { "id": "buitenwerk", "vraag": "Vindt het werk hoofdzakelijk buiten plaats?", "type": "ja_nee" }
+  ]
+}

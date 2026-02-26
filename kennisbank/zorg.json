@@ -1,0 +1,113 @@
+{
+  "slug": "zorg",
+  "naam": "Zorg en Welzijn",
+  "beschrijving": "Ziekenhuizen, verpleeghuizen, thuiszorg, gehandicaptenzorg, GGZ, huisartsenpraktijken, tandartsen, fysiotherapie, kinderopvang, jeugdzorg.",
+  "sbiCodes": ["86.10", "86.21", "86.22", "86.23", "86.91", "86.92", "87.10", "87.20", "87.30", "87.90", "88.10", "88.91", "88.99"],
+  "arbocatalogus": "Arbocatalogus Gezond en Veilig Werken in de Zorg (door RegioPlus / A+O VVT)",
+  "cao": "CAO VVT / CAO Ziekenhuizen / CAO GGZ / CAO Gehandicaptenzorg",
+  "wettelijkeKaders": [
+    { "wet": "Arbowet", "artikel": "Artikel 5", "beschrijving": "Verplichting tot het opstellen van een RI&E en Plan van Aanpak" },
+    { "wet": "Arbowet", "artikel": "Artikel 3 lid 2", "beschrijving": "Beleid gericht op voorkoming van agressie en geweld" },
+    { "wet": "Arbowet", "artikel": "Artikel 8", "beschrijving": "Voorlichting en onderricht werknemers" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 4, afdeling 2", "beschrijving": "Biologische agentia – besmettingsrisico's" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 5, afdeling 1", "beschrijving": "Fysieke belasting – tillen en verplaatsen van cliënten" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 4, afdeling 9", "beschrijving": "Werken met cytostatica en gevaarlijke geneesmiddelen" },
+    { "wet": "Arbeidstijdenwet", "artikel": "Artikel 5:8", "beschrijving": "Nachtarbeid en aanvullende bescherming nachtwerkers" }
+  ],
+  "risicoCategorieën": [
+    {
+      "id": "fysieke_belasting",
+      "categorie": "Fysieke belasting",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Tillen en verplaatsen van cliënten/patiënten", "Langdurig werken in ongunstige houdingen (bukken, draaien)", "Rugklachten door transfers en ADL-ondersteuning", "Schouder- en nekklachten bij bedverzorging"],
+      "standaardMaatregelen": [
+        { "maatregel": "Tillift en andere hulpmiddelen standaard beschikbaar", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Hoog-laag bedden en douchestoelen", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Praktijkrichtlijn Fysieke Belasting (bv. Tilprotocol) toepassen", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Training ergonomisch werken en tiltechnieken", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Ergocoaches aanstellen op de afdeling", "type": "organisatorisch", "termijn": "middel" }
+      ]
+    },
+    {
+      "id": "agressie_geweld",
+      "categorie": "Agressie en geweld",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Fysieke agressie door cliënten (dementie, psychiatrie)", "Verbale agressie en bedreigingen door cliënten of familie", "Seksuele intimidatie", "Onvoorspelbaar gedrag bij verward gedrag of middelengebruik"],
+      "standaardMaatregelen": [
+        { "maatregel": "Training omgaan met agressie en de-escalatie", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Meldingsprocedure en registratie van incidenten", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Alarmknop of noodsignaalsysteem op de afdeling", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Nazorg en opvang na agressie-incidenten", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Koppelwerk bij bekende risicosituaties", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "psychosociale_belasting",
+      "categorie": "Psychosociale arbeidsbelasting (PSA)",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Hoge werkdruk door personeelstekort", "Emotionele belasting door confrontatie met lijden en overlijden", "Morele stress door kwaliteit versus tijdsdruk", "Burn-out en compassiemoeheid", "Onregelmatige diensten en nachtwerk"],
+      "standaardMaatregelen": [
+        { "maatregel": "Vertrouwenspersoon en klachtenprocedure", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Regelmatige teamoverleggen en intervisie/supervisie", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Toegang tot bedrijfsmaatschappelijk werk of psycholoog", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Werkdrukmonitor en signaleringsinstrument", "type": "organisatorisch", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "biologische_agentia",
+      "categorie": "Biologische agentia en infectierisico",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Prikaccidenten met besmette naalden", "Besmettingsrisico met MRSA, TBC, hepatitis, COVID", "Contact met lichaamsvloeistoffen (bloed, urine, feces)", "Schimmel- en bacteriegroei in vochtige ruimtes"],
+      "standaardMaatregelen": [
+        { "maatregel": "Veilige naaldsystemen (safety-naalden) gebruiken", "type": "bronmaatregel", "termijn": "direct" },
+        { "maatregel": "Vaccinatieprogramma (hepatitis B, griep)", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Persoonlijke beschermingsmiddelen (handschoenen, mondkapjes, schorten)", "type": "individueel", "termijn": "direct" },
+        { "maatregel": "Protocol prikaccidenten met meldpunt en follow-up", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Hygiëneprotocol en handhygiëne", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "gevaarlijke_stoffen",
+      "categorie": "Gevaarlijke stoffen",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Blootstelling aan cytostatica en gevaarlijke geneesmiddelen", "Desinfectiemiddelen en glutaaraldehyde", "Anesthesiegassen (lachgas, sevofluraan)", "Latex-allergie door handschoenen"],
+      "standaardMaatregelen": [
+        { "maatregel": "Werken met gesloten systemen bij cytostatica-bereiding", "type": "bronmaatregel", "termijn": "direct" },
+        { "maatregel": "Latexvrije handschoenen als standaard", "type": "bronmaatregel", "termijn": "kort" },
+        { "maatregel": "Afzuiging bij gebruik van desinfectiemiddelen en anesthesiegassen", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Register gevaarlijke stoffen en VIB's beschikbaar", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "alleen_werken",
+      "categorie": "Alleen werken (thuiszorg)",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Geen directe hulp bij agressie-incidenten", "Onveilige thuissituaties bij cliënten", "Medische noodsituatie zonder collega's", "Verkeersveiligheid bij veel reizen"],
+      "standaardMaatregelen": [
+        { "maatregel": "Registratie en beoordeling risico per cliëntadres", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Alarmerings-app of man-down systeem", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Koppelwerk bij risicovolle situaties", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Protocol voor weigeren van onveilige werkplekken", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "bhv",
+      "categorie": "BHV en noodprocedures",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Ontruiming van niet-zelfredzame cliënten", "Onvoldoende BHV'ers tijdens alle diensten (ook nacht)", "Brand in zorginstelling met bedlegerige patiënten"],
+      "standaardMaatregelen": [
+        { "maatregel": "Voldoende BHV'ers per dienst inclusief nachtdienst", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Ontruimingsplan afgestemd op niet-zelfredzame bewoners", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Jaarlijkse ontruimingsoefening (incl. nachtscenario)", "type": "organisatorisch", "termijn": "middel" }
+      ]
+    }
+  ],
+  "intakeVragen": [
+    { "id": "type_zorg", "vraag": "Welk type zorg verleent uw organisatie?", "type": "meerkeuze_multi", "opties": ["Ziekenhuis", "Verpleeghuis/verzorgingshuis", "Thuiszorg", "Gehandicaptenzorg", "GGZ", "Huisartsenpraktijk", "Tandartspraktijk", "Fysiotherapie", "Kinderopvang"] },
+    { "id": "nachtdiensten", "vraag": "Werken medewerkers in nachtdiensten?", "type": "ja_nee" },
+    { "id": "patient_tillen", "vraag": "Worden cliënten/patiënten getild of verplaatst?", "type": "ja_nee" },
+    { "id": "biologisch_risico", "vraag": "Is er contact met bloed, lichaamsvloeistoffen of besmettelijke patiënten?", "type": "ja_nee" },
+    { "id": "alleen_werken", "vraag": "Werken medewerkers alleen (bijv. thuiszorg, nachtdienst)?", "type": "ja_nee" },
+    { "id": "agressie", "vraag": "Komen agressie-incidenten voor op de werkvloer?", "type": "keuze", "opties": ["Zelden (0-2 per jaar)", "Regelmatig (3-10 per jaar)", "Frequent (10+ per jaar)"] }
+  ]
+}

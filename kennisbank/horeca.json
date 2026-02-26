@@ -1,0 +1,113 @@
+{
+  "slug": "horeca",
+  "naam": "Horeca",
+  "beschrijving": "Hotels, restaurants, cafés, catering, snackbars, lunchrooms, eetcafés, nachthoreca, evenementencatering.",
+  "sbiCodes": ["55.10", "55.20", "55.30", "56.10", "56.21", "56.29", "56.30"],
+  "arbocatalogus": "Arbocatalogus Horeca & Catering (door KHN en FNV Horeca)",
+  "cao": "CAO Horeca en Aanverwante Bedrijven",
+  "wettelijkeKaders": [
+    { "wet": "Arbowet", "artikel": "Artikel 5", "beschrijving": "Verplichting tot het opstellen van een RI&E en Plan van Aanpak" },
+    { "wet": "Arbowet", "artikel": "Artikel 3", "beschrijving": "Algemene zorgplicht werkgever voor veiligheid en gezondheid" },
+    { "wet": "Arbowet", "artikel": "Artikel 8", "beschrijving": "Voorlichting en onderricht werknemers" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 5, afdeling 1", "beschrijving": "Fysieke belasting – tillen, duwen, trekken" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 4, afdeling 1", "beschrijving": "Gevaarlijke stoffen en biologische agentia" },
+    { "wet": "Arbeidstijdenwet", "artikel": "Artikel 5:3", "beschrijving": "Rusttijden en pauzes" },
+    { "wet": "Warenwetbesluit attractie- en speeltoestellen", "artikel": "n.v.t.", "beschrijving": "Veiligheid speeltoestellen in familiehoreca" }
+  ],
+  "risicoCategorieën": [
+    {
+      "id": "fysieke_belasting",
+      "categorie": "Fysieke belasting",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Tillen van zware pannen, kratten en vaten", "Lang staan tijdens diensten", "Repeterende bewegingen (snijden, schoonmaken)", "Bukken en reiken naar opslag"],
+      "standaardMaatregelen": [
+        { "maatregel": "Hulpmiddelen voor tillen (steekwagens, krattenliften)", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Werkplekken op juiste werkhoogte instellen", "type": "bronmaatregel", "termijn": "kort" },
+        { "maatregel": "Anti-vermoeidheidsmatten bij staande werkplekken", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Roulatie van taken om eenzijdige belasting te voorkomen", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Voorlichting over ergonomisch werken en tiltechnieken", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "snij_brandwonden",
+      "categorie": "Snij- en brandwonden",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Snijwonden door messen en snijmachines", "Brandwonden door hete pannen, olie en stoom", "Spatten van heet vet bij frituren", "Verwondingen bij gebruik van keukenapparatuur"],
+      "standaardMaatregelen": [
+        { "maatregel": "Veiligheidsvoorzieningen op snijmachines en slicers", "type": "bronmaatregel", "termijn": "direct" },
+        { "maatregel": "Snijbestendige handschoenen beschikbaar stellen", "type": "individueel", "termijn": "direct" },
+        { "maatregel": "Instructie veilig werken met keukenapparatuur", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Brandblusser en blusdeken in de keuken", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "EHBO-kit met brandwondencompres op elke werkplek", "type": "collectief", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "uitglijden_vallen",
+      "categorie": "Uitglijden, struikelen en vallen",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Gladde vloeren door vet, water of voedselresten", "Struikelen over kabels, matten of drempels", "Vallen van trappen of ladders bij opslag"],
+      "standaardMaatregelen": [
+        { "maatregel": "Antislipvloeren in keuken en bar", "type": "bronmaatregel", "termijn": "middel" },
+        { "maatregel": "Direct opruimen van gemorste vloeistoffen (protocol)", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Antislipschoenen verplicht in keuken", "type": "individueel", "termijn": "direct" },
+        { "maatregel": "Goede verlichting in alle werkruimtes en trappen", "type": "collectief", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "psychosociale_belasting",
+      "categorie": "Psychosociale arbeidsbelasting (PSA)",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Hoge werkdruk tijdens piekuren", "Agressie en ongewenst gedrag van gasten", "Onregelmatige werktijden en nachtwerk", "Werkstress door personeelstekort"],
+      "standaardMaatregelen": [
+        { "maatregel": "Protocol voor omgaan met agressieve gasten", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Vertrouwenspersoon aanstellen", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Goede personeelsplanning om piekbelasting te spreiden", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Regelmatige werkoverleggen en signalering werkstress", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "gevaarlijke_stoffen",
+      "categorie": "Gevaarlijke stoffen",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Blootstelling aan schoonmaakmiddelen en ontvettingsmiddelen", "Inademing van dampen bij gebruik van reinigingsproducten", "Huidirritatie door langdurig contact met chemicaliën", "Onjuiste opslag van schoonmaakmiddelen"],
+      "standaardMaatregelen": [
+        { "maatregel": "Veiligheidsinformatiebladen (VIB) beschikbaar bij alle middelen", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Gebruik van minder schadelijke alternatieven waar mogelijk", "type": "bronmaatregel", "termijn": "kort" },
+        { "maatregel": "Handschoenen en beschermende kleding bij gebruik", "type": "individueel", "termijn": "direct" },
+        { "maatregel": "Goede ventilatie bij gebruik van reinigingsproducten", "type": "collectief", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "bhv_brandveiligheid",
+      "categorie": "BHV en brandveiligheid",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Brandgevaar door open vuur, frituren en gasaansluitingen", "Onvoldoende BHV'ers aanwezig tijdens openingstijden", "Ontruiming bemoeilijkt door gast-layout", "Gaslekken bij keukenapparatuur"],
+      "standaardMaatregelen": [
+        { "maatregel": "Voldoende gecertificeerde BHV'ers per dienst", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Jaarlijkse ontruimingsoefening", "type": "organisatorisch", "termijn": "middel" },
+        { "maatregel": "Brandmeld- en blussystemen regelmatig keuren", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Gasdetectie in keukenruimtes", "type": "collectief", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "binnenklimaat",
+      "categorie": "Binnenklimaat en geluid",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Hitte in keukens (regelmatig boven 30°C)", "Tocht door wisselende binnentemperatuur", "Geluidsoverlast in nachthoreca en bars", "Slechte ventilatie in afgesloten ruimtes"],
+      "standaardMaatregelen": [
+        { "maatregel": "Adequate ventilatie en afzuiging in keukens", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Hitteprotocol met extra pauzes boven 30°C", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Gehoorbescherming beschikbaar in lawaaiige omgevingen", "type": "individueel", "termijn": "direct" },
+        { "maatregel": "Klimaatbeheersing (airconditioning) in werkruimtes", "type": "collectief", "termijn": "middel" }
+      ]
+    }
+  ],
+  "intakeVragen": [
+    { "id": "type_horeca", "vraag": "Welk type horecagelegenheid betreft het?", "type": "meerkeuze_multi", "opties": ["Restaurant", "Café/bar", "Hotel", "Snackbar/fastfood", "Catering", "Nachthoreca", "Lunchroom"] },
+    { "id": "open_keuken", "vraag": "Heeft het bedrijf een keuken met kookfaciliteiten?", "type": "ja_nee" },
+    { "id": "nachtdiensten", "vraag": "Zijn er medewerkers die na 23:00 uur werken?", "type": "ja_nee" },
+    { "id": "alcohol", "vraag": "Wordt er alcohol geschonken?", "type": "ja_nee" },
+    { "id": "gastencontact", "vraag": "Hebben medewerkers direct contact met gasten?", "type": "ja_nee" },
+    { "id": "seizoensarbeid", "vraag": "Wordt er gewerkt met seizoenspersoneel of oproepkrachten?", "type": "ja_nee" }
+  ]
+}
