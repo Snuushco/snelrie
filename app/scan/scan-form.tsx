@@ -514,7 +514,7 @@ export default function ScanForm() {
                 <span className="text-2xl font-extrabold text-brand-600">
                   {preselectedTier === "GRATIS" && "€0"}
                   {preselectedTier === "BASIS" && "€99"}
-                  {preselectedTier === "PROFESSIONAL" && "€299"}
+                  {preselectedTier === "PROFESSIONAL" && "€249"}
                   {preselectedTier === "ENTERPRISE" && "€499"}
                 </span>
               </div>

@@ -368,7 +368,7 @@ export default function ResultaatPage() {
                 disabled={checkoutLoading}
                 className="bg-white text-brand-600 px-6 py-3 rounded-lg font-semibold hover:bg-brand-50 transition disabled:opacity-50 ring-2 ring-white/50"
               >
-                Professional — €299 ⭐
+                Professional — €249 ⭐
               </button>
               <button
                 onClick={() => handleCheckout("ENTERPRISE")}

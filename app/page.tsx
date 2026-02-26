@@ -45,7 +45,7 @@ const pricingTiers = [
   },
   {
     name: "Professional",
-    price: "€299",
+    price: "€249",
     description: "RI&E + Plan van Aanpak",
     features: [
       "Alles van Basis",

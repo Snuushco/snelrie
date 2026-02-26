@@ -31,7 +31,7 @@ const steps = [
     number: 4,
     title: "Kies je pakket",
     time: "3 min",
-    description: "Basis (€99) voor de volledige RI&E, Professional (€299) met Plan van Aanpak, of Enterprise (€499) met AI Expert Chat en jaarlijkse updates.",
+    description: "Basis (€99) voor de volledige RI&E, Professional (€249) met Plan van Aanpak, of Enterprise (€499) met AI Expert Chat en jaarlijkse updates.",
     action: { label: "Bekijk Pakketten", href: "/#pricing" },
   },
   {

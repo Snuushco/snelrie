@@ -21,7 +21,7 @@ export const PRICING = {
     description: "Volledige RI&E met risico-inventarisatie",
   },
   PROFESSIONAL: {
-    price: 29900,
+    price: 24900,
     label: "Professional RI&E",
     description: "RI&E + Plan van Aanpak + prioritering",
   },
