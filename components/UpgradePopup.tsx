@@ -126,7 +126,7 @@ export default function UpgradePopup({
 
         {/* CTA */}
         <Link
-          href="/pricing"
+          href="/#prijzen"
           className="flex items-center justify-center gap-2 w-full bg-brand-600 text-white py-3 rounded-xl font-semibold hover:bg-brand-700 transition"
           onClick={handleClose}
         >
