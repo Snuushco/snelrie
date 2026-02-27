@@ -1,0 +1,149 @@
+{
+  "slug": "kinderopvang",
+  "naam": "Kinderopvang",
+  "beschrijving": "Kinderdagverblijven, buitenschoolse opvang, gastouderopvang en peuterspeelzalen.",
+  "sbiCodes": ["88.91"],
+  "arbocatalogus": "Arbocatalogus Kinderopvang (door FCB / BKN)",
+  "cao": "CAO Kinderopvang",
+  "wettelijkeKaders": [
+    { "wet": "Arbowet", "artikel": "Artikel 5", "beschrijving": "Verplichting tot het opstellen van een RI&E en Plan van Aanpak" },
+    { "wet": "Arbowet", "artikel": "Artikel 8", "beschrijving": "Voorlichting en onderricht werknemers" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 4", "beschrijving": "Gevaarlijke stoffen en biologische agentia" },
+    { "wet": "Wet kinderopvang", "artikel": "Wko", "beschrijving": "Kwaliteitseisen kinderopvang en toezicht door GGD" },
+    { "wet": "Besluit kwaliteit kinderopvang", "artikel": "Diverse", "beschrijving": "Beroepskracht-kind-ratio, groepsgrootte, veiligheid en gezondheid" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 5, afdeling 1", "beschrijving": "Fysieke belasting" },
+    { "wet": "Warenwetbesluit attractie- en speeltoestellen", "artikel": "Diverse", "beschrijving": "Veiligheid speeltoestellen binnen en buiten" }
+  ],
+  "risicoCategorieën": [
+    {
+      "id": "veiligheid_kinderen",
+      "categorie": "Veiligheid van kinderen",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Valgevaar van meubilair en speeltoestellen", "Verdrinkingsgevaar bij wateractiviteiten", "Vergiftiging door schoonmaakmiddelen binnen bereik", "Beknelling in deuren en meubels", "Stikgevaar door klein speelgoed"],
+      "standaardMaatregelen": [
+        { "maatregel": "Risicoanalyse veiligheid en gezondheid conform Wko actueel houden", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Deurveiligheid: vingerbeveiliging op alle deuren op kinderhoogte", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Schoonmaakmiddelen en medicijnen achter slot bewaren", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Jaarlijkse inspectie speeltoestellen conform Warenwetbesluit", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Veiligheidspoortjes bij trappen en keuken", "type": "collectief", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "toezicht_bkr",
+      "categorie": "Toezicht en beroepskracht-kind-ratio",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Onvoldoende toezicht bij piekuren", "Overschrijding maximale groepsgrootte", "Onervaren oproepkrachten zonder begeleiding", "Vier-ogenprincipe niet geborgd"],
+      "standaardMaatregelen": [
+        { "maatregel": "Planning conform wettelijke beroepskracht-kind-ratio", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Vier-ogenprincipe implementeren (camera's, open ruimtes, glaswanden)", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "VOG vereist voor alle medewerkers en stagiaires", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Protocol voor noodsituaties bij personeelsuitval", "type": "organisatorisch", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "hygiene",
+      "categorie": "Hygiëne en infectiepreventie",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Verspreiding infectieziekten (noro, hand-voet-mond, kinkhoest)", "Onvoldoende handhygiëne bij verschonen", "Besmetting via speelgoed en oppervlakken", "Luierverwerking"],
+      "standaardMaatregelen": [
+        { "maatregel": "Hygiëneprotocol conform RIVM-richtlijn Infectiepreventie kindercentra", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Handenwasinstructie bij verschonen, eten, buitenspelen", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Wekelijkse reiniging speelgoed, dagelijkse reiniging oppervlakken", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Gesloten luieremmer en gescheiden afvalstromen", "type": "collectief", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "buitenruimte",
+      "categorie": "Buitenruimte en speeltoestellen",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Valgevaar van klimtoestellen", "Onveilige valondergrond", "Vergiftige planten in de tuin", "Hekwerk niet kindveilig", "UV-straling bij langdurig buitenspelen"],
+      "standaardMaatregelen": [
+        { "maatregel": "Jaarlijkse keuring speeltoestellen door gecertificeerd inspecteur", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Valdempende ondergrond (rubbergranulaat of zand) onder toestellen", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Dagelijkse visuele inspectie buitenruimte voor gevaren", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Zonbeschermingsbeleid: insmeren, petjes, schaduw bij UV-index ≥6", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "allergieen_voeding",
+      "categorie": "Allergieën en voedingsveiligheid",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Anafylactische reactie bij voedselallergie", "Verkeerd eten aan verkeerd kind", "Stikgevaar door niet-leeftijdsgeschikte voeding", "Onbekendheid medewerkers met allergieën"],
+      "standaardMaatregelen": [
+        { "maatregel": "Allergie-registratie per kind, zichtbaar in groepsruimte", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "EpiPen beschikbaar en medewerkers getraind in gebruik", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Protocol voedselvoorbereiding: scheiding allergenen", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Voeding aanpassen aan leeftijd (geen noten, druiven gehalveerd)", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "fysieke_belasting",
+      "categorie": "Fysieke belasting medewerkers",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Rugklachten door tillen van kinderen", "Knieklachten door hurken en bukken", "Werken op lage meubels (kinderstoelen/tafels)"],
+      "standaardMaatregelen": [
+        { "maatregel": "Tilcursus specifiek voor kinderopvang", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Hoge verschoontafels met trap voor kinderen", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Volwassen meubilair in personeelsruimte", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Taakroulatie om eenzijdige belasting te voorkomen", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "psychosociale_belasting",
+      "categorie": "Psychosociale arbeidsbelasting",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Hoge werkdruk door personeelstekort", "Emotionele belasting (huilen, gedragsproblemen)", "Agressie van ouders", "Geluidsbelasting in groepsruimte"],
+      "standaardMaatregelen": [
+        { "maatregel": "Maximale groepsgrootte handhaven", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Intervisie en coaching voor pedagogisch medewerkers", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Geluidsabsorberende materialen in groepsruimte", "type": "collectief", "termijn": "middel" },
+        { "maatregel": "Protocol voor omgang met agressieve ouders", "type": "organisatorisch", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "brandveiligheid",
+      "categorie": "Brandveiligheid en BHV",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Ontruiming met niet-zelfredzame kinderen", "Onvoldoende BHV'ers aanwezig", "Slaapkamer baby's niet gemonitord bij brand"],
+      "standaardMaatregelen": [
+        { "maatregel": "Ontruimingsplan specifiek voor kinderopvang (rekening met baby's/peuters)", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Minimaal 2 BHV'ers per locatie altijd aanwezig", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Halfjaarlijkse ontruimingsoefening", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Rookmelders in slaapruimtes met monitoring", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Evacuatiematras of -box voor baby's", "type": "collectief", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "ggd_eisen",
+      "categorie": "GGD-eisen en kwaliteitsborging",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Tekortkomingen bij GGD-inspectie", "Pedagogisch beleidsplan niet actueel", "Klachten niet geregistreerd"],
+      "standaardMaatregelen": [
+        { "maatregel": "Jaarlijkse zelfevaluatie op basis van GGD-inspectiekader", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Pedagogisch beleidsplan jaarlijks evalueren en actualiseren", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Klachtenregistratie en -procedure inrichten", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Oudercommissie actief betrekken bij veiligheidsbeleid", "type": "organisatorisch", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "binnenklimaat",
+      "categorie": "Binnenklimaat en ventilatie",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Onvoldoende ventilatie in groepsruimtes", "Te hoge CO2-waarden", "Oververhitting in zomer"],
+      "standaardMaatregelen": [
+        { "maatregel": "CO2-meter in elke groepsruimte, max 1200 ppm", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Mechanische ventilatie conform Bouwbesluit", "type": "collectief", "termijn": "middel" },
+        { "maatregel": "Zonwering aan buitenzijde", "type": "collectief", "termijn": "middel" }
+      ]
+    }
+  ],
+  "intakeVragen": [
+    { "id": "type_opvang", "vraag": "Welk type kinderopvang biedt u?", "type": "meerkeuze_multi", "opties": ["Kinderdagverblijf (0-4 jaar)", "Buitenschoolse opvang (4-12 jaar)", "Peuterspeelzaal", "Gastouderopvang"] },
+    { "id": "aantal_kinderen", "vraag": "Hoeveel kindplaatsen heeft uw locatie?", "type": "keuze", "opties": ["Klein (tot 30)", "Middelgroot (30-60)", "Groot (60+)"] },
+    { "id": "buitenruimte", "vraag": "Heeft u een eigen buitenspeelruimte?", "type": "ja_nee" },
+    { "id": "babys", "vraag": "Vangt u baby's op (0-1 jaar)?", "type": "ja_nee" },
+    { "id": "zwemactiviteiten", "vraag": "Organiseert u wateractiviteiten of zwemuitjes?", "type": "ja_nee" },
+    { "id": "maaltijden", "vraag": "Worden warme maaltijden bereid op locatie?", "type": "ja_nee" },
+    { "id": "vier_ogen", "vraag": "Hoe is het vier-ogenprincipe geborgd?", "type": "meerkeuze_multi", "opties": ["Camera's", "Glaswanden", "Open deuren", "Altijd twee medewerkers per groep"] }
+  ]
+}

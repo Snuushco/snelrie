@@ -19,6 +19,7 @@ enum PaymentStatus {
   PAID
   FAILED
   REFUNDED
+  EXPIRED
 }
 
 enum PricingTier {
