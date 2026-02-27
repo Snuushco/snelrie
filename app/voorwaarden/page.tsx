@@ -144,9 +144,12 @@ export default function VoorwaardenPage() {
             </h2>
             <p className="text-gray-600 leading-relaxed">
               Wij verwerken uw gegevens uitsluitend voor het genereren van uw
-              RI&E en de bijbehorende dienstverlening. Uw bedrijfsgegevens worden
-              niet gedeeld met derden. Zie ons privacybeleid voor meer
-              informatie.
+              RI&E en de bijbehorende dienstverlening. Zie ons{" "}
+              <Link href="/privacy" className="text-brand-600 hover:underline">
+                privacybeleid
+              </Link>{" "}
+              voor uitgebreide informatie over welke gegevens wij verwerken, met
+              welk doel, en hoe wij deze beschermen.
             </p>
           </section>
 

@@ -115,10 +115,10 @@ export default function UpgradePopup({
             </div>
             <div>
               <h3 className="text-sm font-semibold text-gray-900">
-                Wettelijk compliant
+                Uitgebreide RI&E
               </h3>
               <p className="text-xs text-gray-500">
-                Voldoe aan de Arbowet met een volledige RI&E inclusief wettelijke verplichtingen.
+                Uitgebreide risico-inventarisatie met Plan van Aanpak en meer maatregelen per risico.
               </p>
             </div>
           </div>

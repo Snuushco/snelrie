@@ -410,17 +410,20 @@ export default function HomePage() {
             <span className="text-white font-bold">SnelRIE</span>
           </div>
           <div className="flex gap-6 text-sm">
-            <a href="#" className="hover:text-white transition">
+            <Link href="/privacy" className="hover:text-white transition">
               Privacy
-            </a>
+            </Link>
             <Link href="/voorwaarden" className="hover:text-white transition">
               Voorwaarden
             </Link>
-            <a href="#" className="hover:text-white transition">
+            <a href="mailto:info@snelrie.nl" className="hover:text-white transition">
               Contact
             </a>
           </div>
-          <p className="text-sm">© {new Date().getFullYear()} SnelRIE. Alle rechten voorbehouden.</p>
+          <div className="text-sm text-center md:text-right">
+            <p>© {new Date().getFullYear()} SnelRIE — onderdeel van Praesidion Holding B.V.</p>
+            <p className="text-gray-500 text-xs mt-1">KvK: 97640794 · BTW: NL868152237B01</p>
+          </div>
         </div>
       </footer>
 

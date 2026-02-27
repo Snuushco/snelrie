@@ -52,7 +52,7 @@ export function buildRisicosPrompt(
 ) {
   const maxPerBatch = 4;
   const tierConfig: Record<string, { total: number; maatregelen: number }> = {
-    GRATIS: { total: 4, maatregelen: 1 },
+    GRATIS: { total: 3, maatregelen: 1 },
     BASIS: { total: 6, maatregelen: 2 },
     PROFESSIONAL: { total: 8, maatregelen: 2 },
     ENTERPRISE: { total: 10, maatregelen: 3 },

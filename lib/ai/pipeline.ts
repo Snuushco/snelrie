@@ -12,8 +12,8 @@ const MODEL = "anthropic/claude-haiku-4.5";
 
 // Tier configuration
 const TIER_CONFIG: Record<string, { risicos: number; batches: number; pva: boolean; wettelijk: boolean }> = {
-  GRATIS:       { risicos: 4,  batches: 1, pva: false, wettelijk: false },
-  BASIS:        { risicos: 6,  batches: 2, pva: false, wettelijk: false },
+  GRATIS:       { risicos: 3,  batches: 1, pva: false, wettelijk: false },
+  BASIS:        { risicos: 6,  batches: 2, pva: true,  wettelijk: false },
   PROFESSIONAL: { risicos: 8,  batches: 2, pva: true,  wettelijk: false },
   ENTERPRISE:   { risicos: 10, batches: 3, pva: true,  wettelijk: true  },
 };

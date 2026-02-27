@@ -45,5 +45,40 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  if (event.type === "payment_intent.payment_failed") {
+    const paymentIntent = event.data.object as any;
+    await prisma.payment.updateMany({
+      where: { stripePaymentIntent: paymentIntent.id },
+      data: { status: "FAILED" },
+    });
+  }
+
+  if (event.type === "charge.refunded") {
+    const charge = event.data.object as any;
+    const payments = await prisma.payment.findMany({
+      where: { stripePaymentIntent: charge.payment_intent },
+    });
+    for (const payment of payments) {
+      await prisma.payment.update({
+        where: { id: payment.id },
+        data: { status: "REFUNDED" },
+      });
+      if (payment.reportId) {
+        await prisma.rieReport.update({
+          where: { id: payment.reportId },
+          data: { tier: "GRATIS" },
+        });
+      }
+    }
+  }
+
+  if (event.type === "checkout.session.expired") {
+    const session = event.data.object as any;
+    await prisma.payment.updateMany({
+      where: { stripeSessionId: session.id },
+      data: { status: "EXPIRED" },
+    });
+  }
+
   return NextResponse.json({ received: true });
 }

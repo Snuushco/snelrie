@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
       aantalLocaties,
       email,
       naam,
-      tier,
+      tier: _ignoredTier, // Security: ignore client-supplied tier
       ...werkplekData
     } = parsed.data;
 
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
         branche,
         aantalMedewerkers,
         aantalLocaties: aantalLocaties || 1,
-        tier: tier || "GRATIS",
+        tier: "GRATIS", // Security: always start as GRATIS, upgrade only via Stripe webhook
         intakeData: {
           bedrijfsnaam,
           branche,

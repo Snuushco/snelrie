@@ -266,6 +266,16 @@ export default function ScanForm() {
                 />
               </div>
 
+              {parseInt(form.aantalMedewerkers) > 25 && (
+                <div className="bg-amber-50 border border-amber-300 rounded-lg p-4">
+                  <p className="text-amber-800 text-sm font-medium">
+                    ⚠️ Let op: voor bedrijven met meer dan 25 medewerkers moet de RI&E getoetst
+                    worden door een gecertificeerde arbodeskundige (Arbowet art. 14). SnelRIE
+                    genereert de RI&E, maar de toetsing moet u zelf regelen.
+                  </p>
+                </div>
+              )}
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Aantal locaties
