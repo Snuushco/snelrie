@@ -1,0 +1,174 @@
+{
+  "slug": "overig",
+  "naam": "Overige branches",
+  "beschrijving": "Breed toepasbaar template voor branches zonder specifieke kennisbank: dienstverlening, ambacht, techniek, creatieve sector en overige MKB-bedrijven.",
+  "sbiCodes": [],
+  "arbocatalogus": "Branche-eigen arbocatalogus (indien beschikbaar)",
+  "cao": "Eigen CAO of geen CAO van toepassing",
+  "wettelijkeKaders": [
+    { "wet": "Arbowet", "artikel": "Artikel 5", "beschrijving": "Verplichting tot het opstellen van een RI&E en Plan van Aanpak" },
+    { "wet": "Arbowet", "artikel": "Artikel 3", "beschrijving": "Algemeen arbeidsomstandighedenbeleid" },
+    { "wet": "Arbowet", "artikel": "Artikel 8", "beschrijving": "Voorlichting en onderricht werknemers" },
+    { "wet": "Arbowet", "artikel": "Artikel 13", "beschrijving": "Bijstand deskundige werknemers (preventiemedewerker)" },
+    { "wet": "Arbowet", "artikel": "Artikel 14", "beschrijving": "Maatwerkregeling bedrijfsarts en arbodienst" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 3", "beschrijving": "Inrichting arbeidsplaatsen" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 5", "beschrijving": "Fysieke belasting" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 6, afdeling 9", "beschrijving": "Beeldschermwerk" }
+  ],
+  "risicoCategorieën": [
+    {
+      "id": "fysieke_belasting",
+      "categorie": "Fysieke belasting",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Tillen en dragen van lasten", "Lang staan of zitten", "Repeterende bewegingen", "Werken in ongunstige houdingen"],
+      "standaardMaatregelen": [
+        { "maatregel": "Tilhulpmiddelen beschikbaar stellen", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Instructie tiltechnieken", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Taakroulatie om eenzijdige belasting te voorkomen", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Ergonomische werkhoogte bij staan/zitten", "type": "collectief", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "psychosociale_belasting",
+      "categorie": "Psychosociale arbeidsbelasting (PSA)",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Werkdruk en werkstress", "Ongewenst gedrag (pesten, discriminatie, seksuele intimidatie)", "Agressie door klanten of derden", "Burn-out"],
+      "standaardMaatregelen": [
+        { "maatregel": "Vertrouwenspersoon aanstellen", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Klachtenregeling ongewenst gedrag", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Werkdrukmonitor en regelmatige evaluatie", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Voorlichting over herkennen en melden van PSA", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Toegang tot bedrijfsmaatschappelijk werk", "type": "organisatorisch", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "beeldschermwerk",
+      "categorie": "Beeldschermwerk",
+      "prioriteit": "midden",
+      "typischeRisicos": ["RSI/KANS-klachten", "Oogvermoeidheid", "Nek-/schouder-/rugklachten", "Hoofdpijn door beeldschermgebruik"],
+      "standaardMaatregelen": [
+        { "maatregel": "Ergonomische werkplekinrichting (stoel, bureau, scherm)", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Beeldschermbril vergoeden indien nodig", "type": "individueel", "termijn": "kort" },
+        { "maatregel": "20-20-20 regel: elke 20 min, 20 sec op 20 voet afstand kijken", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Werkplekonderzoek door arbo-ergonoom", "type": "organisatorisch", "termijn": "middel" }
+      ]
+    },
+    {
+      "id": "bhv",
+      "categorie": "BHV en noodprocedures",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Onvoldoende BHV'ers", "Ontruimingsplan ontbreekt of niet geoefend", "EHBO-middelen onvoldoende of verlopen", "Onbekendheid nooduitgangen"],
+      "standaardMaatregelen": [
+        { "maatregel": "Voldoende opgeleide BHV'ers per locatie/dienst", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Ontruimingsplan opstellen en jaarlijks oefenen", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "EHBO-middelen aanwezig en periodiek controleren", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Nooduitgangen vrij en gemarkeerd", "type": "collectief", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "gevaarlijke_stoffen",
+      "categorie": "Gevaarlijke stoffen",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Blootstelling aan gevaarlijke stoffen", "Onjuiste opslag en etikettering", "Onbekendheid met SDS/veiligheidsinformatiebladen", "Huidcontact of inademing"],
+      "standaardMaatregelen": [
+        { "maatregel": "Register gevaarlijke stoffen met actuele SDS-bladen", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Opslag conform PGS-richtlijnen", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "PBM beschikbaar (handschoenen, bril, adembescherming)", "type": "individueel", "termijn": "direct" },
+        { "maatregel": "Substitutie: minder gevaarlijke alternatieven gebruiken", "type": "collectief", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "binnenklimaat",
+      "categorie": "Binnenklimaat",
+      "prioriteit": "laag",
+      "typischeRisicos": ["Te hoge of lage temperatuur", "Onvoldoende ventilatie", "Tocht", "Te lage luchtvochtigheid"],
+      "standaardMaatregelen": [
+        { "maatregel": "Temperatuur werkruimte 20-24°C (kantoor), ≥18°C (licht werk)", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Mechanische ventilatie conform Bouwbesluit", "type": "collectief", "termijn": "middel" },
+        { "maatregel": "CO2-meter plaatsen (max 1200 ppm)", "type": "collectief", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "valgevaar",
+      "categorie": "Val- en struikelgevaar",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Uitglijden op gladde vloeren", "Struikelen over kabels of obstakels", "Vallen van trap of ladder", "Ongelijke vloeren"],
+      "standaardMaatregelen": [
+        { "maatregel": "Goede verlichting in alle ruimtes en gangen", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Kabels wegwerken of afdekken", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Antislipvloer of -strips waar nodig", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Leuning bij trappen", "type": "collectief", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "geluid",
+      "categorie": "Geluid en gehoorschade",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Gehoorschade bij >80 dB(A)", "Concentratieproblemen door omgevingsgeluid", "Tinnitus"],
+      "standaardMaatregelen": [
+        { "maatregel": "Geluidsmeting bij vermoeden van >80 dB(A)", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Gehoorbescherming verplicht boven 85 dB(A)", "type": "individueel", "termijn": "direct" },
+        { "maatregel": "Bronmaatregelen: demping, afscherming, onderhoud", "type": "collectief", "termijn": "middel" },
+        { "maatregel": "Audiometrie in PMO voor blootgestelde medewerkers", "type": "organisatorisch", "termijn": "middel" }
+      ]
+    },
+    {
+      "id": "machineveiligheid",
+      "categorie": "Machine- en arbeidsmiddelenveiligheid",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Beknelling in machines", "Snijwonden door gereedschap", "Elektrische gevaren", "Onbeveiligde draaiende delen"],
+      "standaardMaatregelen": [
+        { "maatregel": "CE-markering en gebruiksaanwijzing bij alle machines", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Machine-instructie voor elke gebruiker", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Periodieke keuring en onderhoud arbeidsmiddelen", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Beveiligingen (noodstop, afscherming) nooit omzeilen", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "alleen_werken",
+      "categorie": "Alleen werken",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Geen hulp bij ongeval of onwelwording", "Verhoogd risico op overval", "Psychosociale belasting door isolatie"],
+      "standaardMaatregelen": [
+        { "maatregel": "Alarmering: man-down systeem of check-in app", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Protocol alleen werken met risicobeoordeling", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Bereikbaarheid leidinggevende/collega waarborgen", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "brandveiligheid",
+      "categorie": "Brandveiligheid",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Brand door elektrische apparatuur", "Onjuiste opslag brandbare materialen", "Geen of verlopen brandblussers", "Geblokkeerde nooduitgangen"],
+      "standaardMaatregelen": [
+        { "maatregel": "Brandrisico-inventarisatie", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Brandblussers en rookmelders op strategische locaties", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Nooduitgangen vrij houden en markeren", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Jaarlijkse controle blusmiddelen", "type": "collectief", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "verkeersveiligheid",
+      "categorie": "Verkeersveiligheid (woon-werkverkeer en dienstverkeer)",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Verkeersongevallen", "Afleiding door telefoon", "Vermoeidheid achter stuur", "Onveilige bedrijfsvoertuigen"],
+      "standaardMaatregelen": [
+        { "maatregel": "Beleid: handsfree bellen of niet bellen achter stuur", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Periodieke keuring bedrijfsvoertuigen", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "EHBO-kit en gevarendriehoek in bedrijfsvoertuigen", "type": "collectief", "termijn": "direct" }
+      ]
+    }
+  ],
+  "intakeVragen": [
+    { "id": "type_bedrijf", "vraag": "Wat is de hoofdactiviteit van uw bedrijf?", "type": "tekst" },
+    { "id": "aantal_medewerkers", "vraag": "Hoeveel medewerkers heeft uw bedrijf?", "type": "keuze", "opties": ["1-5", "6-25", "26-50", "51-100", "100+"] },
+    { "id": "beeldschermwerk", "vraag": "Werken medewerkers meer dan 2 uur per dag achter een beeldscherm?", "type": "ja_nee" },
+    { "id": "fysiek_werk", "vraag": "Is er sprake van fysiek zwaar werk (tillen, staan, buigen)?", "type": "ja_nee" },
+    { "id": "gevaarlijke_stoffen", "vraag": "Wordt er met gevaarlijke stoffen gewerkt?", "type": "ja_nee" },
+    { "id": "machines", "vraag": "Worden er machines of elektrisch gereedschap gebruikt?", "type": "ja_nee" },
+    { "id": "klantcontact", "vraag": "Hebben medewerkers direct klantcontact?", "type": "ja_nee" },
+    { "id": "alleen_werken", "vraag": "Werken medewerkers wel eens alleen?", "type": "ja_nee" },
+    { "id": "buitenwerk", "vraag": "Wordt er regelmatig buiten gewerkt?", "type": "ja_nee" },
+    { "id": "voertuigen", "vraag": "Worden er bedrijfsvoertuigen gebruikt?", "type": "ja_nee" }
+  ]
+}

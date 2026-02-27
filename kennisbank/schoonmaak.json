@@ -1,0 +1,144 @@
+{
+  "slug": "schoonmaak",
+  "naam": "Schoonmaakbranche",
+  "beschrijving": "Schoonmaakbedrijven: kantoorschoonmaak, industriële reiniging, glazenwassen, gevelreiniging, specialistische reiniging.",
+  "sbiCodes": ["81.21", "81.22", "81.29"],
+  "arbocatalogus": "Arbocatalogus Schoonmaak- en Glazenwassersbranche (RAS)",
+  "cao": "CAO Schoonmaak- en Glazenwassersbranche",
+  "wettelijkeKaders": [
+    { "wet": "Arbowet", "artikel": "Artikel 5", "beschrijving": "Verplichting tot het opstellen van een RI&E en Plan van Aanpak" },
+    { "wet": "Arbowet", "artikel": "Artikel 8", "beschrijving": "Voorlichting en onderricht werknemers" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 4, afdeling 1", "beschrijving": "Gevaarlijke stoffen: blootstelling en grenswaarden" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 3, afdeling 5", "beschrijving": "Valgevaar: werken op hoogte" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 5", "beschrijving": "Fysieke belasting" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 4, afdeling 2", "beschrijving": "Biologische agentia" },
+    { "wet": "Arbeidstijdenwet", "artikel": "Artikel 5:8", "beschrijving": "Nachtarbeid" },
+    { "wet": "CLP-verordening", "artikel": "EU 1272/2008", "beschrijving": "Classificatie, etikettering en verpakking gevaarlijke stoffen" }
+  ],
+  "risicoCategorieën": [
+    {
+      "id": "chemische_stoffen",
+      "categorie": "Chemische stoffen",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Huidirritatie en eczeem door reinigingsmiddelen", "Inademing dampen (chloor, ammoniak)", "Oogletsel bij spatten", "Mengen van onverenigbare producten (chloor+zuur)", "Onbekendheid met veiligheidsinformatiebladen (SDS)"],
+      "standaardMaatregelen": [
+        { "maatregel": "SDS/veiligheidsbladden beschikbaar in taal van medewerker", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Gebruik minder gevaarlijke producten (substitutie)", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Doseersystemen om onverdund gebruik te voorkomen", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Handschoenen, veiligheidsbril en schort als PBM", "type": "individueel", "termijn": "direct" },
+        { "maatregel": "Instructie over het niet mengen van producten", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "ergonomie",
+      "categorie": "Ergonomie en fysieke belasting",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Rugklachten door dweilen, zuigen, bukken", "Schouderklachten door boven schouderhoogte werken", "Repeterende bewegingen (RSI)", "Tillen van emmers en machines"],
+      "standaardMaatregelen": [
+        { "maatregel": "Ergonomisch materieel: lichtgewicht stofzuiger, vlakmoppen i.p.v. natte mop", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Telescoopstelen op juiste werkhoogte", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Taakroulatie: afwisselen zware en lichte taken", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Tilhulpmiddelen voor zware machines", "type": "collectief", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "valgevaar",
+      "categorie": "Valgevaar",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Uitglijden op natte vloeren", "Vallen van trappen of ladders", "Werken op hoogte bij glazenwassen", "Struikelen over snoeren en obstakels"],
+      "standaardMaatregelen": [
+        { "maatregel": "Antislip werkschoenen verplicht", "type": "individueel", "termijn": "direct" },
+        { "maatregel": "Natte-vloer waarschuwingsborden", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Valbeveiliging bij werken boven 2,5 meter", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Keuringsplichtige ladders en steigers", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Werkinstructie glazenwassen en gevelreiniging", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "huidcontact",
+      "categorie": "Huidbelasting en huidaandoeningen",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Contacteczeem door langdurig nat werk", "Allergische reacties op reinigingsmiddelen", "Beschadiging huidbarrière door frequent handen wassen"],
+      "standaardMaatregelen": [
+        { "maatregel": "Geschikt handschoenbeleid per taak (latex-vrij)", "type": "individueel", "termijn": "direct" },
+        { "maatregel": "Huidverzorgingsplan: bescherming, reiniging, verzorging", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "PAGO gericht op huidklachten", "type": "organisatorisch", "termijn": "middel" }
+      ]
+    },
+    {
+      "id": "alleen_werken",
+      "categorie": "Alleen werken",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Geen hulp bij ongeval of onwelwording", "Onveilig gevoel in lege gebouwen", "Confrontatie met onbevoegden buiten kantooruren"],
+      "standaardMaatregelen": [
+        { "maatregel": "Inchecksysteem: medewerker meldt begin/einde dienst", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Alarmknop of app op telefoon", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Instructie over noodprocedures per locatie", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "nachtwerk",
+      "categorie": "Nacht- en avondwerk",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Vermoeidheid en slaapstoornissen", "Verminderde alertheid", "Sociale isolatie", "Verkeersveiligheid bij pendelen in het donker"],
+      "standaardMaatregelen": [
+        { "maatregel": "Roostering conform Arbeidstijdenwet", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "PAGO voor nachtwerkers", "type": "organisatorisch", "termijn": "middel" },
+        { "maatregel": "Dagschoonmaak waar mogelijk als alternatief", "type": "organisatorisch", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "biologische_agentia",
+      "categorie": "Biologische agentia",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Prikaccidenten bij afval in ziekenhuizen/scholen", "Blootstelling aan schimmels en bacteriën", "Contact met menselijke uitscheidingsproducten (sanitair)"],
+      "standaardMaatregelen": [
+        { "maatregel": "Hepatitis B vaccinatie bij risicolocaties (ziekenhuizen)", "type": "individueel", "termijn": "kort" },
+        { "maatregel": "Prikbestendige handschoenen en prikaccidentenprotocol", "type": "individueel", "termijn": "direct" },
+        { "maatregel": "Persoonlijke hygiëne-instructie", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "psychosociale_belasting",
+      "categorie": "Psychosociale arbeidsbelasting",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Werkdruk door tijdsnormen", "Lage waardering en onzichtbaarheid", "Taalbarrière en sociale isolatie", "Ongewenst gedrag door gebouwgebruikers"],
+      "standaardMaatregelen": [
+        { "maatregel": "Realistische tijdsnormen per object", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Werkoverleg in begrijpelijke taal", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Vertrouwenspersoon aanstellen", "type": "organisatorisch", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "bhv",
+      "categorie": "BHV en noodprocedures",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Medewerker kent ontruimingsplan locatie niet", "Geen EHBO-middelen beschikbaar", "Taalbarrière bij noodinstructies"],
+      "standaardMaatregelen": [
+        { "maatregel": "Locatiespecifieke noodinstructie bij indiensttreding", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Visuele noodinstructies (pictogrammen)", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "BHV-certificering voor voormannen/objectleiders", "type": "organisatorisch", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "machineveiligheid",
+      "categorie": "Machineveiligheid",
+      "prioriteit": "laag",
+      "typischeRisicos": ["Beknelling bij schrobzuigmachine", "Elektrische gevaren bij natte omgeving", "Geluidshinder bij industriële apparatuur"],
+      "standaardMaatregelen": [
+        { "maatregel": "Machine-instructie voor elke gebruiker", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Periodiek onderhoud en keuring machines", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Gehoorbescherming bij luidruchtige machines (>80 dB)", "type": "individueel", "termijn": "direct" }
+      ]
+    }
+  ],
+  "intakeVragen": [
+    { "id": "type_schoonmaak", "vraag": "Welk type schoonmaakdiensten verleent u?", "type": "meerkeuze_multi", "opties": ["Kantoorschoonmaak", "Industriële reiniging", "Glazenwassen", "Gevelreiniging", "Sanitaire hygiëne", "Ziekenhuisschoonmaak", "Schoolschoonmaak", "Treinschoonmaak"] },
+    { "id": "nachtwerk", "vraag": "Werken uw medewerkers 's avonds of 's nachts?", "type": "ja_nee" },
+    { "id": "alleen_werken", "vraag": "Werken medewerkers regelmatig alleen op een locatie?", "type": "ja_nee" },
+    { "id": "hoogte", "vraag": "Wordt er op hoogte gewerkt (glazenwassen, gevelreiniging)?", "type": "ja_nee" },
+    { "id": "gevaarlijke_middelen", "vraag": "Worden er agressieve schoonmaakmiddelen gebruikt?", "type": "ja_nee" },
+    { "id": "speciale_locaties", "vraag": "Werkt u op locaties met bijzondere risico's?", "type": "meerkeuze_multi", "opties": ["Ziekenhuizen/zorginstellingen", "Fabrieken/industrie", "Scholen", "Openbaar vervoer", "Overheidsgebouwen"] },
+    { "id": "taalbarriere", "vraag": "Zijn er medewerkers die de Nederlandse taal beperkt beheersen?", "type": "ja_nee" }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "slug": "detailhandel",
+  "naam": "Detailhandel",
+  "beschrijving": "Winkelbedrijven: supermarkten, kledingwinkels, bouwmarkten, elektronicazaken, drogisterijen, speciaalzaken.",
+  "sbiCodes": ["47.1", "47.2", "47.4", "47.5", "47.6", "47.7", "47.8", "47.9"],
+  "arbocatalogus": "Arbocatalogus Retail Non-Food / Arbocatalogus Levensmiddelenbedrijf",
+  "cao": "CAO Retail Non-Food / CAO Levensmiddelenbedrijf",
+  "wettelijkeKaders": [
+    { "wet": "Arbowet", "artikel": "Artikel 5", "beschrijving": "Verplichting tot het opstellen van een RI&E en Plan van Aanpak" },
+    { "wet": "Arbowet", "artikel": "Artikel 3 lid 2", "beschrijving": "Beleid inzake agressie en geweld" },
+    { "wet": "Arbowet", "artikel": "Artikel 8", "beschrijving": "Voorlichting en onderricht werknemers" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 5", "beschrijving": "Fysieke belasting" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 6, afdeling 9", "beschrijving": "Beeldschermwerk" },
+    { "wet": "Arbeidstijdenwet", "artikel": "Diverse", "beschrijving": "Werktijden, pauzes, koopavonden" },
+    { "wet": "Warenwetbesluit", "artikel": "Diverse", "beschrijving": "Voedselveiligheid (supermarkten)" }
+  ],
+  "risicoCategorieën": [
+    {
+      "id": "agressie_overvallen",
+      "categorie": "Agressie en overvallen",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Gewapende overvallen", "Agressie door klanten", "Verbale bedreigingen bij aanspreken winkeldieven", "Trauma na overval"],
+      "standaardMaatregelen": [
+        { "maatregel": "Overvalprotocol en jaarlijkse training", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Cameratoezicht met opname", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Tijdslotkluis voor beperking contant geld", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Overvalknop gekoppeld aan alarmcentrale", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Nazorg en professionele opvang na incident", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "fysieke_belasting",
+      "categorie": "Fysieke belasting (tillen en sjouwen)",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Rugklachten door tillen dozen en kratten", "Schouderklachten bij vullen hoge schappen", "Herhaald bukken en reiken", "Duwen zware rolcontainers"],
+      "standaardMaatregelen": [
+        { "maatregel": "Tilhulpmiddelen: steekwagen, rolcontainer, schaartafel", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Maximaal tilgewicht 23 kg conform NIOSH", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Trapje voor hoge schappen", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Instructie tiltechnieken bij indiensttreding", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "kassawerk_rsi",
+      "categorie": "Kassawerk en RSI",
+      "prioriteit": "midden",
+      "typischeRisicos": ["RSI-klachten door repeterende scanbewegingen", "Statische werkhouding aan kassa", "Nek-/schouderklachten"],
+      "standaardMaatregelen": [
+        { "maatregel": "Ergonomische kassa-inrichting (scannerplaatsing, stoel)", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Taakroulatie: afwisselen kassa met vulwerk", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Zelfscankassa's ter vermindering kassamomenten", "type": "collectief", "termijn": "middel" },
+        { "maatregel": "Micro-pauzes en rekoefeningen stimuleren", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "winkelcriminaliteit",
+      "categorie": "Winkelcriminaliteit en preventie",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Winkeldiefstalpogingen", "Interne fraude", "Confrontatie met daders", "Stress door beveiligingsrol"],
+      "standaardMaatregelen": [
+        { "maatregel": "Protocol aanspreken winkeldieven (niet zelf achtervolgen)", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Elektronisch artikelbeveiligingssysteem (EAS)", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Winkelindeling met overzicht (spiegelhoeken, camera's)", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Training herkennen winkeldiefstal", "type": "organisatorisch", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "brandveiligheid",
+      "categorie": "Brandveiligheid",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Brand in magazijn/opslag", "Geblokkeerde nooduitgangen", "Klanten in paniek bij ontruiming", "Brandbare materialen in etalage"],
+      "standaardMaatregelen": [
+        { "maatregel": "Ontruimingsplan en halfjaarlijkse oefening", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Nooduitgangen vrij en zichtbaar gemarkeerd", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Brandblussers en rookmelders op strategische plekken", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "BHV-organisatie met minimaal 1 BHV'er per dienst", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "werkdruk",
+      "categorie": "Werkdruk en seizoenspieken",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Hoge werkdruk in decembermaand en uitverkoop", "Onderbezetting in vakantieperiodes", "Stress door personeelstekort", "Werkdruk bij avondopening"],
+      "standaardMaatregelen": [
+        { "maatregel": "Tijdige personeelsplanning voor piekmomenten", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Werkdrukmonitor: periodiek meten en bespreken", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Flexibele inzet uitzendkrachten bij piekmomenten", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Pauzes waarborgen ook bij drukte", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "klimaat",
+      "categorie": "Binnenklimaat en temperatuur",
+      "prioriteit": "laag",
+      "typischeRisicos": ["Tocht bij ingang", "Koude in koelcellen (supermarkt)", "Oververhitting in zomer zonder airco"],
+      "standaardMaatregelen": [
+        { "maatregel": "Tochtsluis of luchtgordijn bij ingang", "type": "collectief", "termijn": "middel" },
+        { "maatregel": "Thermische kleding voor koelcelwerk", "type": "individueel", "termijn": "direct" },
+        { "maatregel": "Maximale blootstelling aan koelcellen beperken", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "valgevaar",
+      "categorie": "Val- en struikelgevaar",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Uitglijden op natte vloer", "Struikelen over dozen en lege kratten", "Vallen van ladder bij schappen vullen"],
+      "standaardMaatregelen": [
+        { "maatregel": "Direct opruimen van lege dozen en obstakels", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Waarschuwingsborden bij natte vloer", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Goedgekeurde trap/ladder voor bovenschappen", "type": "collectief", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "jong_personeel",
+      "categorie": "Jonge werknemers",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Onvoldoende ervaring met risico's", "Zware fysieke belasting voor jeugdigen", "Onbekendheid met rechten en regels"],
+      "standaardMaatregelen": [
+        { "maatregel": "Inwerkprogramma met veiligheidsmodule", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Nadere RI&E voor jeugdige werknemers (<18 jaar)", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Beperking zware taken conform Arbeidstijdenwet jeugdigen", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    }
+  ],
+  "intakeVragen": [
+    { "id": "type_winkel", "vraag": "Wat voor type winkel heeft u?", "type": "meerkeuze_multi", "opties": ["Supermarkt/levensmiddelen", "Kleding/mode", "Elektronica", "Bouwmarkt/doe-het-zelf", "Drogisterij", "Speciaalzaak", "Warenhuis"] },
+    { "id": "contant_geld", "vraag": "Wordt er veel contant geld ontvangen?", "type": "ja_nee" },
+    { "id": "koelcellen", "vraag": "Zijn er koelcellen of vriesruimtes aanwezig?", "type": "ja_nee" },
+    { "id": "jong_personeel", "vraag": "Werken er medewerkers jonger dan 18 jaar?", "type": "ja_nee" },
+    { "id": "avondopening", "vraag": "Is de winkel 's avonds of op zondag geopend?", "type": "ja_nee" },
+    { "id": "overval_historie", "vraag": "Heeft er de afgelopen 3 jaar een overval of ernstig agressie-incident plaatsgevonden?", "type": "ja_nee" }
+  ]
+}

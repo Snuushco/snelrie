@@ -1,0 +1,136 @@
+{
+  "slug": "transport",
+  "naam": "Transport en logistiek",
+  "beschrijving": "Wegvervoer, koeriersdiensten, verhuisbedrijven, distributiecentra, chauffeurs en logistiek medewerkers.",
+  "sbiCodes": ["49.41", "49.42", "52.10", "52.24", "53.20"],
+  "arbocatalogus": "Arbocatalogus Transport en Logistiek (door TLN/VNB)",
+  "cao": "CAO Beroepsgoederenvervoer over de weg en de verhuur van mobiele kranen",
+  "wettelijkeKaders": [
+    { "wet": "Arbowet", "artikel": "Artikel 5", "beschrijving": "Verplichting tot het opstellen van een RI&E en Plan van Aanpak" },
+    { "wet": "Arbowet", "artikel": "Artikel 8", "beschrijving": "Voorlichting en onderricht werknemers" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 5", "beschrijving": "Fysieke belasting" },
+    { "wet": "Arbeidstijdenwet", "artikel": "Diverse", "beschrijving": "Rij- en rusttijden, nachtarbeid" },
+    { "wet": "EU-verordening", "artikel": "561/2006", "beschrijving": "Rij- en rusttijden beroepschauffeurs" },
+    { "wet": "ADR", "artikel": "Europese overeenkomst", "beschrijving": "Vervoer gevaarlijke stoffen over de weg" },
+    { "wet": "Wegenverkeerswet", "artikel": "WVW 1994", "beschrijving": "Verkeersveiligheid en voertuigeisen" },
+    { "wet": "Arbobesluit", "artikel": "Hoofdstuk 7, afdeling 1", "beschrijving": "Arbeidsmiddelen en transportmiddelen" }
+  ],
+  "risicoCategorieën": [
+    {
+      "id": "verkeersveiligheid",
+      "categorie": "Verkeersveiligheid",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Verkeersongevallen", "Dode hoek bij vrachtwagens", "Verkeersagressie", "Afleiding door telefoon/navigatie", "Slechte weersomstandigheden"],
+      "standaardMaatregelen": [
+        { "maatregel": "Rijvaardigheidstraining en nascholing (Code 95)", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Dode-hoek-detectiesysteem op voertuigen", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Handsfree bellen verplicht, verbod op handmatig telefoongebruik", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Winterbanden en noodset in voertuig", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Dashcam ter analyse van incidenten en rijgedrag", "type": "collectief", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "rij_rusttijden",
+      "categorie": "Rij- en rusttijden",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Overschrijding maximale rijtijden", "Onvoldoende nachtrust", "Druk van opdrachtgever op planning", "Fraude met tachograaf"],
+      "standaardMaatregelen": [
+        { "maatregel": "Digitale tachograafregistratie en monitoring", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Planning met voldoende rijtijdmarge", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Beleid: chauffeur mag rit weigeren bij overschrijding", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Periodieke controle tachograafgegevens door planner", "type": "organisatorisch", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "laden_lossen",
+      "categorie": "Laden en lossen",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Beknelling door verschuivende lading", "Valgevaar van laadklep of container", "Rugletsel door handmatig tillen", "Aanrijdgevaar op laad-/losplaats"],
+      "standaardMaatregelen": [
+        { "maatregel": "Gebruik laadklep, heftruck of transpallet", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Ladingzekeringsinstructie en controle", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Veiligheidsschoenen en handschoenen bij laden/lossen", "type": "individueel", "termijn": "direct" },
+        { "maatregel": "Gescheiden verkeersroutes voetgangers/voertuigen op terrein", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Wielkeggen en motoruit bij laden/lossen", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "gevaarlijke_stoffen",
+      "categorie": "Gevaarlijke stoffen (ADR)",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Lekkage of morsen van gevaarlijke stoffen", "Brand/explosiegevaar", "Vergiftiging bij inademen", "Verkeerde classificatie of documentatie"],
+      "standaardMaatregelen": [
+        { "maatregel": "ADR-certificaat verplicht voor betrokken chauffeurs", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "ADR-nooduitrusting in voertuig (brandblusser, oogdouche, PBM)", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Schriftelijke instructies (ADR-kaart) in cabine", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Voertuiginspectie voor vertrek (lekkage, etikettering)", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "ergonomie_cabine",
+      "categorie": "Ergonomie in de cabine",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Rugklachten door langdurig zitten en trillingen", "Lichaamstrillingen (whole-body vibration)", "Nek-/schouderklachten", "Slechte stoelafstelling"],
+      "standaardMaatregelen": [
+        { "maatregel": "Luchtvering chauffeursstoel met trillingdemping", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Stoelafstelling aanpassen per chauffeur (instructie)", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Stretching en bewegingsoefeningen in pauzes", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "PAGO gericht op rug- en nekklachten", "type": "organisatorisch", "termijn": "middel" }
+      ]
+    },
+    {
+      "id": "vermoeidheid",
+      "categorie": "Vermoeidheid en fitheid",
+      "prioriteit": "hoog",
+      "typischeRisicos": ["Microslaap achter het stuur", "Verminderd reactievermogen", "Slaapapneu onbehandeld", "Ongezond eetpatroon onderweg"],
+      "standaardMaatregelen": [
+        { "maatregel": "Vermoeidheidsdetectiesysteem in cabine", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Voorlichting over slaaphygiëne en gezonde voeding", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Keuring op slaapapneu bij PMO", "type": "organisatorisch", "termijn": "middel" },
+        { "maatregel": "Geen nachtritten na onvoldoende rust", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "psychosociale_belasting",
+      "categorie": "Psychosociale arbeidsbelasting",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Eenzaamheid en sociale isolatie", "Tijdsdruk door strakke planning", "Agressie bij leveringen", "Onbereikbaarheid bij problemen"],
+      "standaardMaatregelen": [
+        { "maatregel": "Vast contactpersoon bij planning (bereikbaar)", "type": "organisatorisch", "termijn": "direct" },
+        { "maatregel": "Periodiek werkoverleg op kantoor", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Agressietraining voor chauffeurs met klantcontact", "type": "organisatorisch", "termijn": "kort" }
+      ]
+    },
+    {
+      "id": "bhv",
+      "categorie": "BHV en noodprocedures",
+      "prioriteit": "midden",
+      "typischeRisicos": ["Geen BHV op locatie (chauffeur alleen)", "Brand in voertuig", "EHBO bij verkeersongeval"],
+      "standaardMaatregelen": [
+        { "maatregel": "EHBO-kit en brandblusser in elk voertuig", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "BHV-training inclusief voertuigbrand", "type": "organisatorisch", "termijn": "kort" },
+        { "maatregel": "Noodprocedure met alarmnummer en contactpersoon", "type": "organisatorisch", "termijn": "direct" }
+      ]
+    },
+    {
+      "id": "klimaat",
+      "categorie": "Klimaat en weersomstandigheden",
+      "prioriteit": "laag",
+      "typischeRisicos": ["Gladheid op laadperron", "Hittestress in cabine", "Koude bij buitenwerk laden/lossen"],
+      "standaardMaatregelen": [
+        { "maatregel": "Gladheidsbestrijding laadperron", "type": "collectief", "termijn": "direct" },
+        { "maatregel": "Airco-onderhoud voertuigen", "type": "collectief", "termijn": "kort" },
+        { "maatregel": "Weersbestendige werkkleding beschikbaar", "type": "individueel", "termijn": "direct" }
+      ]
+    }
+  ],
+  "intakeVragen": [
+    { "id": "type_transport", "vraag": "Welk type transport verricht uw bedrijf?", "type": "meerkeuze_multi", "opties": ["Wegtransport nationaal", "Wegtransport internationaal", "Koeriersdiensten", "Verhuizingen", "Koeltransport", "Bulktransport", "Containertransport"] },
+    { "id": "gevaarlijke_stoffen", "vraag": "Worden er gevaarlijke stoffen (ADR) vervoerd?", "type": "ja_nee" },
+    { "id": "nachtritten", "vraag": "Worden er nachtritten of vroege ochtendritten gereden?", "type": "ja_nee" },
+    { "id": "handmatig_laden", "vraag": "Laden en lossen chauffeurs handmatig?", "type": "ja_nee" },
+    { "id": "internationaal", "vraag": "Rijden chauffeurs internationaal (overnachting in cabine)?", "type": "ja_nee" },
+    { "id": "eigen_terrein", "vraag": "Heeft u een eigen laad-/losterrein of magazijn?", "type": "ja_nee" },
+    { "id": "voertuigtypen", "vraag": "Welke voertuigen worden ingezet?", "type": "meerkeuze_multi", "opties": ["Bestelbus", "Vrachtwagen <7,5t", "Vrachtwagen >7,5t", "Trekker-oplegger", "Koelwagen", "Tankwagen"] }
+  ]
+}
