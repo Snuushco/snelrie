@@ -41,9 +41,9 @@ export const VALID_BRANCHES = [
 export const generateRieSchema = z.object({
   bedrijfsnaam: z
     .string()
-    .min(1, "Bedrijfsnaam is verplicht")
     .max(200, "Bedrijfsnaam mag maximaal 200 tekens zijn")
-    .transform(stripHtml),
+    .transform(stripHtml)
+    .default("Mijn bedrijf"),
   branche: z.enum(VALID_BRANCHES, {
     errorMap: () => ({ message: "Ongeldige branche" }),
   }),
@@ -62,7 +62,9 @@ export const generateRieSchema = z.object({
     .string()
     .email("Ongeldig e-mailadres")
     .max(254)
-    .transform((v) => v.toLowerCase().trim()),
+    .transform((v) => v.toLowerCase().trim())
+    .optional()
+    .nullable(),
   naam: z
     .string()
     .max(200)

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 import {
   Shield,
   Zap,
@@ -10,7 +11,17 @@ import {
   Scale,
   Star,
   ChevronDown,
+  AlertTriangle,
+  DollarSign,
+  ShieldAlert,
+  Timer,
+  PiggyBank,
+  CalendarCheck,
+  Target,
 } from "lucide-react";
+import { variantConfig, type ABVariant } from "@/lib/ab-variants";
+import { ABTracker } from "@/components/ABTracker";
+import { HeroCTA } from "@/components/HeroCTA";
 
 const pricingTiers = [
   {
@@ -108,9 +119,31 @@ const faqs = [
   },
 ];
 
-export default function HomePage() {
+// Icon map per variant for USPs
+const uspIcons = {
+  a: [Zap, Building2, Clock],
+  b: [PiggyBank, CalendarCheck, Target],
+  c: [AlertTriangle, ShieldAlert, Timer],
+};
+
+// Badge per variant
+const heroBadge = {
+  a: { icon: Scale, text: 'Wettelijk verplicht voor alle werkgevers' },
+  b: { icon: PiggyBank, text: 'Bespaar €1.900+ op uw RI&E' },
+  c: { icon: AlertTriangle, text: 'Inspectie SZW controleert steeds vaker' },
+};
+
+export default async function HomePage() {
+  const cookieStore = await cookies();
+  const variant = (cookieStore.get('ab-variant')?.value || 'a') as ABVariant;
+  const v = variantConfig[variant];
+  const badge = heroBadge[variant];
+  const icons = uspIcons[variant];
+
   return (
-    <main>
+    <main className={v.className}>
+      <ABTracker variant={variant} />
+
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-sm border-b border-gray-100 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
@@ -135,7 +168,7 @@ export default function HomePage() {
             href="/scan"
             className="bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-brand-700 transition"
           >
-            Start Gratis Scan
+            {v.hero.cta}
           </Link>
         </div>
       </nav>
@@ -144,26 +177,18 @@ export default function HomePage() {
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-brand-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-brand-100 text-brand-700 px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-            <Scale className="h-4 w-4" />
-            Wettelijk verplicht voor alle werkgevers
+            <badge.icon className="h-4 w-4" />
+            {badge.text}
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight">
-            Je RI&E in minuten,{" "}
-            <span className="text-brand-600">niet weken</span>
+            {v.hero.header}{" "}
+            <span className="text-brand-600">{v.hero.headerHighlight}</span>
           </h1>
           <p className="mt-6 text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-            AI-gestuurde Risico-Inventarisatie & Evaluatie. Branchespecifiek,
-            professioneel, en direct klaar. Voldoe aan de Arbowet zonder weken
-            te wachten op een adviseur.
+            {v.hero.subtext}
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/scan"
-              className="inline-flex items-center justify-center gap-2 bg-brand-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-brand-700 transition shadow-lg shadow-brand-600/25"
-            >
-              Start Gratis Scan
-              <ArrowRight className="h-5 w-5" />
-            </Link>
+            <HeroCTA variant={variant} cta={v.hero.cta} />
             <a
               href="#hoe-werkt-het"
               className="inline-flex items-center justify-center gap-2 bg-white text-gray-700 px-8 py-4 rounded-xl text-lg font-semibold border border-gray-200 hover:bg-gray-50 transition"
@@ -192,39 +217,26 @@ export default function HomePage() {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            Waarom bedrijven kiezen voor SnelRIE
+            {v.usps.title}
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: Zap,
-                title: "AI-gestuurd",
-                desc: "Onze AI analyseert uw bedrijfssituatie en genereert een gepersonaliseerde RI&E op basis van de laatste arbocatalogi en wetgeving.",
-              },
-              {
-                icon: Building2,
-                title: "Branchespecifiek",
-                desc: "Geen generiek verhaal. Uw RI&E is afgestemd op de specifieke risico's en maatregelen van uw branche.",
-              },
-              {
-                icon: Clock,
-                title: "Klaar in minuten",
-                desc: "Traditioneel duurt een RI&E weken en kost het duizenden euro's. Bij SnelRIE heeft u binnen 5 minuten een professioneel rapport.",
-              },
-            ].map((usp) => (
-              <div
-                key={usp.title}
-                className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition"
-              >
-                <div className="w-12 h-12 bg-brand-100 rounded-xl flex items-center justify-center mb-4">
-                  <usp.icon className="h-6 w-6 text-brand-600" />
+            {v.usps.items.map((usp, i) => {
+              const Icon = icons[i];
+              return (
+                <div
+                  key={usp.title}
+                  className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition"
+                >
+                  <div className="w-12 h-12 bg-brand-100 rounded-xl flex items-center justify-center mb-4">
+                    <Icon className="h-6 w-6 text-brand-600" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    {usp.title}
+                  </h3>
+                  <p className="text-gray-600">{usp.desc}</p>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  {usp.title}
-                </h3>
-                <p className="text-gray-600">{usp.desc}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -382,23 +394,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* Bottom CTA */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-brand-600">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
-            Klaar om uw RI&E op te stellen?
+            {v.bottomCta.title}
           </h2>
           <p className="text-brand-100 text-lg mb-8">
-            Begin met een gratis scan en ontdek de grootste risico's in uw
-            bedrijf. In 5 minuten klaar.
+            {v.bottomCta.text}
           </p>
-          <Link
-            href="/scan"
-            className="inline-flex items-center gap-2 bg-white text-brand-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-brand-50 transition"
-          >
-            Start Nu — Gratis
-            <ArrowRight className="h-5 w-5" />
-          </Link>
+          <HeroCTA variant={variant} cta={v.bottomCta.button} isBottom />
         </div>
       </section>
 

@@ -27,11 +27,12 @@ export async function POST(req: NextRequest) {
       ...werkplekData
     } = parsed.data;
 
-    // Find or create user
-    let user = await prisma.user.findUnique({ where: { email } });
+    // Find or create user (anonymous if no email provided)
+    const userEmail = email || `anon-${Date.now()}-${Math.random().toString(36).slice(2, 8)}@snelrie.nl`;
+    let user = email ? await prisma.user.findUnique({ where: { email } }) : null;
     if (!user) {
       user = await prisma.user.create({
-        data: { email, naam: naam || null },
+        data: { email: userEmail, naam: naam || null },
       });
     }
 
