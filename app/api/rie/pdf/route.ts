@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { renderToBuffer } from "@react-pdf/renderer";
 import React from "react";
-import { RieDocument } from "@/lib/pdf/rie-document";
+import { RieDocument, getBranding } from "@/lib/pdf/rie-document";
 import { prisma } from "@/lib/db";
 
 /**
@@ -53,7 +53,12 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const element = React.createElement(RieDocument, { data });
+    // Build branding for Enterprise white-label
+    const branding = data.tier === "ENTERPRISE" && data.whiteLabel?.companyName
+      ? getBranding("ENTERPRISE", data.whiteLabel)
+      : undefined;
+
+    const element = React.createElement(RieDocument, { data, branding });
     const buffer = await renderToBuffer(element as any);
 
     const filename = `RIE-${data.bedrijfsnaam.replace(/[^a-zA-Z0-9]/g, "-")}.pdf`;
