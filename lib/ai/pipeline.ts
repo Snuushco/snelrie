@@ -81,6 +81,106 @@ async function aiCall(system: string, user: string, maxTokens: number): Promise<
 }
 
 // ═══════════════════════════════════════════════════════════════
+// Post-generation sanitization
+// ═══════════════════════════════════════════════════════════════
+function sanitizeRisicos(risicos: any[], tier: string): any[] {
+  const config = TIER_CONFIG[tier] || TIER_CONFIG.GRATIS;
+  const promptConfig = PROMPT_TIER_CONFIG[tier] || PROMPT_TIER_CONFIG.GRATIS;
+  const maxMaatregelen = promptConfig.maatregelenPerRisico;
+
+  // 1. Filter out empty risico objects (only id, no real content)
+  let cleaned = risicos.filter((r: any) => r && r.categorie && r.beschrijving);
+
+  // 2. Deduplicate categories — keep the more complete one
+  const seen = new Map<string, number>();
+  cleaned = cleaned.filter((r: any, idx: number) => {
+    const key = (r.categorie || "").toLowerCase().trim();
+    if (seen.has(key)) {
+      // Merge maatregelen into the existing one
+      const existingIdx = seen.get(key)!;
+      const existing = cleaned[existingIdx];
+      if (Array.isArray(r.maatregelen) && Array.isArray(existing.maatregelen)) {
+        existing.maatregelen.push(...r.maatregelen);
+      }
+      return false;
+    }
+    seen.set(key, idx);
+    return true;
+  });
+
+  // 3. Ensure required fields, fix typos, enforce tier limits
+  cleaned.forEach((r: any, i: number) => {
+    r.id = r.id || `risico_${i + 1}`;
+    r.gevaren = Array.isArray(r.gevaren) ? r.gevaren : r.gevaren ? [r.gevaren] : ["Niet gespecificeerd"];
+    r.huidigeBeheersing = r.huidigeBeheersing || "Geen specifieke beheersmaatregelen bekend";
+    r.wettelijkKader = r.wettelijkKader || "Arbowet art. 3 - Algemene zorgplicht";
+    r.kans = r.kans || 3;
+    r.effect = r.effect || 3;
+    r.risicoScore = r.risicoScore || r.kans * r.effect;
+    r.prioriteit = r.prioriteit || (r.risicoScore >= 18 ? "hoog" : r.risicoScore >= 12 ? "midden" : "laag");
+
+    // Normalize maatregelen typos
+    if (Array.isArray(r.maatregelen)) {
+      r.maatregelen.forEach((m: any) => {
+        if (m.kostesindicatie && !m.kostenindicatie) {
+          m.kostenindicatie = m.kostesindicatie;
+          delete m.kostesindicatie;
+        }
+        // Ensure all 6 subfields
+        m.maatregel = m.maatregel || m.beschrijving || m.actie || "Nader te bepalen";
+        m.type = m.type || "organisatorisch";
+        m.prioriteit = m.prioriteit || r.prioriteit || "midden";
+        m.verantwoordelijke = m.verantwoordelijke || "Nader te bepalen";
+        m.deadline = m.deadline || m.termijn || "Nader te bepalen";
+        m.kostenindicatie = m.kostenindicatie || m.kosten || "Nader te bepalen";
+      });
+
+      // Enforce tier limits: BASIS = max 1 maatregel per risico
+      if (tier === "BASIS" && r.maatregelen.length > 1) {
+        r.maatregelen = r.maatregelen.slice(0, 1);
+      }
+    }
+  });
+
+  // 4. Re-index IDs
+  cleaned.forEach((r: any, i: number) => {
+    r.id = `risico_${i + 1}`;
+  });
+
+  return cleaned;
+}
+
+function sanitizePva(pva: any): any[] {
+  // Unwrap nested structure: [{"plan_van_aanpak": [...]}] → [...]
+  let items = pva;
+  if (Array.isArray(items) && items.length === 1 && items[0]?.plan_van_aanpak) {
+    items = items[0].plan_van_aanpak;
+  }
+  if (Array.isArray(items) && items.length === 1 && items[0]?.planVanAanpak) {
+    items = items[0].planVanAanpak;
+  }
+  if (!Array.isArray(items)) {
+    items = items?.planVanAanpak || items?.plan_van_aanpak || [items];
+  }
+
+  // Validate and fix each item
+  return items.filter((item: any) => item && item.maatregel).map((item: any, i: number) => {
+    // Fix typo
+    if (item.kostesindicatie && !item.kostenindicatie) {
+      item.kostenindicatie = item.kostesindicatie;
+      delete item.kostesindicatie;
+    }
+    item.nummer = item.nummer || i + 1;
+    item.maatregel = item.maatregel || "Nader te bepalen";
+    item.prioriteit = item.prioriteit || "midden";
+    item.verantwoordelijke = item.verantwoordelijke || "Nader te bepalen";
+    item.deadline = item.deadline || item.termijn || "Nader te bepalen";
+    item.status = item.status || "nog niet gestart";
+    return item;
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
 // Validation
 // ═══════════════════════════════════════════════════════════════
 function validateRie(content: any, tier: string): { valid: boolean; errors: string[] } {
@@ -244,23 +344,50 @@ export async function generateRie(reportId: string) {
 
     // ── Step 3: Risico's in batches ──
     const allRisicos: any[] = [];
+    const existingCategories: string[] = [];
     for (let batch = 0; batch < config.batches; batch++) {
-      console.log(`[${reportId}] Step 3.${batch + 1}: Risico's batch ${batch + 1}/${config.batches}`);
-      const risicosPrompt = buildRisicosPrompt(kennisbank, intakeData, tier, batch, config.batches);
-      const { parsed: risicos, tokens: t3 } = await aiCall(risicosPrompt.system, risicosPrompt.user, 3500);
-      totalTokens += t3;
-      const arr = Array.isArray(risicos) ? risicos : risicos.risicos || [risicos];
-      allRisicos.push(...arr);
+      const maxPerBatch = 5;
+      const startIdx = batch * maxPerBatch;
+      const expectedCount = Math.min(maxPerBatch, config.risicos - startIdx);
+      if (expectedCount <= 0) break;
+
+      console.log(`[${reportId}] Step 3.${batch + 1}: Risico's batch ${batch + 1}/${config.batches} (expecting ${expectedCount})`);
+
+      let batchRisicos: any[] = [];
+      for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+          const risicosPrompt = buildRisicosPrompt(kennisbank, intakeData, tier, batch, config.batches, existingCategories);
+          const { parsed: risicos, tokens: t3 } = await aiCall(risicosPrompt.system, risicosPrompt.user, 4000);
+          totalTokens += t3;
+          const arr = Array.isArray(risicos) ? risicos : risicos.risicos || [risicos];
+          batchRisicos = arr.filter((r: any) => r && r.categorie && r.beschrijving);
+          if (batchRisicos.length >= Math.ceil(expectedCount * 0.5)) break;
+          console.warn(`[${reportId}] Batch ${batch + 1} returned only ${batchRisicos.length}/${expectedCount}, retrying...`);
+        } catch (err) {
+          console.error(`[${reportId}] Batch ${batch + 1} attempt ${attempt + 1} failed:`, err);
+          if (attempt === 1) throw err;
+        }
+      }
+
+      // Track categories to avoid cross-batch duplicates
+      batchRisicos.forEach((r: any) => {
+        if (r.categorie) existingCategories.push(r.categorie);
+      });
+      allRisicos.push(...batchRisicos);
     }
+
+    // ── Sanitize risicos ──
+    const sanitizedRisicos = sanitizeRisicos(allRisicos, tier);
+    console.log(`[${reportId}] Sanitized: ${allRisicos.length} → ${sanitizedRisicos.length} risico's`);
 
     // ── Step 4: Plan van Aanpak ──
     let planVanAanpak: any[] = [];
-    if (config.pva && allRisicos.length > 0) {
+    if (config.pva && sanitizedRisicos.length > 0) {
       console.log(`[${reportId}] Step 4: Plan van Aanpak`);
-      const pvaPrompt = buildPvaPrompt(kennisbank, intakeData, allRisicos, tier);
+      const pvaPrompt = buildPvaPrompt(kennisbank, intakeData, sanitizedRisicos, tier);
       const { parsed: pva, tokens: t4 } = await aiCall(pvaPrompt.system, pvaPrompt.user, 3000);
       totalTokens += t4;
-      planVanAanpak = Array.isArray(pva) ? pva : pva.planVanAanpak || [pva];
+      planVanAanpak = sanitizePva(pva);
     }
 
     // ── Step 5: Wettelijke verplichtingen (Enterprise) ──
@@ -288,7 +415,7 @@ export async function generateRie(reportId: string) {
       samenvatting: profiel.samenvatting,
       bedrijfsprofiel: profiel.bedrijfsprofiel,
       arbobeleid,
-      risicos: allRisicos,
+      risicos: sanitizedRisicos,
       planVanAanpak,
       wettelijkeVerplichtingen,
       aanbevelingen,

@@ -121,7 +121,8 @@ export function buildRisicosPrompt(
   intakeData: any,
   tier: string,
   batchIndex: number,
-  totalBatches: number
+  totalBatches: number,
+  existingCategories: string[] = []
 ) {
   const config = PROMPT_TIER_CONFIG[tier] || PROMPT_TIER_CONFIG.GRATIS;
   const maxPerBatch = 5;
@@ -171,7 +172,7 @@ JSON format — een array van EXACT ${count} risico objecten:
         "type": "bronmaatregel|collectief|individueel|organisatorisch",
         "prioriteit": "hoog|midden|laag",
         "verantwoordelijke": "Concrete functie/rol (bijv. 'Preventiemedewerker', 'Leidinggevende', 'HR-manager')",
-        "deadline": "Concrete termijn (bijv. 'Binnen 3 maanden', 'Q2 2025', 'Direct')",
+        "deadline": "Relatieve deadline (bijv. 'Binnen 1 maand', 'Binnen 3 maanden', 'Direct')",
         "kostenindicatie": "Geschatte kosten (bijv. '€500-1000', 'Geen extra kosten', '€2000 eenmalig')"
       }
     ]
@@ -181,9 +182,10 @@ JSON format — een array van EXACT ${count} risico objecten:
 BELANGRIJK:
 - risicoScore = kans × effect (1-25 schaal)
 - Prioriteit: hoog bij score ≥18, midden bij 12-17, laag bij ≤11
-- Elke risico MOET minimaal ${minMaatregelen} maatregelen hebben
-- Elke maatregel MOET alle 6 velden bevatten (maatregel, type, prioriteit, verantwoordelijke, deadline, kostenindicatie)
+- ${tier === 'BASIS' ? 'Genereer EXACT 1 maatregel per risico' : `Elke risico MOET minimaal ${minMaatregelen} maatregelen hebben`}
+- Elke maatregel MOET ALLE 6 velden bevatten: maatregel, type, prioriteit, verantwoordelijke, deadline/termijn, kostenindicatie. SLAAG GEEN ENKEL VELD OVER.
 - Maak maatregelen concreet en branche-specifiek, niet generiek
+- Elke risico MOET een UNIEKE categorie hebben. Geen duplicaten.${existingCategories.length > 0 ? `\n- De volgende categorieën zijn AL gebruikt in eerdere batches, gebruik deze NIET opnieuw: ${existingCategories.join(', ')}` : ''}
 - Genereer EXACT ${count} risico's`
   };
 }
@@ -233,7 +235,7 @@ JSON format — een array:
     "maatregel": "${isProfessional ? 'Uitgebreide, concrete en uitvoerbare maatregel met specifieke acties en verwacht resultaat (min 2 zinnen)' : 'Concrete, uitvoerbare maatregel (1 zin)'}",
     ${isBasis ? '' : '"typeMaatregel": "bronmaatregel|collectief|individueel|organisatorisch",\n    '}"prioriteit": "hoog|midden|laag",
     "verantwoordelijke": "Concrete functie/rol",
-    "deadline": "Concrete datum of periode (bijv. 'Q2 2025', 'Binnen 1 maand')",
+    "deadline": "Relatieve deadline vanaf vandaag (bijv. 'Binnen 1 maand', 'Binnen 3 maanden', 'Binnen 6 maanden')",
     ${showKosten ? `"kostenindicatie": "Geschatte kosten met bereik (bijv. '€500-1000', 'Geen extra kosten')",` : ''}
     ${isEnterprise ? `"implementatieStappen": ["Stap 1: ...", "Stap 2: ...", "Stap 3: ..."],
     "verwachtResultaat": "Meetbaar resultaat van deze maatregel",` : ''}
@@ -244,7 +246,7 @@ JSON format — een array:
 BELANGRIJK:
 - Minimaal ${config.pvaItems} items
 - Elk item MOET alle verplichte velden bevatten
-- Deadlines moeten realistisch en concreet zijn
+- Gebruik relatieve deadlines vanaf vandaag (bijv. 'Binnen 1 maand', 'Binnen 3 maanden'), NOOIT absolute datums in het verleden
 - Verantwoordelijke moet een functie/rol zijn, niet "het bedrijf"
 - Sorteer: hoog prioriteit eerst
 - Volg de arbeidshygiënische strategie: bronmaatregelen > collectief > individueel > organisatorisch${professionalExtra}${enterpriseExtra}`
