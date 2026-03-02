@@ -25,8 +25,8 @@ const TIER_CONFIG: Record<string, {
   aanbevelingen: boolean;
 }> = {
   GRATIS:       { risicos: 3,  batches: 1, pva: false, arbobeleid: false, wettelijk: false, aanbevelingen: false },
-  BASIS:        { risicos: 8,  batches: 2, pva: true,  arbobeleid: true,  wettelijk: false, aanbevelingen: true },
-  PROFESSIONAL: { risicos: 12, batches: 3, pva: true,  arbobeleid: true,  wettelijk: false, aanbevelingen: true },
+  BASIS:        { risicos: 5,  batches: 1, pva: true,  arbobeleid: false, wettelijk: false, aanbevelingen: false },
+  PROFESSIONAL: { risicos: 12, batches: 3, pva: true,  arbobeleid: true,  wettelijk: true,  aanbevelingen: true },
   ENTERPRISE:   { risicos: 15, batches: 3, pva: true,  arbobeleid: true,  wettelijk: true,  aanbevelingen: true },
 };
 

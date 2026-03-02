@@ -4,8 +4,8 @@ import { prisma } from "@/lib/db";
 // Tier content limits for server-side filtering
 const TIER_LIMITS: Record<string, { risicos: number; maatregelenPerRisico: number; pva: boolean; wettelijk: boolean }> = {
   GRATIS:       { risicos: 3,  maatregelenPerRisico: 1, pva: false, wettelijk: false },
-  BASIS:        { risicos: 8,  maatregelenPerRisico: 2, pva: true,  wettelijk: false },
-  PROFESSIONAL: { risicos: 12, maatregelenPerRisico: 3, pva: true,  wettelijk: false },
+  BASIS:        { risicos: 5,  maatregelenPerRisico: 1, pva: true,  wettelijk: false },
+  PROFESSIONAL: { risicos: 12, maatregelenPerRisico: 3, pva: true,  wettelijk: true },
   ENTERPRISE:   { risicos: Infinity, maatregelenPerRisico: Infinity, pva: true, wettelijk: true },
 };
 

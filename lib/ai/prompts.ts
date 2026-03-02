@@ -39,8 +39,8 @@ export const PROMPT_TIER_CONFIG: Record<string, {
   wettelijk: number;
 }> = {
   GRATIS:       { totalRisicos: 3,  maatregelenPerRisico: 1, pvaItems: 0,  wettelijk: 0 },
-  BASIS:        { totalRisicos: 8,  maatregelenPerRisico: 2, pvaItems: 8,  wettelijk: 0 },
-  PROFESSIONAL: { totalRisicos: 12, maatregelenPerRisico: 3, pvaItems: 12, wettelijk: 0 },
+  BASIS:        { totalRisicos: 5,  maatregelenPerRisico: 1, pvaItems: 5,  wettelijk: 0 },
+  PROFESSIONAL: { totalRisicos: 12, maatregelenPerRisico: 3, pvaItems: 12, wettelijk: 8 },
   ENTERPRISE:   { totalRisicos: 15, maatregelenPerRisico: 3, pvaItems: 15, wettelijk: 8 },
 };
 
@@ -198,9 +198,10 @@ export function buildPvaPrompt(kennisbank: any, intakeData: any, risicos: any[],
     `- ${r.id}: ${r.categorie} (score: ${r.risicoScore || '?'}, prio: ${r.prioriteit}) — Maatregelen: ${r.maatregelen?.map((m: any) => m.maatregel).join('; ') || 'geen'}`
   ).join('\n');
 
-  const showKosten = tier === 'PROFESSIONAL' || tier === 'ENTERPRISE';
+  const isBasis = tier === 'BASIS';
   const isEnterprise = tier === 'ENTERPRISE';
   const isProfessional = tier === 'PROFESSIONAL' || isEnterprise;
+  const showKosten = isProfessional;
 
   const professionalExtra = isProfessional ? `
 - "risicoBeschrijving" moet een VOLLEDIGE beschrijving zijn van het gekoppelde risico (2-3 zinnen), niet slechts de categorienaam
@@ -228,11 +229,9 @@ JSON format — een array:
 [
   {
     "nummer": 1,
-    "gekoppeldRisico": "risico_1",
-    "risicoBeschrijving": "${isProfessional ? 'Volledige beschrijving van het gekoppelde risico en waarom dit prioriteit heeft (2-3 zinnen)' : 'Korte beschrijving van het gekoppelde risico'}",
-    "maatregel": "${isProfessional ? 'Uitgebreide, concrete en uitvoerbare maatregel met specifieke acties en verwacht resultaat (min 2 zinnen)' : 'Concrete, uitvoerbare maatregel'}",
-    "typeMaatregel": "bronmaatregel|collectief|individueel|organisatorisch",
-    "prioriteit": "hoog|midden|laag",
+    ${isBasis ? '' : '"gekoppeldRisico": "risico_1",\n    '}"risicoBeschrijving": "${isProfessional ? 'Volledige beschrijving van het gekoppelde risico en waarom dit prioriteit heeft (2-3 zinnen)' : 'Korte beschrijving'}",
+    "maatregel": "${isProfessional ? 'Uitgebreide, concrete en uitvoerbare maatregel met specifieke acties en verwacht resultaat (min 2 zinnen)' : 'Concrete, uitvoerbare maatregel (1 zin)'}",
+    ${isBasis ? '' : '"typeMaatregel": "bronmaatregel|collectief|individueel|organisatorisch",\n    '}"prioriteit": "hoog|midden|laag",
     "verantwoordelijke": "Concrete functie/rol",
     "deadline": "Concrete datum of periode (bijv. 'Q2 2025', 'Binnen 1 maand')",
     ${showKosten ? `"kostenindicatie": "Geschatte kosten met bereik (bijv. '€500-1000', 'Geen extra kosten')",` : ''}

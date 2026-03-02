@@ -526,6 +526,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
 
   // Tier logic
   const tierUpper = (data.tier || "BASIS").toUpperCase();
+  const isBasis = tierUpper === "BASIS";
   const isProfessional = tierUpper === "PROFESSIONAL" || tierUpper === "ENTERPRISE";
   const isEnterprise = tierUpper === "ENTERPRISE";
   const tierLabel = tierUpper === "PROFESSIONAL" ? "PROFESSIONAL" : tierUpper === "ENTERPRISE" ? "ENTERPRISE" : tierUpper === "BASIS" ? "BASIS" : null;
@@ -625,12 +626,12 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
           {[
             "Samenvatting",
             "Bedrijfsbeschrijving",
-            ...(arbo ? ["Arbobeleid & Organisatie"] : []),
+            ...(!isBasis && arbo ? ["Arbobeleid & Organisatie"] : []),
             "Risico-inventarisatie — Overzicht",
             "Risico-inventarisatie — Detail",
             ...(pva.length > 0 ? ["Plan van Aanpak"] : []),
             ...(wettelijk.length > 0 ? ["Wettelijke Verplichtingen"] : []),
-            ...(aanbevelingen ? ["Aanbevelingen & Conclusie"] : []),
+            ...(!isBasis && aanbevelingen ? ["Aanbevelingen & Conclusie"] : []),
             "Disclaimer",
           ].map((title, i) => (
             <View key={i} style={s.tocRow}>
@@ -759,7 +760,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
       </Page>
 
       {/* ═══ ARBOBELEID & ORGANISATIE ═══ */}
-      {arbo && (
+      {!isBasis && arbo && (
         <Page size="A4" style={s.page}>
           <Header data={data} brand={brand} s={s} />
           <Footer brand={brand} s={s} />
@@ -999,29 +1000,27 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
             </View>
           )}
 
-          {/* Basis: compact table */}
+          {/* Basis: simple table (no kosten, no type) */}
           {!isProfessional && (
             <View style={s.table}>
               <View style={s.tableHeader}>
                 <Text style={[s.th, { width: 16 }]}>#</Text>
                 <Text style={[s.th, { flex: 2 }]}>Maatregel</Text>
-                <Text style={[s.th, { width: 38, textAlign: "center" }]}>Prio</Text>
-                <Text style={[s.th, { width: 55 }]}>Type</Text>
-                <Text style={[s.th, { width: 55 }]}>Verantw.</Text>
-                <Text style={[s.th, { width: 55 }]}>Deadline</Text>
-                <Text style={[s.th, { width: 48 }]}>Status</Text>
+                <Text style={[s.th, { width: 42, textAlign: "center" }]}>Prio</Text>
+                <Text style={[s.th, { width: 65 }]}>Verantw.</Text>
+                <Text style={[s.th, { width: 65 }]}>Deadline</Text>
+                <Text style={[s.th, { width: 55 }]}>Status</Text>
               </View>
               {pva.map((item, i) => (
                 <View key={i} style={[s.tableRow, i % 2 === 1 ? s.tableRowAlt : {}]} wrap={false}>
                   <Text style={[s.td, { width: 16, fontFamily: "Helvetica-Bold" }]}>{item.nummer || i + 1}</Text>
-                  <Text style={[s.td, { flex: 2 }]}>{truncate(item.maatregel, 65)}</Text>
-                  <View style={{ width: 38, alignItems: "center", justifyContent: "center" }}>
+                  <Text style={[s.td, { flex: 2 }]}>{truncate(item.maatregel, 75)}</Text>
+                  <View style={{ width: 42, alignItems: "center", justifyContent: "center" }}>
                     <Badge prioriteit={item.prioriteit} s={s} />
                   </View>
-                  <Text style={[s.td, { width: 55, color: GRAY[500] }]}>{truncate(item.typeMaatregel, 14) || "—"}</Text>
-                  <Text style={[s.td, { width: 55 }]}>{truncate(item.verantwoordelijke, 14) || "—"}</Text>
-                  <Text style={[s.td, { width: 55, color: GRAY[500] }]}>{truncate(item.deadline || item.termijn, 14) || "—"}</Text>
-                  <Text style={[s.td, { width: 48, fontSize: 6.5, color: GRAY[400] }]}>{truncate(item.status, 14) || "—"}</Text>
+                  <Text style={[s.td, { width: 65 }]}>{truncate(item.verantwoordelijke, 16) || "—"}</Text>
+                  <Text style={[s.td, { width: 65, color: GRAY[500] }]}>{truncate(item.deadline || item.termijn, 16) || "—"}</Text>
+                  <Text style={[s.td, { width: 55, fontSize: 6.5, color: GRAY[400] }]}>{truncate(item.status, 16) || "—"}</Text>
                 </View>
               ))}
             </View>
@@ -1102,7 +1101,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
       )}
 
       {/* ═══ AANBEVELINGEN & CONCLUSIE ═══ */}
-      {aanbevelingen && (
+      {!isBasis && aanbevelingen && (
         <Page size="A4" style={s.page}>
           <Header data={data} brand={brand} s={s} />
           <Footer brand={brand} s={s} />
