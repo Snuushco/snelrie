@@ -100,10 +100,10 @@ const prioriteitConfig: Record<string, { bg: string; color: string; border: stri
   laag:   { bg: "#f0fdf4", color: "#15803d", border: "#bbf7d0", label: "LAAG" },
 };
 
-const statusConfig: Record<string, { symbol: string; color: string }> = {
-  voldoet:        { symbol: "✓", color: "#16a34a" },
-  aandachtspunt:  { symbol: "!", color: "#ea580c" },
-  niet_in_orde:   { symbol: "✗", color: "#dc2626" },
+const statusConfig: Record<string, { symbol: string; color: string; label: string }> = {
+  voldoet:        { symbol: "✓", color: "#16a34a", label: "Voldoet" },
+  aandachtspunt:  { symbol: "!", color: "#ea580c", label: "Aandachtspunt" },
+  niet_in_orde:   { symbol: "✗", color: "#dc2626", label: "Niet in orde" },
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -156,9 +156,9 @@ function createStyles(b: BrandingConfig) {
       flexDirection: "row", justifyContent: "space-between", alignItems: "center",
       paddingBottom: 10, marginBottom: 20, borderBottomWidth: 2, borderBottomColor: b.primaryColor,
     },
-    logoText: { fontSize: 18, fontFamily: "Helvetica-Bold", color: b.primaryDark, letterSpacing: -0.5 },
+    logoText: { fontSize: 20, fontFamily: "Helvetica-Bold", color: b.primaryDark, letterSpacing: -0.5 },
     logoAccent: { color: b.primaryColor },
-    logoImage: { height: 28, maxWidth: 120 },
+    logoImage: { height: 32, maxWidth: 140 },
     headerRight: { textAlign: "right" },
     headerCompany: { fontSize: 8, fontFamily: "Helvetica-Bold", color: GRAY[900] },
     headerDate: { fontSize: 7, color: GRAY[500], marginTop: 2 },
@@ -169,7 +169,7 @@ function createStyles(b: BrandingConfig) {
     sectionTitle: {
       fontSize: 12, fontFamily: "Helvetica-Bold", color: GRAY[900],
       marginTop: 20, marginBottom: 10, paddingBottom: 4,
-      borderBottomWidth: 1, borderBottomColor: GRAY[200],
+      borderBottomWidth: 2, borderBottomColor: b.primaryColor,
     },
     subsectionTitle: {
       fontSize: 10, fontFamily: "Helvetica-Bold", color: GRAY[800], marginTop: 10, marginBottom: 6,
@@ -287,21 +287,21 @@ function createStyles(b: BrandingConfig) {
 
     // Management dashboard
     dashboardContainer: {
-      backgroundColor: GRAY[50], borderRadius: 8, borderWidth: 1,
-      borderColor: GRAY[200], padding: 16, marginBottom: 16,
+      borderRadius: 8, padding: 0, marginBottom: 16,
     },
     dashboardTitle: {
-      fontSize: 11, fontFamily: "Helvetica-Bold", color: GRAY[900],
-      marginBottom: 12, textAlign: "center" as const,
+      fontSize: 12, fontFamily: "Helvetica-Bold", color: b.primaryDark,
+      marginBottom: 14, textAlign: "center" as const, letterSpacing: 0.5,
+      textTransform: "uppercase" as const,
     },
     dashboardRow: { flexDirection: "row" as const, justifyContent: "space-between" as const, marginBottom: 8 },
     dashboardMetric: {
-      flex: 1, alignItems: "center" as const, paddingVertical: 8,
-      backgroundColor: "#ffffff", borderRadius: 6, borderWidth: 1,
-      borderColor: GRAY[200], marginHorizontal: 3,
+      flex: 1, alignItems: "center" as const, paddingVertical: 12, paddingHorizontal: 6,
+      backgroundColor: "#ffffff", borderRadius: 8, borderWidth: 1,
+      borderColor: GRAY[200], marginHorizontal: 4,
     },
-    dashboardMetricValue: { fontSize: 18, fontFamily: "Helvetica-Bold", color: b.primaryColor },
-    dashboardMetricLabel: { fontSize: 7, color: GRAY[500], marginTop: 2 },
+    dashboardMetricValue: { fontSize: 24, fontFamily: "Helvetica-Bold", color: b.primaryColor },
+    dashboardMetricLabel: { fontSize: 6.5, color: GRAY[500], marginTop: 4, textTransform: "uppercase" as const, letterSpacing: 0.3 },
 
     // PvA cards (Professional+)
     pvaCard: {
@@ -489,7 +489,12 @@ function Header({ data, brand, s }: { data: RieData; brand: BrandingConfig; s: R
 function Footer({ brand, s }: { brand: BrandingConfig; s: ReturnType<typeof createStyles> }) {
   return (
     <View style={s.footer} fixed>
-      <Text style={s.footerText}>{brand.footerText}</Text>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        {!brand.showSnelRIE && (
+          <Text style={[s.footerText, { fontFamily: "Helvetica-Bold", color: GRAY[600], marginRight: 6, fontSize: 7 }]}>{brand.companyName}</Text>
+        )}
+        <Text style={s.footerText}>{brand.footerText}</Text>
+      </View>
       <Text style={s.pageNum} render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`} />
     </View>
   );
@@ -568,7 +573,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
       <Page size="A4" style={s.coverPage}>
         <View style={s.coverTop}>
           {brand.logoUrl ? (
-            <Image src={brand.logoUrl} style={{ height: 40, maxWidth: 200, marginBottom: 20 }} />
+            <Image src={brand.logoUrl} style={{ height: 56, maxWidth: 260, marginBottom: 20 }} />
           ) : brand.showSnelRIE ? (
             <Text style={[s.coverTitle, { fontSize: 24, marginBottom: 20 }]}>
               Snel<Text style={{ color: brand.primaryLight }}>RIE</Text>
@@ -578,12 +583,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
           <View style={s.coverDivider} />
           <Text style={s.coverCompany}>{data.bedrijfsnaam}</Text>
           <Text style={[s.coverSubtitle, { marginTop: 8 }]}>{data.branche}</Text>
-          {/* Tier badge */}
-          {tierLabel && (
-            <View style={[s.tierBadge, { backgroundColor: tierBadgeColors.bg, borderWidth: 1, borderColor: tierBadgeColors.border }]}>
-              <Text style={[s.tierBadgeText, { color: tierBadgeColors.text }]}>{tierLabel}</Text>
-            </View>
-          )}
+          {/* Tier badge removed — clean cover page */}
         </View>
         <View style={s.coverBody}>
           <View style={s.coverMeta}>
@@ -660,40 +660,40 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
           <View style={s.dashboardContainer}>
             <Text style={s.dashboardTitle}>Management Samenvatting</Text>
             <View style={s.dashboardRow}>
-              <View style={s.dashboardMetric}>
+              <View style={[s.dashboardMetric, { backgroundColor: brand.primaryBg }]}>
                 <Text style={s.dashboardMetricValue}>{risicos.length}</Text>
                 <Text style={s.dashboardMetricLabel}>Risico{"'"}s totaal</Text>
               </View>
-              <View style={s.dashboardMetric}>
+              <View style={[s.dashboardMetric, { backgroundColor: "#fef2f2" }]}>
                 <Text style={[s.dashboardMetricValue, { color: "#dc2626" }]}>{hoogCount}</Text>
                 <Text style={s.dashboardMetricLabel}>Hoog prioriteit</Text>
               </View>
-              <View style={s.dashboardMetric}>
+              <View style={[s.dashboardMetric, { backgroundColor: "#fff7ed" }]}>
                 <Text style={[s.dashboardMetricValue, { color: "#ea580c" }]}>{middenCount}</Text>
                 <Text style={s.dashboardMetricLabel}>Midden prioriteit</Text>
               </View>
-              <View style={s.dashboardMetric}>
+              <View style={[s.dashboardMetric, { backgroundColor: "#f0fdf4" }]}>
                 <Text style={[s.dashboardMetricValue, { color: "#16a34a" }]}>{laagCount}</Text>
                 <Text style={s.dashboardMetricLabel}>Laag prioriteit</Text>
               </View>
             </View>
             <View style={s.dashboardRow}>
-              <View style={s.dashboardMetric}>
-                <Text style={s.dashboardMetricValue}>{avgScore}</Text>
+              <View style={[s.dashboardMetric, { backgroundColor: "#fefce8" }]}>
+                <Text style={[s.dashboardMetricValue, { color: "#ca8a04" }]}>{avgScore}</Text>
                 <Text style={s.dashboardMetricLabel}>Gem. risicoscore</Text>
               </View>
-              <View style={s.dashboardMetric}>
+              <View style={[s.dashboardMetric, { backgroundColor: brand.primaryBg }]}>
                 <Text style={s.dashboardMetricValue}>{pva.length}</Text>
                 <Text style={s.dashboardMetricLabel}>Actiepunten PvA</Text>
               </View>
               {isEnterprise && (
-                <View style={s.dashboardMetric}>
+                <View style={[s.dashboardMetric, { backgroundColor: brand.primaryBg }]}>
                   <Text style={[s.dashboardMetricValue, { fontSize: 14 }]}>€{totalBudgetLo.toLocaleString("nl-NL")}–{totalBudgetHi.toLocaleString("nl-NL")}</Text>
                   <Text style={s.dashboardMetricLabel}>Geschat budget</Text>
                 </View>
               )}
               {!isEnterprise && (
-                <View style={s.dashboardMetric}>
+                <View style={[s.dashboardMetric, { backgroundColor: GRAY[50] }]}>
                   <Text style={s.dashboardMetricValue}>{wettelijk.length || "—"}</Text>
                   <Text style={s.dashboardMetricLabel}>Wettelijke checks</Text>
                 </View>
@@ -701,6 +701,13 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
             </View>
           </View>
         )}
+
+      </Page>
+
+      {/* ═══ BEDRIJFSBESCHRIJVING ═══ */}
+      <Page size="A4" style={s.page}>
+        <Header data={data} brand={brand} s={s} />
+        <Footer brand={brand} s={s} />
 
         <Text style={s.sectionTitle}>{nextSection()}. Bedrijfsbeschrijving</Text>
         <View style={s.profileCard}>
@@ -850,7 +857,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
           {risicos.map((r, i) => (
             <View key={i} style={[s.tableRow, i % 2 === 1 ? s.tableRowAlt : {}]} wrap={false}>
               <Text style={[s.td, { width: 18, fontFamily: "Helvetica-Bold" }]}>{i + 1}</Text>
-              <Text style={[s.td, { flex: 1 }]}>{truncate(r.categorie, 40)}</Text>
+              <Text style={[s.td, { flex: 1 }]}>{r.categorie}</Text>
               <View style={{ width: 42, alignItems: "center", justifyContent: "center" }}>
                 {r.risicoScore ? (
                   <ScoreBadge score={r.risicoScore} s={s} />
@@ -861,7 +868,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
               <View style={{ width: 55, alignItems: "center", justifyContent: "center" }}>
                 <Badge prioriteit={r.prioriteit} s={s} />
               </View>
-              <Text style={[s.td, { flex: 1, color: GRAY[500] }]}>{truncate(r.huidigeBeheersing, 60) || "—"}</Text>
+              <Text style={[s.td, { flex: 1, color: GRAY[500] }]}>{r.huidigeBeheersing || "—"}</Text>
             </View>
           ))}
         </View>
@@ -888,9 +895,9 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
 
             {/* Meta info row */}
             <View style={s.riskMeta}>
-              {r.wieBlootgesteld && <Text style={s.riskMetaItem}>Blootgesteld: {truncate(r.wieBlootgesteld, 50)}</Text>}
-              {r.frequentie && <Text style={s.riskMetaItem}>Frequentie: {truncate(r.frequentie, 40)}</Text>}
-              {r.ernst && <Text style={s.riskMetaItem}>Ernst: {truncate(r.ernst, 50)}</Text>}
+              {r.wieBlootgesteld && <Text style={s.riskMetaItem}>Blootgesteld: {r.wieBlootgesteld}</Text>}
+              {r.frequentie && <Text style={s.riskMetaItem}>Frequentie: {r.frequentie}</Text>}
+              {r.ernst && <Text style={s.riskMetaItem}>Ernst: {r.ernst}</Text>}
             </View>
 
             {r.wettelijkKader && <Text style={s.riskLegal}>Wettelijk kader: {r.wettelijkKader}</Text>}
@@ -921,8 +928,8 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
                   <View key={mi} style={[s.measureRow, { marginBottom: 4 }]}>
                     <Text style={s.measureBullet}>✓</Text>
                     <View style={{ flex: 1 }}>
-                      <Text style={s.measureText}>{m.maatregel}</Text>
-                      <Text style={{ fontSize: 7, color: GRAY[400], marginTop: 1 }}>
+                      <Text style={[s.measureText, { lineHeight: 1.5 }]}>{m.maatregel}</Text>
+                      <Text style={{ fontSize: 7, color: GRAY[400], marginTop: 4, lineHeight: 1.5 }}>
                         {[
                           m.type && `Type: ${m.type}`,
                           (m.verantwoordelijke) && `Verantw: ${m.verantwoordelijke}`,
@@ -988,13 +995,13 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
               {pva.map((item, i) => (
                 <View key={i} style={[s.tableRow, i % 2 === 1 ? s.tableRowAlt : {}]} wrap={false}>
                   <Text style={[s.td, { width: 16, fontFamily: "Helvetica-Bold" }]}>{item.nummer || i + 1}</Text>
-                  <Text style={[s.td, { flex: 2 }]}>{truncate(item.maatregel, 50)}</Text>
+                  <Text style={[s.td, { flex: 2 }]}>{item.maatregel}</Text>
                   <View style={{ width: 38, alignItems: "center", justifyContent: "center" }}>
                     <Badge prioriteit={item.prioriteit} s={s} />
                   </View>
-                  <Text style={[s.td, { width: 55 }]}>{truncate(item.verantwoordelijke, 14) || "—"}</Text>
-                  <Text style={[s.td, { width: 55, color: GRAY[500] }]}>{truncate(item.deadline || item.termijn, 14) || "—"}</Text>
-                  <Text style={[s.td, { width: 50, color: GRAY[500] }]}>{truncate(item.kostenindicatie || item.kosten, 12) || "—"}</Text>
+                  <Text style={[s.td, { width: 55 }]}>{item.verantwoordelijke || "—"}</Text>
+                  <Text style={[s.td, { width: 55, color: GRAY[500] }]}>{item.deadline || item.termijn || "—"}</Text>
+                  <Text style={[s.td, { width: 50, color: GRAY[500] }]}>{item.kostenindicatie || item.kosten || "—"}</Text>
                 </View>
               ))}
             </View>
@@ -1014,13 +1021,13 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
               {pva.map((item, i) => (
                 <View key={i} style={[s.tableRow, i % 2 === 1 ? s.tableRowAlt : {}]} wrap={false}>
                   <Text style={[s.td, { width: 16, fontFamily: "Helvetica-Bold" }]}>{item.nummer || i + 1}</Text>
-                  <Text style={[s.td, { flex: 2 }]}>{truncate(item.maatregel, 75)}</Text>
+                  <Text style={[s.td, { flex: 2 }]}>{item.maatregel}</Text>
                   <View style={{ width: 42, alignItems: "center", justifyContent: "center" }}>
                     <Badge prioriteit={item.prioriteit} s={s} />
                   </View>
-                  <Text style={[s.td, { width: 65 }]}>{truncate(item.verantwoordelijke, 16) || "—"}</Text>
-                  <Text style={[s.td, { width: 65, color: GRAY[500] }]}>{truncate(item.deadline || item.termijn, 16) || "—"}</Text>
-                  <Text style={[s.td, { width: 55, fontSize: 6.5, color: GRAY[400] }]}>{truncate(item.status, 16) || "—"}</Text>
+                  <Text style={[s.td, { width: 65 }]}>{item.verantwoordelijke || "—"}</Text>
+                  <Text style={[s.td, { width: 65, color: GRAY[500] }]}>{item.deadline || item.termijn || "—"}</Text>
+                  <Text style={[s.td, { width: 55, fontSize: 6.5, color: GRAY[400] }]}>{item.status || "—"}</Text>
                 </View>
               ))}
             </View>
@@ -1078,21 +1085,21 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
           <View style={s.table}>
             <View style={s.tableHeader}>
               <Text style={[s.th, { flex: 1 }]}>Verplichting</Text>
-              <Text style={[s.th, { width: 85 }]}>Wet / Artikel</Text>
-              <Text style={[s.th, { width: 55, textAlign: "center" }]}>Status</Text>
-              <Text style={[s.th, { flex: 1 }]}>Toelichting</Text>
+              <Text style={[s.th, { width: 80 }]}>Wet / Artikel</Text>
+              <Text style={[s.th, { width: 75, textAlign: "center" }]}>Status</Text>
+              <Text style={[s.th, { flex: 1.5 }]}>Toelichting</Text>
             </View>
             {wettelijk.map((w, i) => {
               const st = statusConfig[w.status] || statusConfig.aandachtspunt;
               return (
                 <View key={i} style={[s.tableRow, i % 2 === 1 ? s.tableRowAlt : {}]} wrap={false}>
-                  <Text style={[s.td, { flex: 1, fontFamily: "Helvetica-Bold" }]}>{truncate(w.verplichting, 30)}</Text>
-                  <Text style={[s.td, { width: 85, color: GRAY[500] }]}>{truncate(w.wet, 25)}</Text>
-                  <View style={{ width: 55, flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                  <Text style={[s.td, { flex: 1, fontFamily: "Helvetica-Bold" }]}>{w.verplichting}</Text>
+                  <Text style={[s.td, { width: 80, color: GRAY[500] }]}>{w.wet}</Text>
+                  <View style={{ width: 75, flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
                     <Text style={{ fontSize: 9, color: st.color, marginRight: 3 }}>{st.symbol}</Text>
-                    <Text style={[s.td, { fontSize: 6.5 }]}>{w.status}</Text>
+                    <Text style={[s.td, { fontSize: 7, color: st.color }]}>{st.label}</Text>
                   </View>
-                  <Text style={[s.td, { flex: 1 }]}>{truncate(w.toelichting, 80) || "—"}</Text>
+                  <Text style={[s.td, { flex: 1.5 }]}>{w.toelichting || "—"}</Text>
                 </View>
               );
             })}
