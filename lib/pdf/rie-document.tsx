@@ -8,54 +8,11 @@ import {
   StyleSheet,
 } from "@react-pdf/renderer";
 
-// ─── Branding config ────────────────────────────────────────
-export type BrandingConfig = {
-  primaryColor: string;   // hex
-  darkColor: string;      // hex
-  companyName: string;     // shown in header as text-logo (if no logoUrl)
-  logoUrl?: string;        // enterprise: external logo image URL
-  footerText: string;      // "Gegenereerd door SnelRIE" or empty for enterprise
-  showSnelRIE: boolean;    // false for enterprise white-label
-};
+// SnelRIE brand colors (blue)
+const BRAND_600 = "#2563eb";
+const BRAND_900 = "#1e3a8a";
+const BRAND_50 = "#eff6ff";
 
-const SNELRIE_BRANDING: BrandingConfig = {
-  primaryColor: "#2563eb",
-  darkColor: "#1e3a8a",
-  companyName: "SnelRIE",
-  footerText: "Gegenereerd door SnelRIE — snelrie.nl",
-  showSnelRIE: true,
-};
-
-export function getBranding(tier?: string, opts?: {
-  logoUrl?: string;
-  primaryColor?: string;
-  companyName?: string;
-}): BrandingConfig {
-  // Enterprise = full white-label
-  if (tier?.toUpperCase() === "ENTERPRISE" && opts?.companyName) {
-    const primary = opts.primaryColor || "#2563eb";
-    return {
-      primaryColor: primary,
-      darkColor: darkenHex(primary, 0.35),
-      companyName: opts.companyName,
-      logoUrl: opts.logoUrl,
-      footerText: `© ${new Date().getFullYear()} ${opts.companyName}`,
-      showSnelRIE: false,
-    };
-  }
-  // Basis + Professional = SnelRIE branding (blauw)
-  return { ...SNELRIE_BRANDING };
-}
-
-function darkenHex(hex: string, amount: number): string {
-  const h = hex.replace("#", "");
-  const r = Math.max(0, Math.round(parseInt(h.substring(0, 2), 16) * (1 - amount)));
-  const g = Math.max(0, Math.round(parseInt(h.substring(2, 4), 16) * (1 - amount)));
-  const b = Math.max(0, Math.round(parseInt(h.substring(4, 6), 16) * (1 - amount)));
-  return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
-}
-
-// ─── Colors ─────────────────────────────────────────────────
 const GRAY_100 = "#f3f4f6";
 const GRAY_200 = "#e5e7eb";
 const GRAY_500 = "#6b7280";
@@ -65,11 +22,8 @@ const RED = "#dc2626";
 const RED_BG = "#fef2f2";
 const ORANGE = "#ea580c";
 const ORANGE_BG = "#fff7ed";
-const YELLOW = "#ca8a04";
-const YELLOW_BG = "#fefce8";
 const GREEN = "#16a34a";
 const GREEN_BG = "#f0fdf4";
-const BLUE_BG = "#eff6ff";
 
 const prioriteitConfig: Record<string, { bg: string; color: string; label: string }> = {
   hoog: { bg: RED_BG, color: RED, label: "HOOG" },
@@ -77,8 +31,51 @@ const prioriteitConfig: Record<string, { bg: string; color: string; label: strin
   laag: { bg: GREEN_BG, color: GREEN, label: "LAAG" },
 };
 
-// ─── Dynamic styles factory ─────────────────────────────────
-function createStyles(brand: BrandingConfig) {
+export type WhiteLabelConfig = {
+  logoUrl?: string;       // URL to client's logo image
+  primaryColor?: string;  // Client's primary brand color (hex)
+  companyName?: string;   // Client's company name for branding
+};
+
+export type RieData = {
+  bedrijfsnaam: string;
+  branche: string;
+  aantalMedewerkers: number;
+  aantalLocaties: number;
+  tier?: string;
+  generatedContent: {
+    samenvatting?: string;
+    bedrijfsprofiel?: { beschrijving?: string };
+    risicos?: Array<{
+      categorie: string;
+      prioriteit: string;
+      beschrijving?: string;
+      wettelijkKader?: string;
+      risicoScore?: number;
+      gevaren?: string[];
+      maatregelen?: Array<{ maatregel: string; termijn?: string; verantwoordelijke?: string; kosten?: string }>;
+    }>;
+    planVanAanpak?: Array<{
+      nummer?: number;
+      maatregel: string;
+      risico?: string;
+      prioriteit: string;
+      termijn?: string;
+      verantwoordelijke?: string;
+      kosten?: string;
+    }>;
+    wettelijkeVerplichtingen?: Array<{
+      verplichting: string;
+      wet: string;
+      status: string;
+      toelichting?: string;
+    }>;
+  };
+  datum: string;
+  whiteLabel?: WhiteLabelConfig;
+};
+
+function createStyles(primaryColor: string) {
   return StyleSheet.create({
     page: {
       paddingTop: 60,
@@ -94,20 +91,21 @@ function createStyles(brand: BrandingConfig) {
       justifyContent: "space-between",
       alignItems: "flex-end",
       borderBottomWidth: 3,
-      borderBottomColor: brand.primaryColor,
+      borderBottomColor: primaryColor,
       paddingBottom: 12,
       marginBottom: 20,
     },
-    logoText: { fontSize: 22, fontFamily: "Helvetica-Bold", color: brand.darkColor },
-    logoAccent: { color: brand.primaryColor },
-    logoImage: { height: 36, maxWidth: 160 },
+    headerLeft: { flexDirection: "row", alignItems: "center" },
+    logoImage: { height: 32, maxWidth: 160, marginRight: 8 },
+    logoText: { fontSize: 22, fontFamily: "Helvetica-Bold", color: BRAND_900 },
+    logoAccent: { color: primaryColor },
     headerRight: { textAlign: "right", fontSize: 8, color: GRAY_500 },
-    title: { fontSize: 18, fontFamily: "Helvetica-Bold", color: brand.darkColor, marginBottom: 4 },
+    title: { fontSize: 18, fontFamily: "Helvetica-Bold", color: BRAND_900, marginBottom: 4 },
     subtitle: { fontSize: 10, color: GRAY_500, marginBottom: 16 },
     sectionTitle: {
       fontSize: 14,
       fontFamily: "Helvetica-Bold",
-      color: brand.darkColor,
+      color: BRAND_900,
       marginTop: 20,
       marginBottom: 10,
       paddingBottom: 4,
@@ -115,9 +113,9 @@ function createStyles(brand: BrandingConfig) {
       borderBottomColor: GRAY_200,
     },
     infoBox: {
-      backgroundColor: BLUE_BG,
+      backgroundColor: BRAND_50,
       borderLeftWidth: 3,
-      borderLeftColor: brand.primaryColor,
+      borderLeftColor: primaryColor,
       padding: 12,
       marginBottom: 16,
       borderRadius: 4,
@@ -150,10 +148,8 @@ function createStyles(brand: BrandingConfig) {
     riskDesc: { fontSize: 9, color: GRAY_700, marginBottom: 6 },
     riskLegal: { fontSize: 8, color: GRAY_500, marginBottom: 6 },
     measureRow: { flexDirection: "row", marginBottom: 3, paddingLeft: 8 },
-    measureCheck: { fontSize: 9, color: brand.primaryColor, marginRight: 6, fontFamily: "Helvetica-Bold" },
+    measureCheck: { fontSize: 9, color: GREEN, marginRight: 6, fontFamily: "Helvetica-Bold" },
     measureText: { fontSize: 9, color: GRAY_700, flex: 1 },
-    scoreContainer: { flexDirection: "row", alignItems: "center", marginRight: 8 },
-    scoreLabel: { fontSize: 7, color: GRAY_500, marginRight: 4 },
     table: { marginBottom: 16 },
     tableHeader: {
       flexDirection: "row",
@@ -187,70 +183,33 @@ function createStyles(brand: BrandingConfig) {
     },
     footerText: { fontSize: 7, color: GRAY_500 },
     pageNum: { fontSize: 7, color: GRAY_500 },
+    scoreContainer: { flexDirection: "row", alignItems: "center", marginRight: 8 },
+    scoreLabel: { fontSize: 7, color: GRAY_500, marginRight: 4 },
   });
 }
 
-// ─── Types ──────────────────────────────────────────────────
-export type RieData = {
-  bedrijfsnaam: string;
-  branche: string;
-  aantalMedewerkers: number;
-  aantalLocaties: number;
-  generatedContent: {
-    samenvatting?: string;
-    bedrijfsprofiel?: { beschrijving?: string };
-    risicos?: Array<{
-      categorie: string;
-      prioriteit: string;
-      beschrijving?: string;
-      wettelijkKader?: string;
-      risicoScore?: number;
-      gevaren?: string[];
-      maatregelen?: Array<{ maatregel: string; termijn?: string; verantwoordelijke?: string; kosten?: string; kostenindicatie?: string }>;
-    }>;
-    planVanAanpak?: Array<{
-      nummer?: number;
-      maatregel: string;
-      risico?: string;
-      prioriteit: string;
-      termijn?: string;
-      verantwoordelijke?: string;
-      kosten?: string;
-      deadline?: string;
-    }>;
-    wettelijkeVerplichtingen?: Array<{
-      verplichting: string;
-      wet: string;
-      status: string;
-      toelichting?: string;
-    }>;
-  };
-  datum: string;
-};
-
-// ─── Components ─────────────────────────────────────────────
-
-function Badge({ prioriteit, s }: { prioriteit: string; s: ReturnType<typeof createStyles> }) {
+function Badge({ prioriteit }: { prioriteit: string }) {
   const config = prioriteitConfig[prioriteit] || prioriteitConfig.laag;
   return (
-    <Text style={[s.badge, { backgroundColor: config.bg, color: config.color }]}>
+    <Text style={[{ paddingHorizontal: 8, paddingVertical: 2, borderRadius: 10, fontSize: 7, fontFamily: "Helvetica-Bold", backgroundColor: config.bg, color: config.color }]}>
       {config.label}
     </Text>
   );
 }
 
-function Header({ data, brand, s }: { data: RieData; brand: BrandingConfig; s: ReturnType<typeof createStyles> }) {
+function Header({ data, s, isWhiteLabel, primaryColor }: { data: RieData; s: ReturnType<typeof createStyles>; isWhiteLabel: boolean; primaryColor: string }) {
+  const wl = data.whiteLabel;
   return (
     <View style={s.header} fixed>
-      <View>
-        {brand.logoUrl ? (
-          <Image src={brand.logoUrl} style={s.logoImage} />
-        ) : brand.showSnelRIE ? (
+      <View style={s.headerLeft}>
+        {isWhiteLabel && wl?.logoUrl ? (
+          <Image src={wl.logoUrl} style={s.logoImage} />
+        ) : isWhiteLabel && wl?.companyName ? (
+          <Text style={[s.logoText, { color: primaryColor }]}>{wl.companyName}</Text>
+        ) : (
           <Text style={s.logoText}>
             Snel<Text style={s.logoAccent}>RIE</Text>
           </Text>
-        ) : (
-          <Text style={s.logoText}>{brand.companyName}</Text>
         )}
       </View>
       <View style={s.headerRight}>
@@ -261,45 +220,45 @@ function Header({ data, brand, s }: { data: RieData; brand: BrandingConfig; s: R
   );
 }
 
-function Footer({ brand, s }: { brand: BrandingConfig; s: ReturnType<typeof createStyles> }) {
+function Footer({ isWhiteLabel, s }: { isWhiteLabel: boolean; s: ReturnType<typeof createStyles> }) {
   return (
     <View style={s.footer} fixed>
-      <Text style={s.footerText}>{brand.footerText}</Text>
+      <Text style={s.footerText}>
+        {isWhiteLabel ? "" : "Gegenereerd door SnelRIE — snelrie.nl"}
+      </Text>
       <Text style={s.pageNum} render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`} />
     </View>
   );
 }
 
-// ─── Main Document ──────────────────────────────────────────
+export function RieDocument({ data }: { data: RieData }) {
+  const isWhiteLabel = data.tier === "ENTERPRISE" && !!data.whiteLabel;
+  const primaryColor = (isWhiteLabel && data.whiteLabel?.primaryColor) || BRAND_600;
+  const s = createStyles(primaryColor);
 
-export function RieDocument({ data, branding }: { data: RieData; branding?: BrandingConfig }) {
-  const brand = branding || SNELRIE_BRANDING;
-  const s = createStyles(brand);
   const content = data.generatedContent;
   const risicos = content.risicos || [];
   const pva = content.planVanAanpak || [];
   const wettelijk = content.wettelijkeVerplichtingen || [];
 
-  const docAuthor = brand.showSnelRIE ? "SnelRIE" : brand.companyName;
-
   return (
     <Document
       title={`RI&E — ${data.bedrijfsnaam}`}
-      author={docAuthor}
+      author={isWhiteLabel ? (data.whiteLabel?.companyName || data.bedrijfsnaam) : "SnelRIE"}
       subject="Risico-Inventarisatie & Evaluatie"
-      creator={brand.showSnelRIE ? "SnelRIE — snelrie.nl" : brand.companyName}
+      creator={isWhiteLabel ? (data.whiteLabel?.companyName || "") : "SnelRIE — snelrie.nl"}
     >
       {/* Page 1: Cover + Summary + Profile */}
       <Page size="A4" style={s.page}>
-        <Header data={data} brand={brand} s={s} />
-        <Footer brand={brand} s={s} />
+        <Header data={data} s={s} isWhiteLabel={isWhiteLabel} primaryColor={primaryColor} />
+        <Footer isWhiteLabel={isWhiteLabel} s={s} />
 
-        <Text style={s.title}>Risico-Inventarisatie & Evaluatie</Text>
+        <Text style={[s.title, { color: primaryColor }]}>Risico-Inventarisatie & Evaluatie</Text>
         <Text style={s.subtitle}>
           {data.bedrijfsnaam} · {data.branche} · {data.datum}
         </Text>
 
-        <Text style={s.sectionTitle}>1. Bedrijfsprofiel</Text>
+        <Text style={[s.sectionTitle, { color: primaryColor }]}>1. Bedrijfsprofiel</Text>
         <View style={{ marginBottom: 12 }}>
           <View style={s.profileRow}>
             <Text style={s.profileLabel}>Bedrijfsnaam</Text>
@@ -323,7 +282,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
           <Text style={s.infoText}>{content.bedrijfsprofiel.beschrijving}</Text>
         )}
 
-        <Text style={s.sectionTitle}>2. Samenvatting</Text>
+        <Text style={[s.sectionTitle, { color: primaryColor }]}>2. Samenvatting</Text>
         <View style={s.infoBox}>
           <Text style={s.infoText}>
             {content.samenvatting || "Geen samenvatting beschikbaar."}
@@ -331,10 +290,9 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
         </View>
 
         <Text style={[s.infoText, { marginBottom: 8 }]}>
-          Er zijn {risicos.length} risico{"'"}s geïdentificeerd op basis van uw intake en de branchespecifieke kennisbank.
+          Er zijn {risicos.length} risico's geïdentificeerd op basis van uw intake en de branchespecifieke kennisbank.
         </Text>
 
-        {/* Risk overview table */}
         <View style={s.table}>
           <View style={s.tableHeader}>
             <Text style={[s.th, { width: 20 }]}>#</Text>
@@ -350,7 +308,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
                 {r.risicoScore ? `${r.risicoScore}/25` : "-"}
               </Text>
               <View style={{ width: 60, alignItems: "center" }}>
-                <Badge prioriteit={r.prioriteit} s={s} />
+                <Badge prioriteit={r.prioriteit} />
               </View>
             </View>
           ))}
@@ -359,10 +317,10 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
 
       {/* Page 2+: Detailed Risks */}
       <Page size="A4" style={s.page}>
-        <Header data={data} brand={brand} s={s} />
-        <Footer brand={brand} s={s} />
+        <Header data={data} s={s} isWhiteLabel={isWhiteLabel} primaryColor={primaryColor} />
+        <Footer isWhiteLabel={isWhiteLabel} s={s} />
 
-        <Text style={s.sectionTitle}>3. Risico-inventarisatie — Detail</Text>
+        <Text style={[s.sectionTitle, { color: primaryColor }]}>3. Risico-inventarisatie — Detail</Text>
 
         {risicos.map((r, i) => (
           <View key={i} style={s.riskCard} wrap={false}>
@@ -376,7 +334,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
                     <Text style={s.scoreLabel}>Score: {r.risicoScore}/25</Text>
                   </View>
                 )}
-                <Badge prioriteit={r.prioriteit} s={s} />
+                <Badge prioriteit={r.prioriteit} />
               </View>
             </View>
 
@@ -411,7 +369,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
                       {m.maatregel}
                       {m.termijn ? ` (${m.termijn})` : ""}
                       {m.verantwoordelijke ? ` — ${m.verantwoordelijke}` : ""}
-                      {(m.kosten || m.kostenindicatie) ? ` · ${m.kosten || m.kostenindicatie}` : ""}
+                      {m.kosten ? ` · ${m.kosten}` : ""}
                     </Text>
                   </View>
                 ))}
@@ -424,32 +382,32 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
       {/* Plan van Aanpak */}
       {pva.length > 0 && (
         <Page size="A4" style={s.page}>
-          <Header data={data} brand={brand} s={s} />
-          <Footer brand={brand} s={s} />
+          <Header data={data} s={s} isWhiteLabel={isWhiteLabel} primaryColor={primaryColor} />
+          <Footer isWhiteLabel={isWhiteLabel} s={s} />
 
-          <Text style={s.sectionTitle}>4. Plan van Aanpak</Text>
+          <Text style={[s.sectionTitle, { color: primaryColor }]}>4. Plan van Aanpak</Text>
 
           <View style={s.table}>
             <View style={s.tableHeader}>
               <Text style={[s.th, { width: 18 }]}>#</Text>
               <Text style={[s.th, { flex: 1 }]}>Maatregel</Text>
-              <Text style={[s.th, { width: 70 }]}>Risico</Text>
-              <Text style={[s.th, { width: 45, textAlign: "center" }]}>Prio</Text>
-              <Text style={[s.th, { width: 45 }]}>Termijn</Text>
-              <Text style={[s.th, { width: 65 }]}>Verantw.</Text>
-              <Text style={[s.th, { width: 55 }]}>Deadline</Text>
+              <Text style={[s.th, { width: 80 }]}>Risico</Text>
+              <Text style={[s.th, { width: 50, textAlign: "center" }]}>Prioriteit</Text>
+              <Text style={[s.th, { width: 60 }]}>Termijn</Text>
+              <Text style={[s.th, { width: 70 }]}>Verantw.</Text>
+              <Text style={[s.th, { width: 50 }]}>Kosten</Text>
             </View>
             {pva.map((item, i) => (
               <View key={i} style={s.tableRow} wrap={false}>
                 <Text style={[s.td, { width: 18 }]}>{item.nummer || i + 1}</Text>
                 <Text style={[s.td, { flex: 1 }]}>{item.maatregel}</Text>
-                <Text style={[s.td, { width: 70 }]}>{item.risico || "-"}</Text>
-                <View style={{ width: 45, alignItems: "center", justifyContent: "center" }}>
-                  <Badge prioriteit={item.prioriteit} s={s} />
+                <Text style={[s.td, { width: 80 }]}>{item.risico || "-"}</Text>
+                <View style={{ width: 50, alignItems: "center", justifyContent: "center" }}>
+                  <Badge prioriteit={item.prioriteit} />
                 </View>
-                <Text style={[s.td, { width: 45 }]}>{item.termijn || "-"}</Text>
-                <Text style={[s.td, { width: 65 }]}>{item.verantwoordelijke || "-"}</Text>
-                <Text style={[s.td, { width: 55 }]}>{item.deadline || "-"}</Text>
+                <Text style={[s.td, { width: 60 }]}>{item.termijn || "-"}</Text>
+                <Text style={[s.td, { width: 70 }]}>{item.verantwoordelijke || "-"}</Text>
+                <Text style={[s.td, { width: 50 }]}>{item.kosten || "-"}</Text>
               </View>
             ))}
           </View>
@@ -459,10 +417,10 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
       {/* Wettelijke verplichtingen */}
       {wettelijk.length > 0 && (
         <Page size="A4" style={s.page}>
-          <Header data={data} brand={brand} s={s} />
-          <Footer brand={brand} s={s} />
+          <Header data={data} s={s} isWhiteLabel={isWhiteLabel} primaryColor={primaryColor} />
+          <Footer isWhiteLabel={isWhiteLabel} s={s} />
 
-          <Text style={s.sectionTitle}>
+          <Text style={[s.sectionTitle, { color: primaryColor }]}>
             {pva.length > 0 ? "5" : "4"}. Wettelijke Verplichtingen
           </Text>
 

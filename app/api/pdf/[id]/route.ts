@@ -4,12 +4,12 @@ import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMITS } from "@/l
 import { renderToBuffer } from "@react-pdf/renderer";
 import React from "react";
 import { RieDocument } from "@/lib/pdf/rie-document";
+import type { WhiteLabelConfig } from "@/lib/pdf/rie-document";
 
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  // Rate limiting
   const ip = getClientIp(req);
   const rl = checkRateLimit(RATE_LIMITS.pdf, ip);
   if (!rl.allowed) return rateLimitResponse(rl.retryAfter);
@@ -43,6 +43,18 @@ export async function GET(
     year: "numeric",
   });
 
+  // White-label config from query params (Enterprise tier)
+  const url = new URL(req.url);
+  let whiteLabel: WhiteLabelConfig | undefined;
+  if (report.tier === "ENTERPRISE") {
+    const logoUrl = url.searchParams.get("logoUrl") || undefined;
+    const primaryColor = url.searchParams.get("primaryColor") || undefined;
+    const companyName = url.searchParams.get("companyName") || undefined;
+    if (logoUrl || primaryColor || companyName) {
+      whiteLabel = { logoUrl, primaryColor, companyName };
+    }
+  }
+
   try {
     const element = React.createElement(RieDocument, {
       data: {
@@ -50,8 +62,10 @@ export async function GET(
         branche: report.branche,
         aantalMedewerkers: report.aantalMedewerkers,
         aantalLocaties: report.aantalLocaties,
+        tier: report.tier,
         generatedContent: content,
         datum,
+        whiteLabel,
       },
     });
     const buffer = await renderToBuffer(element as any);
