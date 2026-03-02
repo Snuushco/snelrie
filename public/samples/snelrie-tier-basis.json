@@ -1,0 +1,391 @@
+{
+  "tier": "BASIS",
+  "samenvatting": "Praesidion Security B.V. is een beveiligingsbedrijf met 15 medewerkers verdeeld over 3 locaties. Het bedrijf voert regelmatig RI&E's uit en beschikt over een preventiemedewerker en BHV-organisatie. De beveiligingsbranche brengt specifieke arbowetgevingverplichtingen met zich mee, waaronder agressie- en geweldbeleid (Arbowet artikel 3 lid 2), nachtarbeidregels (Arbeidstijdenwet artikel 5:8) en vergunningvereisten onder de Wpbr. De voornaamste risico's voor medewerkers betreffen agressie en geweld, psychosociale arbeidsbelasting, nacht- en onregelmatige diensten, alleen werken, en fysieke belasting. Een gestructureerde RI&E met daaruit voortvloeiend Plan van Aanpak (Arbowet artikel 5) is essentieel voor risicominimalisatie.\n\nDe huidige RI&E dient aandacht te besteden aan de specifieke risico's van nachtarbeid, waaronder chronische vermoeidheid en verminderde alertheid, alsmede de psychosociale gevolgen van geweldsincidenten. Daarnaast moet worden gewaarborgd dat persoonlijke beschermingsmiddelen (Arbobesluit hoofdstuk 6, afdeling 4) adequaat beschikbaar zijn en correct worden gebruikt. De aanwezigheid van een preventiemedewerker en BHV-organisatie vormt een sterke basis voor verdere risicomanagement en naleving van Arbowet artikel 8 (voorlichting en onderricht).\n\nAanbevolen wordt om de RI&E jaarlijks te actualiseren en het Plan van Aanpak regelmatig te evalueren op effectiviteit, met bijzondere aandacht voor incidentregistratie, medewerkersfeedback en naleving van branchespecifieke arbocatalogus richtlijnen van VBe NL.",
+  "bedrijfsprofiel": {
+    "naam": "Praesidion Security B.V.",
+    "branche": "Particuliere Beveiliging",
+    "aantalMedewerkers": 15,
+    "beschrijving": "Beveiligingsbedrijf met 3 operationele locaties, voorzien van preventiemedewerker en BHV-organisatie. Onderworpen aan Wpbr-vergunningvereisten en arbocatalogus Particuliere Beveiliging (VBe NL). Werkzaamheden omvatten typisch beveiligingstaken met risico's op agressie, geweld, nachtarbeid en psychosociale belasting."
+  },
+  "risicos": [
+    {
+      "id": "risico_1",
+      "categorie": "Agressie en geweld",
+      "prioriteit": "hoog",
+      "risicoScore": 22,
+      "beschrijving": "Beveiligingsmedewerkers van Praesidion Security B.V. lopen risico op fysiek geweld, verbale agressie en bedreigingen tijdens hun werkzaamheden op drie locaties. Dit kan ontstaan bij aanhoudingen, conflicthantering en incidenten met derden.",
+      "wettelijkKader": "Arbowet Artikel 3 lid 2 (Agressie en geweld beleid), Arbowet Artikel 5 (RI&E), Arbocatalogus Particuliere Beveiliging (VBe NL)",
+      "gevaren": [
+        "Fysiek geweld bij aanhoudingen",
+        "Verbale agressie en bedreigingen",
+        "Wapeninzet door derden",
+        "Intimidatie na incidenten",
+        "Psychologische trauma's"
+      ],
+      "huidigeBeheersing": "Basistraining aanwezig, incidentrapportage in plaats, geen specifiek geweldpreventiebeleid geformaliseerd",
+      "maatregelen": [
+        {
+          "maatregel": "Opstellen en implementeren van formeel Agressie- en Geweldbeleid conform Arbowet Artikel 3 lid 2, inclusief escalatieprotocollen en meldingsprocedures",
+          "type": "organisatorisch",
+          "prioriteit": "hoog",
+          "termijn": "kort",
+          "verantwoordelijke": "Directie in samenwerking met preventiemedewerker",
+          "kostenindicatie": "€500-1.000"
+        },
+        {
+          "maatregel": "Jaarlijkse verplichte trainingen Defensieve Tactiek en Deescalatietechnieken voor alle beveiligingsmedewerkers met certificering",
+          "type": "individueel",
+          "prioriteit": "hoog",
+          "termijn": "kort",
+          "verantwoordelijke": "Preventiemedewerker en externe trainingspartner",
+          "kostenindicatie": "€2.500-4.000 per jaar"
+        },
+        {
+          "maatregel": "Invoering van buddy-systeem waarbij medewerkers niet alleen werken bij risicovolle locaties en implementatie van real-time communicatiesysteem",
+          "type": "collectief",
+          "prioriteit": "hoog",
+          "termijn": "middel",
+          "verantwoordelijke": "Operationeel manager",
+          "kostenindicatie": "€1.500-3.000"
+        },
+        {
+          "maatregel": "Psychosociale ondersteuning en nazorg na geweldsincidenten, inclusief toegang tot bedrijfsmaatschappelijk werk en traumaverwerking",
+          "type": "individueel",
+          "prioriteit": "hoog",
+          "termijn": "direct",
+          "verantwoordelijke": "HR-manager en externe zorgverlener",
+          "kostenindicatie": "€3.000-5.000 per jaar"
+        }
+      ]
+    },
+    {
+      "id": "risico_2",
+      "categorie": "Nacht- en onregelmatige diensten",
+      "prioriteit": "hoog",
+      "risicoScore": 20,
+      "beschrijving": "Medewerkers van Praesidion Security B.V. werken in nacht- en onregelmatige diensten, wat leidt tot chronische vermoeidheid, slaapstoornissen, verminderde alertheid en sociaal isolement. Dit verhoogt het risico op fouten en ongevallen.",
+      "wettelijkKader": "Arbeidstijdenwet Artikel 5:8 (Nachtarbeid), Arbowet Artikel 5 (RI&E), Arbobesluit Artikel 5.2 (Arbeidsomstandigheden)",
+      "gevaren": [
+        "Chronische vermoeidheid",
+        "Slaapstoornissen",
+        "Verminderde alertheid en concentratie",
+        "Verhoogd risico op verkeersongevallen",
+        "Sociaal isolement en gezondheidsklachten"
+      ],
+      "huidigeBeheersing": "Basisroosterplanning aanwezig, geen specifieke maatregelen voor nachtarbeid geïmplementeerd",
+      "maatregelen": [
+        {
+          "maatregel": "Implementatie van wetenschappelijk onderbouwde roosterplanning met maximaal 3 opeenvolgende nachtdiensten en minimaal 48 uur rust erna conform Arbeidstijdenwet",
+          "type": "organisatorisch",
+          "prioriteit": "hoog",
+          "termijn": "middel",
+          "verantwoordelijke": "Operationeel manager",
+          "kostenindicatie": "€1.000-2.000"
+        },
+        {
+          "maatregel": "Jaarlijkse gezondheidsscreening en medische controles voor nachtwerkers, inclusief slaapkwaliteit en cardiometabole risico's",
+          "type": "individueel",
+          "prioriteit": "hoog",
+          "termijn": "kort",
+          "verantwoordelijke": "Bedrijfsarts",
+          "kostesindicatie": "€1.500-2.500 per jaar"
+        },
+        {
+          "maatregel": "Voorlichting en training over slaaphygiëne, circadiaan ritme en gezonde leefstijl speciaal voor nachtwerkers",
+          "type": "individueel",
+          "prioriteit": "midden",
+          "termijn": "kort",
+          "verantwoordelijke": "Preventiemedewerker en bedrijfsarts",
+          "kostenindicatie": "€500-1.000"
+        }
+      ]
+    },
+    {
+      "id": "risico_3",
+      "categorie": "Psychosociale arbeidsbelasting",
+      "prioriteit": "hoog",
+      "risicoScore": 19,
+      "beschrijving": "Beveiligingsmedewerkers ervaren werkstress, eentonigheid, sociaal isolement en risico op burn-out en PTSS na geweldsincidenten. De combinatie van nachtwerk, agressie en isolement verhoogt de psychische belasting aanzienlijk.",
+      "wettelijkKader": "Arbowet Artikel 5 (RI&E), Arbowet Artikel 8 (Voorlichting en onderricht), Arbocatalogus Particuliere Beveiliging",
+      "gevaren": [
+        "Werkstress en mentale overbelasting",
+        "Eentonigheid en verveling",
+        "Sociaal isolement",
+        "Burn-out",
+        "PTSS na geweldsincidenten",
+        "Verhoogde ziekteverzuim"
+      ],
+      "huidigeBeheersing": "Geen formeel psychosociaal beleid, incidenteel contact met medewerkers",
+      "maatregelen": [
+        {
+          "maatregel": "Invoering van psychosociale risicobeoordeling in RI&E met jaarlijkse vragenlijsten (bijv. COPSOQ) en vervolgacties op basis van resultaten",
+          "type": "organisatorisch",
+          "prioriteit": "hoog",
+          "termijn": "kort",
+          "verantwoordelijke": "Preventiemedewerker en bedrijfsarts",
+          "kostenindicatie": "€1.000-2.000"
+        },
+        {
+          "maatregel": "Structurele mentale gezondheidsondersteuning via bedrijfsmaatschappelijk werk, coaching en toegang tot psychologische hulp",
+          "type": "individueel",
+          "prioriteit": "hoog",
+          "termijn": "direct",
+          "verantwoordelijke": "HR-manager",
+          "kostenindicatie": "€3.000-5.000 per jaar"
+        },
+        {
+          "maatregel": "Teambuilding en sociale cohesie activiteiten minimaal 2x per jaar om isolement te verminderen en collegiale steun te bevorderen",
+          "type": "collectief",
+          "prioriteit": "midden",
+          "termijn": "middel",
+          "verantwoordelijke": "HR-manager",
+          "kostenindicatie": "€1.500-2.500 per jaar"
+        }
+      ]
+    },
+    {
+      "id": "risico_4",
+      "categorie": "Persoonlijke beschermingsmiddelen",
+      "prioriteit": "midden",
+      "risicoScore": 16,
+      "beschrijving": "Beveiligingsmedewerkers gebruiken persoonlijke beschermingsmiddelen (PBM's) zoals kogelwerende vesten, helmen en handschoenen. Risico's ontstaan door onvoldoende PBM's, slechte onderhoud, verkeerde pasvorm en non-compliance bij gebruik.",
+      "wettelijkKader": "Arbobesluit Hoofdstuk 6, afdeling 4 (Persoonlijke beschermingsmiddelen), Arbowet Artikel 5 (RI&E), Arbowet Artikel 8 (Voorlichting)",
+      "gevaren": [
+        "Onvoldoende bescherming tegen geweld",
+        "Beschadigde of versleten PBM's",
+        "Verkeerde pasvorm en oncomfort"
+      ]
+    },
+    {
+      "id": "risico_5",
+      "categorie": "Beeldschermwerk en Camerabewaking",
+      "prioriteit": "midden",
+      "risicoScore": 12,
+      "beschrijving": "Beveiligingsmedewerkers werkzaam bij camerabewaking en monitoringactiviteiten ondervinden oogvermoeidheid, concentratieverlies en RSI-klachten door langdurig beeldschermwerk zonder adequate pauzes en ergonomische inrichting.",
+      "wettelijkKader": "Arbowet Artikel 5 (RI&E), Arbobesluit Artikel 5.2 (Beeldschermwerk), Arbowet Artikel 8 (Voorlichting)",
+      "gevaren": [
+        "Oogvermoeidheid en visuele belasting",
+        "Repetitive Strain Injury (RSI) aan polsen en nek",
+        "Concentratieverlies en verminderde alertheid",
+        "Chronische hoofdpijn",
+        "Slechte houding en rugklachten"
+      ],
+      "huidigeBeheersing": "Beeldschermen aanwezig op monitoringposten, geen formele pauzeregeling vastgesteld, geen ergonomische assessments uitgevoerd, medewerkers onvoldoende geïnstrueerd over juiste werkhouding.",
+      "maatregelen": [
+        {
+          "maatregel": "Implementeren van 20-20-20 regel: elke 20 minuten 20 seconden pauze met blik gericht op object op 20 meter afstand",
+          "type": "organisatorisch",
+          "prioriteit": "hoog",
+          "termijn": "kort",
+          "verantwoordelijke": "Preventiemedewerker",
+          "kostenindicatie": "Geen directe kosten"
+        },
+        {
+          "maatregel": "Ergonomische assessments uitvoeren op alle monitoringposten en aanpassingen doorvoeren (beeldschermhoogte, stoel, toetsenbord, muismat)",
+          "type": "bronmaatregel",
+          "prioriteit": "hoog",
+          "termijn": "middel",
+          "verantwoordelijke": "Arbodienst/Preventiemedewerker",
+          "kostenindicatie": "€500-1500"
+        },
+        {
+          "maatregel": "Verplichte scholing voor alle medewerkers over ergonomie, juiste werkhouding en oogverzorging bij beeldschermwerk",
+          "type": "individueel",
+          "prioriteit": "midden",
+          "termijn": "kort",
+          "verantwoordelijke": "Preventiemedewerker",
+          "kostenindicatie": "€200-400"
+        },
+        {
+          "maatregel": "Antireflex schermen installeren en beeldschermfilters toepassen ter vermindering van blauw licht",
+          "type": "collectief",
+          "prioriteit": "midden",
+          "termijn": "middel",
+          "verantwoordelijke": "Bedrijfsleiding",
+          "kostenindicatie": "€300-600"
+        }
+      ]
+    },
+    {
+      "id": "risico_6",
+      "categorie": "Persoonlijke Beschermingsmiddelen",
+      "prioriteit": "hoog",
+      "risicoScore": 18,
+      "beschrijving": "Beveiligingsmedewerkers beschikken niet over adequate persoonlijke beschermingsmiddelen (PBM's) zoals kogelwerende vesten, helmen of beschermingsuitrusting, of gebruiken deze niet consequent. PBM's worden onvoldoende onderhouden en gekeurd.",
+      "wettelijkKader": "Arbobesluit Hoofdstuk 6, Afdeling 4 (Persoonlijke Beschermingsmiddelen), Arbowet Artikel 5 (RI&E), Arbowet Artikel 8 (Voorlichting en onderricht)",
+      "gevaren": [
+        "Ernstig letsel bij fysiek geweld of wapeninzet",
+        "Hoofdletsel bij agressieve incidenten",
+        "Onvoldoende bescherming tegen steken en snijwonden",
+        "Verhoogd risico op blijvend lichamelijk letsel",
+        "Niet-naleving van wettelijke verplichting"
+      ],
+      "huidigeBeheersing": "Basis PBM's beschikbaar maar niet voor alle medewerkers, geen systematische controle op draaggedrag, geen onderhoud- en keuringsschema, medewerkers onvoldoende getraind in correct gebruik.",
+      "maatregelen": [
+        {
+          "maatregel": "Risicobeoordeling uitvoeren per functie/locatie en daarop gebaseerd PBM-pakket samenstellen (kogelwerende vesten, helmen, handschoenen, etc.)",
+          "type": "bronmaatregel",
+          "prioriteit": "hoog",
+          "termijn": "kort",
+          "verantwoordelijke": "Preventiemedewerker/Arbodienst",
+          "kostenindicatie": "€1000-2000"
+        },
+        {
+          "maatregel": "Invoeren van verplicht draagbeleid voor PBM's met controle door leidinggevenden en registratie van niet-naleving",
+          "type": "organisatorisch",
+          "prioriteit": "hoog",
+          "termijn": "direct",
+          "verantwoordelijke": "Bedrijfsleiding",
+          "kostenindicatie": "Geen directe kosten"
+        },
+        {
+          "maatregel": "Opstellen en implementeren van onderhoud- en keuringsschema voor alle PBM's met jaarlijkse inspectie door erkende partij",
+          "type": "collectief",
+          "prioriteit": "hoog",
+          "termijn": "kort",
+          "verantwoordelijke": "Preventiemedewerker",
+          "kostenindicatie": "€300-600 per jaar"
+        },
+        {
+          "maatregel": "Verplichte training voor alle medewerkers over correct aanleggen, gebruik, onderhoud en opslag van PBM's",
+          "type": "individueel",
+          "prioriteit": "hoog",
+          "termijn": "kort",
+          "verantwoordelijke": "Preventiemedewerker",
+          "kostenindicatie": "€400-800"
+        }
+      ]
+    }
+  ],
+  "planVanAanpak": [
+    {
+      "nummer": 1,
+      "maatregel": "Opstellen en implementeren van formeel Agressie- en Geweldbeleid conform Arbowet Artikel 3 lid 2, inclusief escalatieprotocollen, meldingsprocedures en rapportageformulieren",
+      "risico": "Agressie en geweld",
+      "prioriteit": "hoog",
+      "termijn": "direct",
+      "verantwoordelijke": "Directie / Preventiemedewerker",
+      "deadline": "2024-02-15",
+      "status": "nog niet gestart"
+    },
+    {
+      "nummer": 2,
+      "maatregel": "Uitvoeren van risicobeoordeling per functie/locatie en samenstellen van gebaseerd PBM-pakket (kogelwerende vesten, helmen, handschoenen) conform Arbobesluit Hoofdstuk 6, afdeling 4",
+      "risico": "Persoonlijke Beschermingsmiddelen",
+      "prioriteit": "hoog",
+      "termijn": "direct",
+      "verantwoordelijke": "Preventiemedewerker / Directie",
+      "deadline": "2024-02-28",
+      "status": "nog niet gestart"
+    },
+    {
+      "nummer": 3,
+      "maatregel": "Implementatie van wetenschappelijk onderbouwde roosterplanning met maximaal 3 opeenvolgende nachtdiensten en minimaal 48 uur rust erna conform Arbeidstijdenwet Artikel 5:8",
+      "risico": "Nacht- en onregelmatige diensten",
+      "prioriteit": "hoog",
+      "termijn": "kort",
+      "verantwoordelijke": "Directie / Personeelsmanagement",
+      "deadline": "2024-03-31",
+      "status": "nog niet gestart"
+    },
+    {
+      "nummer": 4,
+      "maatregel": "Invoering van buddy-systeem waarbij medewerkers niet alleen werken bij risicovolle locaties en implementatie van real-time communicatiesysteem met noodoproepfunctionaliteit",
+      "risico": "Agressie en geweld",
+      "prioriteit": "hoog",
+      "termijn": "kort",
+      "verantwoordelijke": "Directie / Operationeel Manager",
+      "deadline": "2024-04-15",
+      "status": "nog niet gestart"
+    },
+    {
+      "nummer": 5,
+      "maatregel": "Jaarlijkse verplichte trainingen Defensieve Tactiek en Deescalatietechnieken voor alle 15 beveiligingsmedewerkers met certificering en registratie conform Arbowet Artikel 8",
+      "risico": "Agressie en geweld",
+      "prioriteit": "hoog",
+      "termijn": "kort",
+      "verantwoordelijke": "Preventiemedewerker / Externe trainingspartner",
+      "deadline": "2024-05-31",
+      "status": "nog niet gestart"
+    },
+    {
+      "nummer": 6,
+      "maatregel": "Invoering van psychosociale risicobeoordeling in RI&E met jaarlijkse vragenlijsten (COPSOQ) en vervolgacties op basis van resultaten conform Arbowet Artikel 5",
+      "risico": "Psychosociale arbeidsbelasting",
+      "prioriteit": "hoog",
+      "termijn": "kort",
+      "verantwoordelijke": "Preventiemedewerker / Directie",
+      "deadline": "2024-04-30",
+      "status": "nog niet gestart"
+    },
+    {
+      "nummer": 7,
+      "maatregel": "Opstellen en implementeren van onderhoud- en keuringsschema voor alle PBM's met jaarlijkse inspectie door erkende partij en registratie conform Arbobesluit Hoofdstuk 6, afdeling 4",
+      "risico": "Persoonlijke Beschermingsmiddelen",
+      "prioriteit": "hoog",
+      "termijn": "kort",
+      "verantwoordelijke": "Preventiemedewerker / Logistiek",
+      "deadline": "2024-03-15",
+      "status": "nog niet gestart"
+    },
+    {
+      "nummer": 8,
+      "maatregel": "Verplichte training voor alle medewerkers over correct aanleggen, gebruik, onderhoud en opslag van PBM's met praktische demonstratie en controle conform Arbowet Artikel 8",
+      "risico": "Persoonlijke Beschermingsmiddelen",
+      "prioriteit": "hoog",
+      "termijn": "kort",
+      "verantwoordelijke": "Preventiemedewerker / Leidinggevenden",
+      "deadline": "2024-04-30",
+      "status": "nog niet gestart"
+    },
+    {
+      "nummer": 9,
+      "maatregel": "Invoering van verplicht draagbeleid voor PBM's met controle door leidinggevenden en registratie van niet-naleving met sanctiebeleid",
+      "risico": "Persoonlijke Beschermingsmiddelen",
+      "prioriteit": "hoog",
+      "termijn": "middel",
+      "verantwoordelijke": "Leidinggevenden / Directie",
+      "deadline": "2024-05-31",
+      "status": "nog niet gestart"
+    },
+    {
+      "nummer": 10,
+      "maatregel": "Jaarlijkse gezondheidsscreening en medische controles voor nachtwerkers, inclusief slaapkwaliteit en cardiometabole risico's door bedrijfsarts",
+      "risico": "Nacht- en onregelmatige diensten",
+      "prioriteit": "hoog",
+      "termijn": "middel",
+      "verantwoordelijke": "Bedrijfsarts / Directie",
+      "deadline": "2024-06-30",
+      "status": "nog niet gestart"
+    },
+    {
+      "nummer": 11,
+      "maatregel": "Structurele mentale gezondheidsondersteuning via bedrijfsmaatschappelijk werk, coaching en toegang tot psychologische hulp met vertrouwenspersoon",
+      "risico": "Psychosociale arbeidsbelasting",
+      "prioriteit": "hoog",
+      "termijn": "middel",
+      "verantwoordelijke": "Directie / Bedrijfsmaatschappelijk werk",
+      "deadline": "2024-06-30",
+      "status": "nog niet gestart"
+    },
+    {
+      "nummer": 12,
+      "maatregel": "Psychosociale ondersteuning en nazorg na geweldsincidenten, inclusief toegang tot bedrijfsmaatschappelijk werk en traumaverwerking met incident-debriefing",
+      "risico": "Agressie en geweld",
+      "prioriteit": "hoog",
+      "termijn": "middel",
+      "verantwoordelijke": "Directie / Bedrijfsarts / Preventiemedewerker",
+      "deadline": "2024-05-31",
+      "status": "nog niet gestart"
+    },
+    {
+      "nummer": 13,
+      "maatregel": "Teambuilding en sociale cohesie activiteiten minimaal 2x per jaar om isolement te verminderen en collegiale steun te bevorderen",
+      "risico": "Psychosociale arbeidsbelasting",
+      "prioriteit": "hoog",
+      "termijn": "middel",
+      "verantwoordelijke": null
+    }
+  ],
+  "wettelijkeVerplichtingen": []
+}
