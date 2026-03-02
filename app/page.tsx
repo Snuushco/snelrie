@@ -394,6 +394,18 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Disclaimer */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-3xl mx-auto">
+          <div className="border-l-4 border-amber-500 bg-amber-50 p-6 rounded-r-lg">
+            <h3 className="font-semibold text-gray-900 mb-2">Disclaimer</h3>
+            <p className="text-gray-700 text-sm leading-relaxed">
+              De RI&amp;E is een hulpmiddel voor de werkgever. Voor bedrijven met meer dan 25 medewerkers dient de RI&amp;E getoetst te worden door een gecertificeerde arbodienst/arbodeskundige (Arbowet art. 14). Dit rapport vervangt geen professioneel arbo-advies.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Bottom CTA */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-brand-600">
         <div className="max-w-3xl mx-auto text-center">

@@ -416,6 +416,13 @@ export default function ResultaatPage() {
             )}
           </div>
         )}
+        {/* Disclaimer */}
+        <div className="border-l-4 border-amber-500 bg-amber-50 p-6 rounded-r-lg mt-8">
+          <h3 className="font-semibold text-gray-900 mb-2">Disclaimer</h3>
+          <p className="text-gray-700 text-sm leading-relaxed">
+            De RI&amp;E is een hulpmiddel voor de werkgever. Voor bedrijven met meer dan 25 medewerkers dient de RI&amp;E getoetst te worden door een gecertificeerde arbodienst/arbodeskundige (Arbowet art. 14). Dit rapport vervangt geen professioneel arbo-advies.
+          </p>
+        </div>
       </div>
     </div>
   );
