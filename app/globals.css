@@ -28,3 +28,10 @@
   user-select: none;
   pointer-events: none;
 }
+
+/* A/B test variant utility classes */
+.ab-control,
+.ab-benefit,
+.ab-pain {
+  display: block;
+}
