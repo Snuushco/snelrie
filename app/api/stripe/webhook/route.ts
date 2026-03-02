@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getStripe } from "@/lib/stripe";
 import { prisma } from "@/lib/db";
+import { generateRie } from "@/lib/ai/pipeline";
 
 export async function POST(req: NextRequest) {
   const body = await req.text();
@@ -35,12 +36,31 @@ export async function POST(req: NextRequest) {
       });
 
       if (payment.reportId) {
+        // Get current tier to check if this is an upgrade
+        const currentReport = await prisma.rieReport.findUnique({
+          where: { id: payment.reportId },
+          select: { tier: true },
+        });
+
+        // Update the tier first (user paid, this must persist)
         await prisma.rieReport.update({
           where: { id: payment.reportId },
           data: {
             tier: payment.tier,
+            pdfGenerated: false, // invalidate old PDF
           },
         });
+
+        // Regenerate RI&E content with new tier (fire-and-forget)
+        // If regeneration fails, the tier is already updated
+        if (currentReport && currentReport.tier !== payment.tier) {
+          console.log(`[webhook] Tier upgrade ${currentReport.tier} → ${payment.tier} for report ${payment.reportId}, triggering regeneration`);
+          generateRie(payment.reportId).catch((err) => {
+            console.error(`[webhook] Regeneration failed for report ${payment.reportId}:`, err);
+            // Tier is already updated, report status will be FAILED
+            // User can retry or admin can manually trigger
+          });
+        }
       }
     }
   }
