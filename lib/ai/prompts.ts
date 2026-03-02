@@ -199,6 +199,18 @@ export function buildPvaPrompt(kennisbank: any, intakeData: any, risicos: any[],
   ).join('\n');
 
   const showKosten = tier === 'PROFESSIONAL' || tier === 'ENTERPRISE';
+  const isEnterprise = tier === 'ENTERPRISE';
+  const isProfessional = tier === 'PROFESSIONAL' || isEnterprise;
+
+  const professionalExtra = isProfessional ? `
+- "risicoBeschrijving" moet een VOLLEDIGE beschrijving zijn van het gekoppelde risico (2-3 zinnen), niet slechts de categorienaam
+- Maak elke maatregel UITGEBREID en specifiek (minimaal 2 zinnen): wat precies moet er gebeuren, hoe, en wat is het verwachte resultaat
+- Voeg bij elke maatregel een realistische kostenindicatie toe met een bereik (bijv. '€500-1500')` : '';
+
+  const enterpriseExtra = isEnterprise ? `
+- Voeg per item een "implementatieStappen" array toe met 2-4 concrete stappen om de maatregel te implementeren
+- Voeg "verwachtResultaat" toe: wat levert deze maatregel concreet op (meetbaar indien mogelijk)
+- Kostenindicatie MOET een numeriek bereik bevatten (bijv. '€500-1500') voor budgetberekening` : '';
 
   return {
     system: SYSTEM_BASE,
@@ -217,13 +229,15 @@ JSON format — een array:
   {
     "nummer": 1,
     "gekoppeldRisico": "risico_1",
-    "risicoBeschrijving": "Korte beschrijving van het gekoppelde risico",
-    "maatregel": "Concrete, uitvoerbare maatregel",
+    "risicoBeschrijving": "${isProfessional ? 'Volledige beschrijving van het gekoppelde risico en waarom dit prioriteit heeft (2-3 zinnen)' : 'Korte beschrijving van het gekoppelde risico'}",
+    "maatregel": "${isProfessional ? 'Uitgebreide, concrete en uitvoerbare maatregel met specifieke acties en verwacht resultaat (min 2 zinnen)' : 'Concrete, uitvoerbare maatregel'}",
     "typeMaatregel": "bronmaatregel|collectief|individueel|organisatorisch",
     "prioriteit": "hoog|midden|laag",
     "verantwoordelijke": "Concrete functie/rol",
     "deadline": "Concrete datum of periode (bijv. 'Q2 2025', 'Binnen 1 maand')",
-    ${showKosten ? `"kostenindicatie": "Geschatte kosten (bijv. '€500-1000', 'Geen extra kosten')",` : ''}
+    ${showKosten ? `"kostenindicatie": "Geschatte kosten met bereik (bijv. '€500-1000', 'Geen extra kosten')",` : ''}
+    ${isEnterprise ? `"implementatieStappen": ["Stap 1: ...", "Stap 2: ...", "Stap 3: ..."],
+    "verwachtResultaat": "Meetbaar resultaat van deze maatregel",` : ''}
     "status": "nog niet gestart"
   }
 ]
@@ -234,7 +248,7 @@ BELANGRIJK:
 - Deadlines moeten realistisch en concreet zijn
 - Verantwoordelijke moet een functie/rol zijn, niet "het bedrijf"
 - Sorteer: hoog prioriteit eerst
-- Volg de arbeidshygiënische strategie: bronmaatregelen > collectief > individueel > organisatorisch`
+- Volg de arbeidshygiënische strategie: bronmaatregelen > collectief > individueel > organisatorisch${professionalExtra}${enterpriseExtra}`
   };
 }
 

@@ -274,6 +274,71 @@ function createStyles(b: BrandingConfig) {
     arboLabel: { fontSize: 8.5, fontFamily: "Helvetica-Bold", color: GRAY[800], marginBottom: 2 },
     arboValue: { fontSize: 8, color: GRAY[600], lineHeight: 1.5 },
     arboStatus: { fontSize: 8, fontFamily: "Helvetica-Bold", marginRight: 4 },
+
+    // Tier badge on cover
+    tierBadge: {
+      paddingHorizontal: 16, paddingVertical: 6, borderRadius: 4,
+      marginTop: 16, alignSelf: "center" as const,
+    },
+    tierBadgeText: {
+      fontSize: 11, fontFamily: "Helvetica-Bold", letterSpacing: 2,
+      textTransform: "uppercase" as const,
+    },
+
+    // Management dashboard
+    dashboardContainer: {
+      backgroundColor: GRAY[50], borderRadius: 8, borderWidth: 1,
+      borderColor: GRAY[200], padding: 16, marginBottom: 16,
+    },
+    dashboardTitle: {
+      fontSize: 11, fontFamily: "Helvetica-Bold", color: GRAY[900],
+      marginBottom: 12, textAlign: "center" as const,
+    },
+    dashboardRow: { flexDirection: "row" as const, justifyContent: "space-between" as const, marginBottom: 8 },
+    dashboardMetric: {
+      flex: 1, alignItems: "center" as const, paddingVertical: 8,
+      backgroundColor: "#ffffff", borderRadius: 6, borderWidth: 1,
+      borderColor: GRAY[200], marginHorizontal: 3,
+    },
+    dashboardMetricValue: { fontSize: 18, fontFamily: "Helvetica-Bold", color: b.primaryColor },
+    dashboardMetricLabel: { fontSize: 7, color: GRAY[500], marginTop: 2 },
+
+    // PvA cards (Professional+)
+    pvaCard: {
+      borderWidth: 1, borderColor: GRAY[200], borderRadius: 6,
+      padding: 12, marginBottom: 10, backgroundColor: "#ffffff",
+    },
+    pvaCardHeader: {
+      flexDirection: "row" as const, justifyContent: "space-between" as const,
+      alignItems: "center" as const, marginBottom: 6,
+    },
+    pvaCardTitle: { fontSize: 9.5, fontFamily: "Helvetica-Bold", color: GRAY[900], flex: 1, marginRight: 8 },
+    pvaCardRisk: {
+      fontSize: 8, color: GRAY[500], backgroundColor: GRAY[50],
+      paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4,
+      marginBottom: 6, fontStyle: "italic" as const,
+    },
+    pvaCardMeta: {
+      flexDirection: "row" as const, flexWrap: "wrap" as const, gap: 6, marginTop: 4,
+    },
+    pvaCardMetaItem: { fontSize: 7.5, color: GRAY[600] },
+    pvaCardMetaLabel: { fontFamily: "Helvetica-Bold", color: GRAY[500] },
+
+    // Budget summary (Enterprise)
+    budgetBox: {
+      backgroundColor: b.primaryBg, borderWidth: 1, borderColor: b.primaryColor,
+      borderRadius: 6, padding: 12, marginBottom: 16,
+    },
+    budgetTitle: { fontSize: 10, fontFamily: "Helvetica-Bold", color: b.primaryDark, marginBottom: 8 },
+    budgetRow: { flexDirection: "row" as const, justifyContent: "space-between" as const, marginBottom: 3 },
+    budgetLabel: { fontSize: 8, color: GRAY[700] },
+    budgetValue: { fontSize: 8, fontFamily: "Helvetica-Bold", color: GRAY[900] },
+    budgetTotal: {
+      flexDirection: "row" as const, justifyContent: "space-between" as const,
+      borderTopWidth: 1, borderTopColor: b.primaryColor, paddingTop: 6, marginTop: 6,
+    },
+    budgetTotalLabel: { fontSize: 9, fontFamily: "Helvetica-Bold", color: b.primaryDark },
+    budgetTotalValue: { fontSize: 9, fontFamily: "Helvetica-Bold", color: b.primaryDark },
   });
 }
 
@@ -459,6 +524,38 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
   const middenCount = risicos.filter(r => r.prioriteit === "midden").length;
   const laagCount = risicos.filter(r => r.prioriteit === "laag").length;
 
+  // Tier logic
+  const tierUpper = (data.tier || "BASIS").toUpperCase();
+  const isProfessional = tierUpper === "PROFESSIONAL" || tierUpper === "ENTERPRISE";
+  const isEnterprise = tierUpper === "ENTERPRISE";
+  const tierLabel = tierUpper === "PROFESSIONAL" ? "PROFESSIONAL" : tierUpper === "ENTERPRISE" ? "ENTERPRISE" : tierUpper === "BASIS" ? "BASIS" : null;
+  const tierBadgeColors = isEnterprise
+    ? { bg: brand.primaryDark, border: brand.primaryColor, text: "#ffffff" }
+    : tierUpper === "PROFESSIONAL"
+    ? { bg: "#fef3c7", border: "#f59e0b", text: "#92400e" }
+    : { bg: GRAY[100], border: GRAY[300], text: GRAY[600] };
+
+  // Avg risk score
+  const avgScore = risicos.length > 0 ? Math.round(risicos.reduce((a, r) => a + (r.risicoScore || 0), 0) / risicos.length) : 0;
+
+  // Budget helper for Enterprise
+  function parseCostRange(kosten: string | undefined): [number, number] {
+    if (!kosten) return [0, 0];
+    const matches = kosten.match(/€?\s*([\d.,]+)/g);
+    if (!matches) return [0, 0];
+    const nums = matches.map(m => parseInt(m.replace(/[€.\s]/g, "").replace(",", ""), 10) || 0);
+    return nums.length >= 2 ? [nums[0], nums[1]] : [nums[0], nums[0]];
+  }
+  const budgetItems = pva.map(item => {
+    const [lo, hi] = parseCostRange(item.kostenindicatie || item.kosten);
+    return { prio: item.prioriteit, lo, hi };
+  });
+  const totalBudgetLo = budgetItems.reduce((a, b) => a + b.lo, 0);
+  const totalBudgetHi = budgetItems.reduce((a, b) => a + b.hi, 0);
+  const hoogBudgetHi = budgetItems.filter(b => b.prio === "hoog").reduce((a, b) => a + b.hi, 0);
+  const middenBudgetHi = budgetItems.filter(b => b.prio === "midden").reduce((a, b) => a + b.hi, 0);
+  const laagBudgetHi = budgetItems.filter(b => b.prio === "laag").reduce((a, b) => a + b.hi, 0);
+
   return (
     <Document
       title={`RI&E — ${data.bedrijfsnaam}`}
@@ -480,6 +577,12 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
           <View style={s.coverDivider} />
           <Text style={s.coverCompany}>{data.bedrijfsnaam}</Text>
           <Text style={[s.coverSubtitle, { marginTop: 8 }]}>{data.branche}</Text>
+          {/* Tier badge */}
+          {tierLabel && (
+            <View style={[s.tierBadge, { backgroundColor: tierBadgeColors.bg, borderWidth: 1, borderColor: tierBadgeColors.border }]}>
+              <Text style={[s.tierBadgeText, { color: tierBadgeColors.text }]}>{tierLabel}</Text>
+            </View>
+          )}
         </View>
         <View style={s.coverBody}>
           <View style={s.coverMeta}>
@@ -550,6 +653,53 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
         <Text style={[s.infoText, { marginBottom: 12, color: GRAY[500] }]}>
           Er zijn {risicos.length} risico{"'"}s geïdentificeerd: {hoogCount} hoog, {middenCount} midden, {laagCount} laag prioriteit.
         </Text>
+
+        {/* Management Dashboard (Professional+) */}
+        {isProfessional && (
+          <View style={s.dashboardContainer}>
+            <Text style={s.dashboardTitle}>Management Samenvatting</Text>
+            <View style={s.dashboardRow}>
+              <View style={s.dashboardMetric}>
+                <Text style={s.dashboardMetricValue}>{risicos.length}</Text>
+                <Text style={s.dashboardMetricLabel}>Risico{"'"}s totaal</Text>
+              </View>
+              <View style={s.dashboardMetric}>
+                <Text style={[s.dashboardMetricValue, { color: "#dc2626" }]}>{hoogCount}</Text>
+                <Text style={s.dashboardMetricLabel}>Hoog prioriteit</Text>
+              </View>
+              <View style={s.dashboardMetric}>
+                <Text style={[s.dashboardMetricValue, { color: "#ea580c" }]}>{middenCount}</Text>
+                <Text style={s.dashboardMetricLabel}>Midden prioriteit</Text>
+              </View>
+              <View style={s.dashboardMetric}>
+                <Text style={[s.dashboardMetricValue, { color: "#16a34a" }]}>{laagCount}</Text>
+                <Text style={s.dashboardMetricLabel}>Laag prioriteit</Text>
+              </View>
+            </View>
+            <View style={s.dashboardRow}>
+              <View style={s.dashboardMetric}>
+                <Text style={s.dashboardMetricValue}>{avgScore}</Text>
+                <Text style={s.dashboardMetricLabel}>Gem. risicoscore</Text>
+              </View>
+              <View style={s.dashboardMetric}>
+                <Text style={s.dashboardMetricValue}>{pva.length}</Text>
+                <Text style={s.dashboardMetricLabel}>Actiepunten PvA</Text>
+              </View>
+              {isEnterprise && (
+                <View style={s.dashboardMetric}>
+                  <Text style={[s.dashboardMetricValue, { fontSize: 14 }]}>€{totalBudgetLo.toLocaleString("nl-NL")}–{totalBudgetHi.toLocaleString("nl-NL")}</Text>
+                  <Text style={s.dashboardMetricLabel}>Geschat budget</Text>
+                </View>
+              )}
+              {!isEnterprise && (
+                <View style={s.dashboardMetric}>
+                  <Text style={s.dashboardMetricValue}>{wettelijk.length || "—"}</Text>
+                  <Text style={s.dashboardMetricLabel}>Wettelijke checks</Text>
+                </View>
+              )}
+            </View>
+          </View>
+        )}
 
         <Text style={s.sectionTitle}>{nextSection()}. Bedrijfsbeschrijving</Text>
         <View style={s.profileCard}>
@@ -800,32 +950,121 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
             Conform Arbowet art. 5 lid 3 is het PvA een verplicht onderdeel van de RI&E.
           </Text>
 
-          <View style={s.table}>
-            <View style={s.tableHeader}>
-              <Text style={[s.th, { width: 16 }]}>#</Text>
-              <Text style={[s.th, { flex: 2 }]}>Maatregel</Text>
-              <Text style={[s.th, { width: 38, textAlign: "center" }]}>Prio</Text>
-              <Text style={[s.th, { width: 55 }]}>Type</Text>
-              <Text style={[s.th, { width: 55 }]}>Verantw.</Text>
-              <Text style={[s.th, { width: 55 }]}>Deadline</Text>
-              <Text style={[s.th, { width: 50 }]}>Kosten</Text>
-              <Text style={[s.th, { width: 48 }]}>Status</Text>
-            </View>
-            {pva.map((item, i) => (
-              <View key={i} style={[s.tableRow, i % 2 === 1 ? s.tableRowAlt : {}]} wrap={false}>
-                <Text style={[s.td, { width: 16, fontFamily: "Helvetica-Bold" }]}>{item.nummer || i + 1}</Text>
-                <Text style={[s.td, { flex: 2 }]}>{truncate(item.maatregel, 65)}</Text>
-                <View style={{ width: 38, alignItems: "center", justifyContent: "center" }}>
-                  <Badge prioriteit={item.prioriteit} s={s} />
-                </View>
-                <Text style={[s.td, { width: 55, color: GRAY[500] }]}>{truncate(item.typeMaatregel, 14) || "—"}</Text>
-                <Text style={[s.td, { width: 55 }]}>{truncate(item.verantwoordelijke, 14) || "—"}</Text>
-                <Text style={[s.td, { width: 55, color: GRAY[500] }]}>{truncate(item.deadline || item.termijn, 14) || "—"}</Text>
-                <Text style={[s.td, { width: 50, color: GRAY[500] }]}>{truncate(item.kostenindicatie || item.kosten, 12) || "—"}</Text>
-                <Text style={[s.td, { width: 48, fontSize: 6.5, color: GRAY[400] }]}>{truncate(item.status, 14) || "—"}</Text>
+          {/* Enterprise: Budget overview */}
+          {isEnterprise && (
+            <View style={s.budgetBox} wrap={false}>
+              <Text style={s.budgetTitle}>Budgetoverzicht</Text>
+              <View style={s.budgetRow}>
+                <Text style={s.budgetLabel}>Hoge prioriteit ({pva.filter(p => p.prioriteit === "hoog").length} items)</Text>
+                <Text style={s.budgetValue}>€{hoogBudgetHi.toLocaleString("nl-NL")}</Text>
               </View>
-            ))}
-          </View>
+              <View style={s.budgetRow}>
+                <Text style={s.budgetLabel}>Midden prioriteit ({pva.filter(p => p.prioriteit === "midden").length} items)</Text>
+                <Text style={s.budgetValue}>€{middenBudgetHi.toLocaleString("nl-NL")}</Text>
+              </View>
+              <View style={s.budgetRow}>
+                <Text style={s.budgetLabel}>Lage prioriteit ({pva.filter(p => p.prioriteit === "laag").length} items)</Text>
+                <Text style={s.budgetValue}>€{laagBudgetHi.toLocaleString("nl-NL")}</Text>
+              </View>
+              <View style={s.budgetTotal}>
+                <Text style={s.budgetTotalLabel}>Totaal geschat budget</Text>
+                <Text style={s.budgetTotalValue}>€{totalBudgetLo.toLocaleString("nl-NL")} – €{totalBudgetHi.toLocaleString("nl-NL")}</Text>
+              </View>
+            </View>
+          )}
+
+          {/* Enterprise: Summary table + detailed cards below */}
+          {isEnterprise && (
+            <View style={s.table}>
+              <View style={s.tableHeader}>
+                <Text style={[s.th, { width: 16 }]}>#</Text>
+                <Text style={[s.th, { flex: 2 }]}>Maatregel</Text>
+                <Text style={[s.th, { width: 38, textAlign: "center" }]}>Prio</Text>
+                <Text style={[s.th, { width: 55 }]}>Verantw.</Text>
+                <Text style={[s.th, { width: 55 }]}>Deadline</Text>
+                <Text style={[s.th, { width: 50 }]}>Kosten</Text>
+              </View>
+              {pva.map((item, i) => (
+                <View key={i} style={[s.tableRow, i % 2 === 1 ? s.tableRowAlt : {}]} wrap={false}>
+                  <Text style={[s.td, { width: 16, fontFamily: "Helvetica-Bold" }]}>{item.nummer || i + 1}</Text>
+                  <Text style={[s.td, { flex: 2 }]}>{truncate(item.maatregel, 50)}</Text>
+                  <View style={{ width: 38, alignItems: "center", justifyContent: "center" }}>
+                    <Badge prioriteit={item.prioriteit} s={s} />
+                  </View>
+                  <Text style={[s.td, { width: 55 }]}>{truncate(item.verantwoordelijke, 14) || "—"}</Text>
+                  <Text style={[s.td, { width: 55, color: GRAY[500] }]}>{truncate(item.deadline || item.termijn, 14) || "—"}</Text>
+                  <Text style={[s.td, { width: 50, color: GRAY[500] }]}>{truncate(item.kostenindicatie || item.kosten, 12) || "—"}</Text>
+                </View>
+              ))}
+            </View>
+          )}
+
+          {/* Basis: compact table */}
+          {!isProfessional && (
+            <View style={s.table}>
+              <View style={s.tableHeader}>
+                <Text style={[s.th, { width: 16 }]}>#</Text>
+                <Text style={[s.th, { flex: 2 }]}>Maatregel</Text>
+                <Text style={[s.th, { width: 38, textAlign: "center" }]}>Prio</Text>
+                <Text style={[s.th, { width: 55 }]}>Type</Text>
+                <Text style={[s.th, { width: 55 }]}>Verantw.</Text>
+                <Text style={[s.th, { width: 55 }]}>Deadline</Text>
+                <Text style={[s.th, { width: 48 }]}>Status</Text>
+              </View>
+              {pva.map((item, i) => (
+                <View key={i} style={[s.tableRow, i % 2 === 1 ? s.tableRowAlt : {}]} wrap={false}>
+                  <Text style={[s.td, { width: 16, fontFamily: "Helvetica-Bold" }]}>{item.nummer || i + 1}</Text>
+                  <Text style={[s.td, { flex: 2 }]}>{truncate(item.maatregel, 65)}</Text>
+                  <View style={{ width: 38, alignItems: "center", justifyContent: "center" }}>
+                    <Badge prioriteit={item.prioriteit} s={s} />
+                  </View>
+                  <Text style={[s.td, { width: 55, color: GRAY[500] }]}>{truncate(item.typeMaatregel, 14) || "—"}</Text>
+                  <Text style={[s.td, { width: 55 }]}>{truncate(item.verantwoordelijke, 14) || "—"}</Text>
+                  <Text style={[s.td, { width: 55, color: GRAY[500] }]}>{truncate(item.deadline || item.termijn, 14) || "—"}</Text>
+                  <Text style={[s.td, { width: 48, fontSize: 6.5, color: GRAY[400] }]}>{truncate(item.status, 14) || "—"}</Text>
+                </View>
+              ))}
+            </View>
+          )}
+
+          {/* Professional + Enterprise: detailed cards */}
+          {isProfessional && (
+            <View>
+              {isEnterprise && (
+                <Text style={[s.subsectionTitle, { marginTop: 16, marginBottom: 10 }]}>Gedetailleerde actiepunten</Text>
+              )}
+              {pva.map((item, i) => (
+                <View key={i} style={[s.pvaCard, { borderLeftWidth: 3, borderLeftColor: (prioriteitConfig[item.prioriteit?.toLowerCase()] || prioriteitConfig.laag).color }]} wrap={false}>
+                  <View style={s.pvaCardHeader}>
+                    <Text style={s.pvaCardTitle}>{item.nummer || i + 1}. {item.maatregel}</Text>
+                    <Badge prioriteit={item.prioriteit} s={s} />
+                  </View>
+                  {(item.risicoBeschrijving || item.gekoppeldRisico) && (
+                    <Text style={s.pvaCardRisk}>
+                      Gekoppeld risico: {item.risicoBeschrijving || item.gekoppeldRisico}
+                    </Text>
+                  )}
+                  <View style={s.pvaCardMeta}>
+                    {item.typeMaatregel && (
+                      <Text style={s.pvaCardMetaItem}><Text style={s.pvaCardMetaLabel}>Type: </Text>{item.typeMaatregel}</Text>
+                    )}
+                    {item.verantwoordelijke && (
+                      <Text style={s.pvaCardMetaItem}><Text style={s.pvaCardMetaLabel}>Verantwoordelijke: </Text>{item.verantwoordelijke}</Text>
+                    )}
+                    {(item.deadline || item.termijn) && (
+                      <Text style={s.pvaCardMetaItem}><Text style={s.pvaCardMetaLabel}>Deadline: </Text>{item.deadline || item.termijn}</Text>
+                    )}
+                    {(item.kostenindicatie || item.kosten) && (
+                      <Text style={s.pvaCardMetaItem}><Text style={s.pvaCardMetaLabel}>Kosten: </Text>{item.kostenindicatie || item.kosten}</Text>
+                    )}
+                    {item.status && (
+                      <Text style={s.pvaCardMetaItem}><Text style={s.pvaCardMetaLabel}>Status: </Text>{item.status}</Text>
+                    )}
+                  </View>
+                </View>
+              ))}
+            </View>
+          )}
         </Page>
       )}
 
