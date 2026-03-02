@@ -3,8 +3,7 @@ import { prisma } from "@/lib/db";
 import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMITS } from "@/lib/rate-limit";
 import { renderToBuffer } from "@react-pdf/renderer";
 import React from "react";
-import { RieDocument } from "@/lib/pdf/rie-document";
-import type { WhiteLabelConfig } from "@/lib/pdf/rie-document";
+import { RieDocument, getBranding } from "@/lib/pdf/rie-document";
 
 export async function GET(
   req: NextRequest,
@@ -43,17 +42,13 @@ export async function GET(
     year: "numeric",
   });
 
-  // White-label config from query params (Enterprise tier)
+  // Build branding based on tier + optional query params (Enterprise white-label)
   const url = new URL(req.url);
-  let whiteLabel: WhiteLabelConfig | undefined;
-  if (report.tier === "ENTERPRISE") {
-    const logoUrl = url.searchParams.get("logoUrl") || undefined;
-    const primaryColor = url.searchParams.get("primaryColor") || undefined;
-    const companyName = url.searchParams.get("companyName") || undefined;
-    if (logoUrl || primaryColor || companyName) {
-      whiteLabel = { logoUrl, primaryColor, companyName };
-    }
-  }
+  const branding = getBranding(report.tier, {
+    logoUrl: url.searchParams.get("logoUrl") || undefined,
+    primaryColor: url.searchParams.get("primaryColor") || undefined,
+    companyName: url.searchParams.get("companyName") || undefined,
+  });
 
   try {
     const element = React.createElement(RieDocument, {
@@ -62,11 +57,10 @@ export async function GET(
         branche: report.branche,
         aantalMedewerkers: report.aantalMedewerkers,
         aantalLocaties: report.aantalLocaties,
-        tier: report.tier,
         generatedContent: content,
         datum,
-        whiteLabel,
       },
+      branding,
     });
     const buffer = await renderToBuffer(element as any);
 
