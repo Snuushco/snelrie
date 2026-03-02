@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { renderToBuffer } from "@react-pdf/renderer";
 import React from "react";
 import { RieDocument } from "@/lib/pdf/rie-document";
+import { prisma } from "@/lib/db";
 
 /**
  * POST /api/rie/pdf
@@ -30,8 +31,27 @@ export async function POST(req: NextRequest) {
         month: "long",
         year: "numeric",
       }),
-      whiteLabel: body.tier === "ENTERPRISE" ? body.whiteLabel : undefined,
+      whiteLabel: body.whiteLabel, // will be populated below for Enterprise
     };
+
+    // Auto-load branding from database for Enterprise tier
+    if (data.tier === "ENTERPRISE" && body.email && !data.whiteLabel) {
+      try {
+        const user = await prisma.user.findUnique({
+          where: { email: body.email },
+          include: { branding: true },
+        });
+        if (user?.branding) {
+          data.whiteLabel = {
+            logoUrl: user.branding.logoUrl || undefined,
+            primaryColor: user.branding.primaryColor || undefined,
+            companyName: user.branding.companyName || undefined,
+          };
+        }
+      } catch (e) {
+        console.warn("Could not load branding:", e);
+      }
+    }
 
     const element = React.createElement(RieDocument, { data });
     const buffer = await renderToBuffer(element as any);
