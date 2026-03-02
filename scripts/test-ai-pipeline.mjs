@@ -15,7 +15,11 @@ import path from 'path';
 // ═══════════════════════════════════════════════════════════════
 // Configuration
 // ═══════════════════════════════════════════════════════════════
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || 'REDACTED';
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+if (!OPENROUTER_API_KEY) {
+  console.error('❌ Set OPENROUTER_API_KEY environment variable');
+  process.exit(1);
+}
 const MODEL = 'anthropic/claude-haiku-4.5';
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 const PDF_API_URL = 'https://snelrie.nl/api/rie/pdf';
