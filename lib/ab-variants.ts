@@ -71,10 +71,11 @@ export const variantConfig = {
     className: 'ab-pain',
     label: 'Pain-Point',
     hero: {
+      badge: 'Inspectie SZW verscherpt controles — RI&E-eisen aangescherpt per 2026',
       header: 'Geen RI&E? De Inspectie SZW deelt boetes',
       headerHighlight: 'tot €13.500 uit.',
       subtext:
-        'Elke werkgever is wettelijk verplicht een RI&E te hebben. Toch mist 50% van het MKB er één. Voorkom boetes en aansprakelijkheid — stel uw RI&E vandaag nog op.',
+        'De Inspectie SZW verscherpt controles in 2026: gevaarlijke stoffen en psychosociale belasting moeten nu expliciet in je RI&E. Voorkom boetes en aansprakelijkheid — stel uw RI&E vandaag nog op.',
       cta: 'Check Nu Of U Compliant Bent →',
     },
     usps: {
