@@ -49,12 +49,12 @@ export default function BlogIndex() {
       </nav>
 
       {/* Header */}
-      <section className="pt-32 pb-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-brand-50 to-white">
+      <section className="pt-24 sm:pt-28 lg:pt-32 pb-10 sm:pb-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-brand-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-gray-900 tracking-tight text-balance leading-tight">
             SnelRIE <span className="text-brand-600">Blog</span>
           </h1>
-          <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="mt-4 text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-7 sm:leading-8">
             Praktische kennis over de RI&E, arbowetgeving en werkplekveiligheid.
             Voor ondernemers en compliance-professionals.
           </p>
@@ -62,15 +62,15 @@ export default function BlogIndex() {
       </section>
 
       {/* Posts */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto space-y-8">
+      <section className="py-10 sm:py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto grid gap-5 sm:gap-6 lg:gap-8 md:grid-cols-2">
           {posts.map((post) => (
             <article
               key={post.slug}
-              className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition p-8"
+              className="flex h-full flex-col rounded-3xl border border-gray-100 bg-white p-5 sm:p-6 lg:p-8 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
             >
-              <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
-                <span className="flex items-center gap-1">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-500 mb-4">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-50 px-3 py-1">
                   <Calendar className="h-4 w-4" />
                   {new Date(post.date).toLocaleDateString("nl-NL", {
                     year: "numeric",
@@ -78,12 +78,12 @@ export default function BlogIndex() {
                     day: "numeric",
                   })}
                 </span>
-                <span className="flex items-center gap-1">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-50 px-3 py-1">
                   <User className="h-4 w-4" />
                   {post.author}
                 </span>
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 leading-tight text-balance">
                 <Link
                   href={`/blog/${post.slug}`}
                   className="hover:text-brand-600 transition"
@@ -91,7 +91,7 @@ export default function BlogIndex() {
                   {post.title}
                 </Link>
               </h2>
-              <p className="text-gray-600 mb-4">{post.description}</p>
+              <p className="text-gray-600 mb-5 leading-7 flex-1">{post.description}</p>
               <Link
                 href={`/blog/${post.slug}`}
                 className="inline-flex items-center gap-1 text-brand-600 font-medium text-sm hover:text-brand-700 transition"

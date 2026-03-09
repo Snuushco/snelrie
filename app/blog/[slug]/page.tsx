@@ -96,58 +96,56 @@ export default async function BlogPostPage({
       </nav>
 
       {/* Article */}
-      <article className="pt-32 pb-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto">
+      <article className="pt-24 sm:pt-28 lg:pt-32 pb-14 sm:pb-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-1 text-brand-600 text-sm font-medium mb-6 hover:text-brand-700 transition"
+            className="inline-flex items-center gap-1.5 text-brand-600 text-sm font-medium mb-5 sm:mb-6 hover:text-brand-700 transition"
           >
             <ArrowLeft className="h-4 w-4" /> Terug naar blog
           </Link>
 
-          <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
-            <span className="flex items-center gap-1">
-              <Calendar className="h-4 w-4" />
-              {new Date(post.date).toLocaleDateString("nl-NL", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </span>
-            <span className="flex items-center gap-1">
-              <User className="h-4 w-4" />
-              {post.author}
-            </span>
-          </div>
+          <header className="mb-8 sm:mb-10">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-500 mb-4">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-50 px-3 py-1">
+                <Calendar className="h-4 w-4" />
+                {new Date(post.date).toLocaleDateString("nl-NL", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-50 px-3 py-1">
+                <User className="h-4 w-4" />
+                {post.author}
+              </span>
+            </div>
+
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-gray-900 text-balance leading-tight">
+              {post.title}
+            </h1>
+            <p className="mt-4 text-base sm:text-lg text-gray-600 leading-7 sm:leading-8 max-w-3xl">
+              {post.description}
+            </p>
+          </header>
 
           <div
-            className="prose prose-lg prose-gray max-w-none
-              prose-headings:text-gray-900 prose-headings:font-bold
-              prose-h1:text-3xl prose-h1:sm:text-4xl
-              prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4
-              prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3
-              prose-p:text-gray-600 prose-p:leading-relaxed
-              prose-a:text-brand-600 prose-a:no-underline hover:prose-a:underline
-              prose-li:text-gray-600
-              prose-strong:text-gray-900
-              prose-table:text-sm
-              prose-th:bg-gray-50 prose-th:px-4 prose-th:py-2
-              prose-td:px-4 prose-td:py-2 prose-td:border-t"
+            className="blog-content"
             dangerouslySetInnerHTML={{ __html: htmlContent }}
           />
 
           {/* CTA */}
-          <div className="mt-12 bg-brand-50 rounded-2xl p-8 text-center">
-            <h3 className="text-xl font-bold text-gray-900 mb-2">
+          <div className="mt-10 sm:mt-12 rounded-3xl border border-brand-100 bg-gradient-to-br from-brand-50 via-white to-brand-100/60 p-6 sm:p-8 lg:p-10 text-center shadow-sm">
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">
               Klaar om je RI&E op te stellen?
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-sm sm:text-base text-gray-600 mb-6 max-w-2xl mx-auto leading-7">
               Start met een gratis scan en ontdek de risico&apos;s in jouw bedrijf.
               In 5 minuten klaar.
             </p>
             <Link
               href="/scan"
-              className="inline-flex items-center gap-2 bg-brand-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-brand-700 transition"
+              className="inline-flex w-full sm:w-auto items-center justify-center gap-2 bg-brand-600 text-white px-6 py-3.5 rounded-xl font-semibold hover:bg-brand-700 transition"
             >
               Start Gratis Scan
               <ArrowRight className="h-5 w-5" />
