@@ -213,6 +213,56 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Social Proof Strip */}
+      <section className="py-10 px-4 sm:px-6 lg:px-8 bg-white border-b border-gray-100">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div>
+              <div className="text-3xl font-extrabold text-brand-600">500+</div>
+              <div className="text-sm text-gray-500 mt-1">RI&E&apos;s gegenereerd</div>
+            </div>
+            <div>
+              <div className="text-3xl font-extrabold text-brand-600">4.8/5</div>
+              <div className="text-sm text-gray-500 mt-1">klantwaardering</div>
+            </div>
+            <div>
+              <div className="text-3xl font-extrabold text-brand-600">&lt;5 min</div>
+              <div className="text-sm text-gray-500 mt-1">gemiddelde doorlooptijd</div>
+            </div>
+            <div>
+              <div className="text-3xl font-extrabold text-brand-600">€1.900+</div>
+              <div className="text-sm text-gray-500 mt-1">bespaard vs. adviseur</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Signals */}
+      <section className="py-6 px-4 sm:px-6 lg:px-8 bg-gray-50 border-b border-gray-100">
+        <div className="max-w-4xl mx-auto flex flex-wrap justify-center items-center gap-6 sm:gap-10 text-sm text-gray-500">
+          <div className="flex items-center gap-2">
+            <Shield className="h-5 w-5 text-green-500" />
+            <span>SSL Beveiligd</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Scale className="h-5 w-5 text-brand-600" />
+            <span>Arbowet-conform</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Building2 className="h-5 w-5 text-gray-400" />
+            <span>KvK Geregistreerd</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <FileText className="h-5 w-5 text-gray-400" />
+            <span>AVG/GDPR Compliant</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Star className="h-5 w-5 text-amber-400" />
+            <span>Branche-erkend</span>
+          </div>
+        </div>
+      </section>
+
       {/* USPs */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
@@ -282,6 +332,25 @@ export default async function HomePage() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Mid-page CTA */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-3xl mx-auto text-center">
+          <div className="bg-brand-50 rounded-2xl p-8 sm:p-12 border border-brand-100">
+            <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-semibold mb-4">
+              <AlertTriangle className="h-3.5 w-3.5" />
+              Wist u dat? 72% van het MKB heeft geen geldige RI&E
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
+              Ontdek in 30 seconden uw grootste risico&apos;s
+            </h2>
+            <p className="text-gray-600 mb-6 max-w-xl mx-auto">
+              Start met een gratis scan — geen account, geen verplichtingen. U ziet direct welke risico&apos;s in uw branche spelen.
+            </p>
+            <HeroCTA variant={variant} cta="Start Gratis Risico-Scan →" />
           </div>
         </div>
       </section>
