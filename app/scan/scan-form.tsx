@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Shield, ArrowLeft, ArrowRight, Loader2, Clock } from "lucide-react";
 import Link from "next/link";
@@ -18,6 +18,12 @@ const BRANCHES = [
   { value: "overig", label: "Overig" },
 ];
 
+const SECTOR_TO_BRANCHE: Record<string, string> = {
+  bouw: "bouw",
+  transport: "transport",
+  horeca: "horeca",
+};
+
 const MEDEWERKER_RANGES = [
   { value: "1", label: "1–5 medewerkers" },
   { value: "6", label: "6–15 medewerkers" },
@@ -26,7 +32,6 @@ const MEDEWERKER_RANGES = [
   { value: "75", label: "50+ medewerkers" },
 ];
 
-// Branch-specific questions (dynamic based on selection)
 const BRANCHE_VRAGEN: Record<string, { field: string; label: string }[]> = {
   beveiliging: [
     { field: "alleenWerken", label: "Werken uw medewerkers alleen (bijv. objectbeveiliging)?" },
@@ -80,7 +85,6 @@ const BRANCHE_VRAGEN: Record<string, { field: string; label: string }[]> = {
   ],
 };
 
-// Smart defaults per branche (auto-filled based on industry)
 const BRANCHE_DEFAULTS: Record<string, Record<string, string>> = {
   beveiliging: { alleenWerken: "ja", nachtwerk: "ja" },
   horeca: { fysiekWerk: "ja", nachtwerk: "ja" },
@@ -97,7 +101,6 @@ const BRANCHE_DEFAULTS: Record<string, Record<string, string>> = {
 type FormData = {
   branche: string;
   aantalMedewerkers: string;
-  // Dynamic ja/nee fields
   [key: string]: string;
 };
 
@@ -105,6 +108,8 @@ export default function ScanForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const preselectedTier = searchParams.get("tier") || "GRATIS";
+  const preselectedSector = searchParams.get("sector") || "";
+  const preselectedBranche = SECTOR_TO_BRANCHE[preselectedSector] || "";
 
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<FormData>({
@@ -117,13 +122,11 @@ export default function ScanForm() {
   const updateField = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
 
-    // When branche changes, apply smart defaults
     if (field === "branche") {
       const defaults = BRANCHE_DEFAULTS[value] || {};
       setForm((prev) => ({
         ...prev,
         [field]: value,
-        // Reset all dynamic fields, then apply defaults
         gevaarlijkeStoffen: defaults.gevaarlijkeStoffen || "nee",
         beeldschermwerk: defaults.beeldschermwerk || "nee",
         fysiekWerk: defaults.fysiekWerk || "nee",
@@ -134,7 +137,14 @@ export default function ScanForm() {
     }
   };
 
+  useEffect(() => {
+    if (preselectedBranche && !form.branche) {
+      updateField("branche", preselectedBranche);
+    }
+  }, [preselectedBranche, form.branche]);
+
   const brancheVragen = form.branche ? (BRANCHE_VRAGEN[form.branche] || BRANCHE_VRAGEN.overig) : [];
+  const lockedBrancheLabel = BRANCHES.find((b) => b.value === preselectedBranche)?.label;
 
   const canProceed = () => {
     switch (step) {
@@ -156,12 +166,11 @@ export default function ScanForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          bedrijfsnaam: form.branche + "-bedrijf", // Auto-generated placeholder
+          bedrijfsnaam: form.branche + "-bedrijf",
           branche: form.branche,
           aantalMedewerkers: parseInt(form.aantalMedewerkers),
           aantalLocaties: 1,
           tier: preselectedTier,
-          // Pass all dynamic fields
           gevaarlijkeStoffen: form.gevaarlijkeStoffen || "nee",
           beeldschermwerk: form.beeldschermwerk || "nee",
           fysiekWerk: form.fysiekWerk || "nee",
@@ -181,7 +190,6 @@ export default function ScanForm() {
 
       const { reportId } = await res.json();
 
-      // Trigger AI generation in background
       fetch("/api/rie/process", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -197,7 +205,6 @@ export default function ScanForm() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <nav className="bg-white border-b border-gray-100">
         <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
@@ -213,7 +220,6 @@ export default function ScanForm() {
         </div>
       </nav>
 
-      {/* Visual step indicator */}
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-2xl mx-auto px-4 py-4">
           <div className="flex items-center justify-center gap-4">
@@ -248,7 +254,6 @@ export default function ScanForm() {
       </div>
 
       <div className="max-w-2xl mx-auto px-4 py-8">
-        {/* Step 1: Branche + Medewerkers */}
         {step === 1 && (
           <div className="space-y-6">
             <div>
@@ -259,6 +264,15 @@ export default function ScanForm() {
                 Twee vragen — dan genereren we uw risico-overzicht
               </p>
             </div>
+
+            {lockedBrancheLabel && (
+              <div className="bg-brand-50 border border-brand-200 rounded-xl p-4 text-sm text-brand-800">
+                <p className="font-medium">Vooringevulde branche</p>
+                <p className="text-brand-700 mt-1">
+                  We hebben <strong>{lockedBrancheLabel}</strong> alvast geselecteerd op basis van uw landingspagina. U kunt dit nog aanpassen.
+                </p>
+              </div>
+            )}
 
             <div className="space-y-4">
               <div>
@@ -329,7 +343,6 @@ export default function ScanForm() {
           </div>
         )}
 
-        {/* Step 2: Branch-specific questions */}
         {step === 2 && (
           <div className="space-y-6">
             <div>
@@ -373,7 +386,6 @@ export default function ScanForm() {
               ))}
             </div>
 
-            {/* Reassurance */}
             <div className="bg-brand-50 border border-brand-200 rounded-xl p-4 text-sm text-brand-800">
               <p className="font-medium">🔒 Geen account of email nodig</p>
               <p className="text-brand-600 mt-1">
@@ -383,14 +395,12 @@ export default function ScanForm() {
           </div>
         )}
 
-        {/* Error */}
         {error && (
           <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
             {error}
           </div>
         )}
 
-        {/* Navigation */}
         <div className="mt-8 flex justify-between">
           {step > 1 ? (
             <button

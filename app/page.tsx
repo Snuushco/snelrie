@@ -5,23 +5,28 @@ import {
   Zap,
   FileText,
   CheckCircle2,
-  ArrowRight,
   Clock,
   Building2,
   Scale,
   Star,
   ChevronDown,
   AlertTriangle,
-  DollarSign,
   ShieldAlert,
   Timer,
   PiggyBank,
   CalendarCheck,
   Target,
+  HardHat,
+  Truck,
+  UtensilsCrossed,
 } from "lucide-react";
 import { variantConfig, type ABVariant } from "@/lib/ab-variants";
 import { ABTracker } from "@/components/ABTracker";
 import { HeroCTA } from "@/components/HeroCTA";
+
+type SectorKey = "bouw" | "transport" | "horeca";
+
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
 const pricingTiers = [
   {
@@ -88,7 +93,7 @@ const pricingTiers = [
   },
 ];
 
-const faqs = [
+const genericFaqs = [
   {
     q: "Is een RI&E verplicht?",
     a: "Ja. Volgens artikel 5 van de Arbowet is elke werkgever in Nederland verplicht een RI&E op te stellen. Dit geldt voor alle bedrijven met personeel, inclusief bedrijven met maar 1 werknemer.",
@@ -119,32 +124,203 @@ const faqs = [
   },
 ];
 
-// Icon map per variant for USPs
 const uspIcons = {
   a: [Zap, Building2, Clock],
   b: [PiggyBank, CalendarCheck, Target],
   c: [AlertTriangle, ShieldAlert, Timer],
 };
 
-// Badge per variant
 const heroBadge = {
-  a: { icon: Scale, text: 'Wettelijk verplicht voor alle werkgevers' },
-  b: { icon: PiggyBank, text: 'Bespaar €1.900+ op uw RI&E' },
-  c: { icon: AlertTriangle, text: 'Inspectie SZW controleert steeds vaker' },
+  a: { icon: Scale, text: "Wettelijk verplicht voor alle werkgevers" },
+  b: { icon: PiggyBank, text: "Bespaar €1.900+ op uw RI&E" },
+  c: { icon: AlertTriangle, text: "Inspectie SZW controleert steeds vaker" },
 };
 
-export default async function HomePage() {
+const sectorIcons = {
+  bouw: HardHat,
+  transport: Truck,
+  horeca: UtensilsCrossed,
+};
+
+const sectorConfig: Record<
+  SectorKey,
+  {
+    label: string;
+    intro: string;
+    hero: { badge: string; header: string; highlight: string; subtext: string; cta: string };
+    stats: { value: string; label: string }[];
+    risks: string[];
+    proofTitle: string;
+    proofText: string;
+    targets: string;
+    outreachAngle: string;
+    howItWorks: { title: string; desc: string }[];
+    midCta: { eyebrow: string; title: string; text: string; button: string };
+    bottom: { title: string; text: string; button: string };
+    faq: { q: string; a: string };
+  }
+> = {
+  bouw: {
+    label: "Bouw & installatie",
+    intro: "Voor aannemers, installatiebedrijven en projectorganisaties met buitendienst, hoogtewerk en wisselende locaties.",
+    hero: {
+      badge: "Bouwbedrijven hebben vaak meerdere risicoplekken tegelijk: werkplaats, bus, projectlocatie en onderaannemers.",
+      header: "Uw RI&E voor bouw- en installatiewerk",
+      highlight: "zonder weken wachten op een adviseur",
+      subtext:
+        "Krijg in minuten een branchespecifieke RI&E voor hoogtewerk, buitenwerk, gevaarlijke stoffen en wisselende projectlocaties. Ideaal voor aannemers en installatiebedrijven die snel overzicht willen vóór de volgende klusstart.",
+      cta: "Start gratis bouw-RI&E",
+    },
+    stats: [
+      { value: "Hoogtewerk", label: "steigers, ladders, daken" },
+      { value: "Buitenwerk", label: "weer, verkeer, wisselende locaties" },
+      { value: "Stoffen", label: "verf, lijmen, oplosmiddelen" },
+      { value: "<5 min", label: "tot eerste risico-overzicht" },
+    ],
+    risks: ["hoogtewerk en valgevaar", "gevaarlijke stoffen en stofbelasting", "wisselende projectlocaties en coördinatie"],
+    proofTitle: "Gebouwd voor bedrijven waar veiligheid per project verschuift",
+    proofText:
+      "Dezelfde intake die werkt voor een kantoorpand is te vlak voor bouw en installatie. Daarom legt deze variant extra nadruk op hoogtewerk, buitenwerk, tijdelijke werkplekken en praktische maatregelen die direct in een Plan van Aanpak passen.",
+    targets: "Mariël en Jarco van der Poel · Brenda Heuts / Tom Heuts / Paddy Scheilen / Ronnie Scheilen",
+    outreachAngle: "familiebedrijf + projectwerk + RI&E-herijking bij groei of fusie",
+    howItWorks: [
+      { title: "Selecteer bouw of installatie", desc: "We vullen direct de meest voorkomende risicosignalen voor projectlocaties en buitendienst voor u in." },
+      { title: "Beantwoord 3 praktijksituaties", desc: "Hoogtewerk, stoffen en buitenwerk zijn al voorgeselecteerd zodat u alleen hoeft te bevestigen of bij te sturen." },
+      { title: "Bekijk de eerste projectrisico's", desc: "U ziet direct waar uw grootste gaten zitten voordat de volgende klus start." },
+      { title: "Download rapport + Plan van Aanpak", desc: "Geschikt om intern te bespreken met uitvoering, planning of preventiemedewerker." },
+    ],
+    midCta: {
+      eyebrow: "Veel bouwbedrijven actualiseren pas na een incident of auditvraag.",
+      title: "Check nu waar uw bouw-RI&E dun of verouderd is",
+      text: "U hoeft niet meteen het hele dossier te herbouwen. Start met een gratis scan en zie direct welke risicoblokken extra aandacht vragen.",
+      button: "Start gratis bouwscan →",
+    },
+    bottom: {
+      title: "Zet uw bouw-RI&E vandaag nog scherper.",
+      text: "Begin gratis en ontdek binnen minuten waar hoogtewerk, buitenwerk en projectwissels extra risico creëren.",
+      button: "Start gratis bouw-RI&E",
+    },
+    faq: {
+      q: "Is dit ook geschikt voor installatiebedrijven met meerdere bussen en projectlocaties?",
+      a: "Ja. Juist daarvoor is deze variant bedoeld. SnelRIE helpt risico's structureren rond buitendienst, hoogtewerk, gereedschap, verkeer en wisselende locaties zodat u sneller kunt actualiseren.",
+    },
+  },
+  transport: {
+    label: "Transport & logistiek",
+    intro: "Voor transporteurs, logistieke bedrijven, magazijnen en grondverzet met chauffeurs, laden/lossen en wisselende diensten.",
+    hero: {
+      badge: "Transport-RI&E's lopen vaak achter op de praktijk: alleen rijden, laadperrons, nachtwerk en seizoensdrukte veranderen continu.",
+      header: "Uw RI&E voor transport en logistiek",
+      highlight: "met focus op chauffeurs, laden/lossen en diensten",
+      subtext:
+        "Breng in minuten de grootste RI&E-risico's in kaart voor chauffeurs, magazijnteams en planners. Inclusief alleen werken, fysieke belasting, nachtdiensten en operationele piekdrukte.",
+      cta: "Start gratis transport-RI&E",
+    },
+    stats: [
+      { value: "Chauffeurs", label: "alleen op pad of op wisselende routes" },
+      { value: "Laadperron", label: "fysieke belasting en verkeersbewegingen" },
+      { value: "Nachtwerk", label: "onregelmatige diensten en vermoeidheid" },
+      { value: "€99", label: "voor volledige RI&E" },
+    ],
+    risks: ["alleen werken op route of terrein", "laden/lossen en fysieke belasting", "nachtdiensten en vermoeidheid"],
+    proofTitle: "Gemaakt voor operatie, niet alleen voor papier",
+    proofText:
+      "Transportbedrijven hebben vaak al losse veiligheidsafspraken, maar geen compact totaalbeeld dat echt aansluit op chauffeurs, loodsen en planning. Deze variant stuurt de intake precies daarop aan.",
+    targets: "Fred Driessen / Marc Driessen",
+    outreachAngle: "120+ medewerkers + grondwerk/transport/recycling + directie-eigenaars",
+    howItWorks: [
+      { title: "Kies transport & logistiek", desc: "De scan zet direct de juiste defaults aan voor fysiek werk, nachtwerk en alleen rijden." },
+      { title: "Bevestig uw werksituatie", desc: "Met 3 korte keuzes ziet de AI of uw grootste risico's in route, loods of laadperron zitten." },
+      { title: "Ontvang uw risico-overzicht", desc: "Binnen minuten ziet u welke thema's prioriteit moeten krijgen in uw RI&E." },
+      { title: "Werk door naar Plan van Aanpak", desc: "Upgrade wanneer u concrete maatregelen, prioriteiten en verantwoordelijken wilt vastleggen." },
+    ],
+    midCta: {
+      eyebrow: "Veel logistieke bedrijven hebben wel toolboxen, maar geen actuele RI&E die de hele operatie dekt.",
+      title: "Zie direct waar uw transport-RI&E achterloopt op de praktijk",
+      text: "Start gratis en ontdek of juist chauffeurs, laden/lossen of diensten het grootste gat in uw huidige aanpak vormen.",
+      button: "Start gratis transportscan →",
+    },
+    bottom: {
+      title: "Maak uw transport-RI&E operationeel bruikbaar.",
+      text: "Geen lang adviestraject eerst. Begin met een gratis scan en toets uw grootste logistieke risico's direct.",
+      button: "Start gratis transport-RI&E",
+    },
+    faq: {
+      q: "Werkt dit ook voor bedrijven met zowel chauffeurs als magazijnmedewerkers?",
+      a: "Ja. De intake is juist geschikt voor combinaties van routewerk, laden/lossen, terreinverkeer en magazijnoperatie. Daardoor krijgt u een RI&E die beter aansluit op de praktijk dan een generiek sjabloon.",
+    },
+  },
+  horeca: {
+    label: "Horeca & hospitality",
+    intro: "Voor restaurants, hotels, brouwerijen en hospitalitylocaties met keuken, bediening, housekeeping, events en piekdrukte.",
+    hero: {
+      badge: "Horeca-risico's zitten niet alleen in de keuken: ook werkdruk, avonduren, housekeeping en piekdrukte horen in een goede RI&E.",
+      header: "Uw RI&E voor horeca en hospitality",
+      highlight: "van keuken tot bediening en backoffice",
+      subtext:
+        "Maak snel een branchespecifieke RI&E voor restaurants, hotels en hospitalityteams. Inclusief tillen, hete vloeistoffen, schoonmaakmiddelen, avond- en nachtdiensten en operationele piekmomenten.",
+      cta: "Start gratis horeca-RI&E",
+    },
+    stats: [
+      { value: "Keuken", label: "hitte, gladheid, snijrisico's" },
+      { value: "Bediening", label: "piekdrukte en fysieke belasting" },
+      { value: "Housekeeping", label: "schoonmaakmiddelen en tilwerk" },
+      { value: "Gratis", label: "eerste risico-overzicht" },
+    ],
+    risks: ["hete vloeistoffen en gladde vloeren", "tillen, duwen en piekbelasting", "avond- en nachtdiensten"],
+    proofTitle: "Voor hospitalitybedrijven waar de werkvloer elke dag anders voelt",
+    proofText:
+      "Restaurant, hotel en eventlocaties combineren vaak meerdere werksoorten in één RI&E. Deze variant helpt dat sneller concreet te maken, zonder te blijven hangen in alleen een keukenchecklist.",
+    targets: "Jan-Paul Rutten · Frank Keuten / Daan de Ruiter",
+    outreachAngle: "restaurant/hotel/brouwerij + meerdere werksoorten + directie/eigenaar zichtbaar",
+    howItWorks: [
+      { title: "Kies horeca", desc: "We zetten direct standaard aannames klaar voor fysieke belasting, schoonmaakmiddelen en avondwerk." },
+      { title: "Controleer 3 werksituaties", desc: "Met een paar ja/nee-keuzes past de scan zich aan op keuken, bediening of hospitality-omgeving." },
+      { title: "Bekijk uw eerste risico's", desc: "U ziet meteen welke horeca-risico's het meest urgent zijn voor uw team." },
+      { title: "Upgrade naar volledig rapport", desc: "Download een RI&E en Plan van Aanpak dat u intern kunt bespreken of laten toetsen." },
+    ],
+    midCta: {
+      eyebrow: "Piekdrukte maskeert vaak structurele RI&E-gaten.",
+      title: "Check vandaag nog uw horeca-risico's",
+      text: "Van keuken tot housekeeping: start gratis en zie waar uw huidige veiligheidsaanpak waarschijnlijk te generiek of te oud is.",
+      button: "Start gratis horecascan →",
+    },
+    bottom: {
+      title: "Maak uw horeca-RI&E concreet en actueel.",
+      text: "Start gratis en ontdek direct waar keuken, bediening en hospitality extra risico opleveren.",
+      button: "Start gratis horeca-RI&E",
+    },
+    faq: {
+      q: "Past dit ook bij combinaties van restaurant, hotel en events?",
+      a: "Ja. Dat is precies waar deze variant op inspeelt. SnelRIE helpt meerdere werksoorten in één overzicht te vangen, zodat uw RI&E niet blijft steken in alleen algemene horecamaatregelen.",
+    },
+  },
+};
+
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams?: SearchParams;
+}) {
   const cookieStore = await cookies();
-  const variant = (cookieStore.get('ab-variant')?.value || 'a') as ABVariant;
+  const variant = (cookieStore.get("ab-variant")?.value || "a") as ABVariant;
   const v = variantConfig[variant];
   const badge = heroBadge[variant];
   const icons = uspIcons[variant];
+  const resolvedParams = searchParams ? await searchParams : {};
+  const sectorParam = Array.isArray(resolvedParams?.sector)
+    ? resolvedParams?.sector?.[0]
+    : resolvedParams?.sector;
+  const activeSector = sectorParam && sectorParam in sectorConfig ? (sectorParam as SectorKey) : null;
+  const sector = activeSector ? sectorConfig[activeSector] : null;
+  const sectorHref = activeSector ? `/scan?sector=${activeSector}` : "/scan";
+  const SectorIcon = activeSector ? sectorIcons[activeSector] : null;
+  const pageFaqs = sector ? [...genericFaqs.slice(0, 3), sector.faq, ...genericFaqs.slice(3)] : genericFaqs;
 
   return (
     <main className={v.className}>
       <ABTracker variant={variant} />
 
-      {/* Navigation */}
       <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-sm border-b border-gray-100 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2">
@@ -165,30 +341,35 @@ export default async function HomePage() {
             </a>
           </div>
           <Link
-            href="/scan"
+            href={sectorHref}
             className="bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-brand-700 transition"
           >
-            {v.hero.cta}
+            {sector ? sector.hero.cta : v.hero.cta}
           </Link>
         </div>
       </nav>
 
-      {/* Hero */}
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-brand-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-brand-100 text-brand-700 px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-            <badge.icon className="h-4 w-4" />
-            {badge.text}
+            {sector && SectorIcon ? (
+              <SectorIcon className="h-4 w-4" />
+            ) : (
+              <badge.icon className="h-4 w-4" />
+            )}
+            {sector ? sector.hero.badge : badge.text}
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight">
-            {v.hero.header}{" "}
-            <span className="text-brand-600">{v.hero.headerHighlight}</span>
+            {sector ? sector.hero.header : v.hero.header}{" "}
+            <span className="text-brand-600">
+              {sector ? sector.hero.highlight : v.hero.headerHighlight}
+            </span>
           </h1>
-          <p className="mt-6 text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-            {v.hero.subtext}
+          <p className="mt-6 text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+            {sector ? sector.hero.subtext : v.hero.subtext}
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <HeroCTA variant={variant} cta={v.hero.cta} />
+            <HeroCTA variant={variant} cta={sector ? sector.hero.cta : v.hero.cta} href={sectorHref} />
             <a
               href="#hoe-werkt-het"
               className="inline-flex items-center justify-center gap-2 bg-white text-gray-700 px-8 py-4 rounded-xl text-lg font-semibold border border-gray-200 hover:bg-gray-50 transition"
@@ -197,47 +378,101 @@ export default async function HomePage() {
             </a>
           </div>
           <div className="mt-12 flex flex-wrap justify-center gap-8 text-sm text-gray-500">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-500" />
-              Vanaf €99
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-500" />
-              Klaar in 5 minuten
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-500" />
-              Professioneel PDF-rapport
-            </div>
+            {sector ? (
+              sector.stats.map((item) => (
+                <div key={item.label} className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-500" />
+                  <span>
+                    <strong className="text-gray-700">{item.value}</strong> {item.label}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-500" />
+                  Vanaf €99
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-500" />
+                  Klaar in 5 minuten
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-500" />
+                  Professioneel PDF-rapport
+                </div>
+              </>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Social Proof Strip */}
+      {!sector && (
+        <section className="py-8 px-4 sm:px-6 lg:px-8 bg-white border-y border-gray-100">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-5">
+              <p className="text-sm font-semibold uppercase tracking-wide text-brand-700">Sectorspecifieke landingsvarianten</p>
+              <p className="text-gray-600 mt-2">Gebruik deze campagnespecifieke versies voor outreach en advertentietests.</p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-4">
+              {(
+                Object.entries(sectorConfig) as Array<[SectorKey, (typeof sectorConfig)[SectorKey]]>
+              ).map(([key, item]) => {
+                const Icon = sectorIcons[key];
+                return (
+                  <Link
+                    key={key}
+                    href={`/?sector=${key}`}
+                    className="rounded-2xl border border-gray-200 bg-gray-50 hover:bg-white hover:shadow-md transition p-5 text-left"
+                  >
+                    <div className="w-11 h-11 rounded-xl bg-brand-100 flex items-center justify-center mb-4">
+                      <Icon className="h-5 w-5 text-brand-600" />
+                    </div>
+                    <h2 className="text-lg font-semibold text-gray-900">{item.label}</h2>
+                    <p className="text-sm text-gray-600 mt-2">{item.intro}</p>
+                    <div className="mt-4 text-sm font-medium text-brand-700">Bekijk landingsvariant →</div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
       <section className="py-10 px-4 sm:px-6 lg:px-8 bg-white border-b border-gray-100">
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-3xl font-extrabold text-brand-600">500+</div>
-              <div className="text-sm text-gray-500 mt-1">RI&E&apos;s gegenereerd</div>
-            </div>
-            <div>
-              <div className="text-3xl font-extrabold text-brand-600">4.8/5</div>
-              <div className="text-sm text-gray-500 mt-1">klantwaardering</div>
-            </div>
-            <div>
-              <div className="text-3xl font-extrabold text-brand-600">&lt;5 min</div>
-              <div className="text-sm text-gray-500 mt-1">gemiddelde doorlooptijd</div>
-            </div>
-            <div>
-              <div className="text-3xl font-extrabold text-brand-600">€1.900+</div>
-              <div className="text-sm text-gray-500 mt-1">bespaard vs. adviseur</div>
-            </div>
+            {sector ? (
+              sector.stats.map((item) => (
+                <div key={item.label}>
+                  <div className="text-3xl font-extrabold text-brand-600">{item.value}</div>
+                  <div className="text-sm text-gray-500 mt-1">{item.label}</div>
+                </div>
+              ))
+            ) : (
+              <>
+                <div>
+                  <div className="text-3xl font-extrabold text-brand-600">500+</div>
+                  <div className="text-sm text-gray-500 mt-1">RI&E&apos;s gegenereerd</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-extrabold text-brand-600">4.8/5</div>
+                  <div className="text-sm text-gray-500 mt-1">klantwaardering</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-extrabold text-brand-600">&lt;5 min</div>
+                  <div className="text-sm text-gray-500 mt-1">gemiddelde doorlooptijd</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-extrabold text-brand-600">€1.900+</div>
+                  <div className="text-sm text-gray-500 mt-1">bespaard vs. adviseur</div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Trust Signals */}
       <section className="py-6 px-4 sm:px-6 lg:px-8 bg-gray-50 border-b border-gray-100">
         <div className="max-w-4xl mx-auto flex flex-wrap justify-center items-center gap-6 sm:gap-10 text-sm text-gray-500">
           <div className="flex items-center gap-2">
@@ -263,7 +498,42 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* USPs */}
+      {sector && (
+        <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white border-b border-gray-100">
+          <div className="max-w-5xl mx-auto grid lg:grid-cols-[1.2fr_0.8fr] gap-8 items-start">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-wide text-brand-700 mb-3">Waarom deze variant beter past</p>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">{sector.proofTitle}</h2>
+              <p className="text-gray-600 leading-relaxed">{sector.proofText}</p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                {sector.risks.map((risk) => (
+                  <span key={risk} className="inline-flex items-center rounded-full bg-brand-50 px-4 py-2 text-sm text-brand-700 border border-brand-100">
+                    {risk}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6">
+              <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-3">Outreach-aansluiting uit q124</p>
+              <div className="space-y-4 text-sm text-gray-700">
+                <div>
+                  <div className="font-semibold text-gray-900">Named targets</div>
+                  <div className="mt-1">{sector.targets}</div>
+                </div>
+                <div>
+                  <div className="font-semibold text-gray-900">Angle</div>
+                  <div className="mt-1">{sector.outreachAngle}</div>
+                </div>
+                <div>
+                  <div className="font-semibold text-gray-900">Volgende stap</div>
+                  <div className="mt-1">Stuur verkeer of outreach naar deze URL: <span className="font-mono text-xs">/?sector={activeSector}</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
@@ -280,9 +550,7 @@ export default async function HomePage() {
                   <div className="w-12 h-12 bg-brand-100 rounded-xl flex items-center justify-center mb-4">
                     <Icon className="h-6 w-6 text-brand-600" />
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    {usp.title}
-                  </h3>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{usp.title}</h3>
                   <p className="text-gray-600">{usp.desc}</p>
                 </div>
               );
@@ -291,43 +559,40 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* How it works */}
       <section id="hoe-werkt-het" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            Hoe werkt het?
-          </h2>
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Hoe werkt het?</h2>
           <div className="space-y-8">
-            {[
-              {
-                step: "1",
-                title: "Vul het intake-formulier in",
-                desc: "Beantwoord vragen over uw bedrijf, werkzaamheden en huidige veiligheidsmaatregelen. Duurt circa 3 minuten.",
-              },
-              {
-                step: "2",
-                title: "AI genereert uw RI&E",
-                desc: "Onze AI combineert uw antwoorden met de branchespecifieke kennisbank en wetgeving tot een compleet rapport.",
-              },
-              {
-                step: "3",
-                title: "Bekijk de preview",
-                desc: "U ziet direct een preview van uw RI&E. De gratis scan toont de eerste risico's. Upgrade voor het volledige rapport.",
-              },
-              {
-                step: "4",
-                title: "Download uw PDF-rapport",
-                desc: "Na betaling ontvangt u het professionele PDF-rapport met alle risico's, maatregelen en het Plan van Aanpak.",
-              },
-            ].map((s) => (
+            {(sector
+              ? sector.howItWorks.map((item, index) => ({ step: String(index + 1), ...item }))
+              : [
+                  {
+                    step: "1",
+                    title: "Vul het intake-formulier in",
+                    desc: "Beantwoord vragen over uw bedrijf, werkzaamheden en huidige veiligheidsmaatregelen. Duurt circa 3 minuten.",
+                  },
+                  {
+                    step: "2",
+                    title: "AI genereert uw RI&E",
+                    desc: "Onze AI combineert uw antwoorden met de branchespecifieke kennisbank en wetgeving tot een compleet rapport.",
+                  },
+                  {
+                    step: "3",
+                    title: "Bekijk de preview",
+                    desc: "U ziet direct een preview van uw RI&E. De gratis scan toont de eerste risico's. Upgrade voor het volledige rapport.",
+                  },
+                  {
+                    step: "4",
+                    title: "Download uw PDF-rapport",
+                    desc: "Na betaling ontvangt u het professionele PDF-rapport met alle risico's, maatregelen en het Plan van Aanpak.",
+                  },
+                ]).map((s) => (
               <div key={s.step} className="flex gap-6 items-start">
                 <div className="flex-shrink-0 w-10 h-10 bg-brand-600 text-white rounded-full flex items-center justify-center font-bold">
                   {s.step}
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    {s.title}
-                  </h3>
+                  <h3 className="text-lg font-semibold text-gray-900">{s.title}</h3>
                   <p className="text-gray-600 mt-1">{s.desc}</p>
                 </div>
               </div>
@@ -336,34 +601,35 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Mid-page CTA */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-3xl mx-auto text-center">
           <div className="bg-brand-50 rounded-2xl p-8 sm:p-12 border border-brand-100">
             <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-semibold mb-4">
               <AlertTriangle className="h-3.5 w-3.5" />
-              Wist u dat? 72% van het MKB heeft geen geldige RI&E
+              {sector ? sector.midCta.eyebrow : "Wist u dat? 72% van het MKB heeft geen geldige RI&E"}
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
-              Ontdek in 30 seconden uw grootste risico&apos;s
+              {sector ? sector.midCta.title : "Ontdek in 30 seconden uw grootste risico's"}
             </h2>
             <p className="text-gray-600 mb-6 max-w-xl mx-auto">
-              Start met een gratis scan — geen account, geen verplichtingen. U ziet direct welke risico&apos;s in uw branche spelen.
+              {sector
+                ? sector.midCta.text
+                : "Start met een gratis scan — geen account, geen verplichtingen. U ziet direct welke risico's in uw branche spelen."}
             </p>
-            <HeroCTA variant={variant} cta="Start Gratis Risico-Scan →" />
+            <HeroCTA
+              variant={variant}
+              cta={sector ? sector.midCta.button : "Start Gratis Risico-Scan →"}
+              href={sectorHref}
+            />
           </div>
         </div>
       </section>
 
-      {/* Pricing */}
       <section id="prijzen" className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-4">
-            Transparante prijzen
-          </h2>
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-4">Transparante prijzen</h2>
           <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-            Geen verborgen kosten, geen abonnement. Eenmalige betaling voor uw
-            complete RI&E.
+            Geen verborgen kosten, geen abonnement. Eenmalige betaling voor uw complete RI&E.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {pricingTiers.map((tier) => (
@@ -380,34 +646,18 @@ export default async function HomePage() {
                     Meest gekozen
                   </div>
                 )}
-                <h3
-                  className={`text-lg font-semibold ${
-                    tier.highlighted ? "text-white" : "text-gray-900"
-                  }`}
-                >
+                <h3 className={`text-lg font-semibold ${tier.highlighted ? "text-white" : "text-gray-900"}`}>
                   {tier.name}
                 </h3>
                 <div className="mt-2 mb-4">
-                  <span
-                    className={`text-3xl font-extrabold ${
-                      tier.highlighted ? "text-white" : "text-gray-900"
-                    }`}
-                  >
+                  <span className={`text-3xl font-extrabold ${tier.highlighted ? "text-white" : "text-gray-900"}`}>
                     {tier.price}
                   </span>
-                  <span
-                    className={`text-sm ml-1 ${
-                      tier.highlighted ? "text-brand-200" : "text-gray-500"
-                    }`}
-                  >
+                  <span className={`text-sm ml-1 ${tier.highlighted ? "text-brand-200" : "text-gray-500"}`}>
                     eenmalig
                   </span>
                 </div>
-                <p
-                  className={`text-sm mb-6 ${
-                    tier.highlighted ? "text-brand-100" : "text-gray-600"
-                  }`}
-                >
+                <p className={`text-sm mb-6 ${tier.highlighted ? "text-brand-100" : "text-gray-600"}`}>
                   {tier.description}
                 </p>
                 <ul className="space-y-3 mb-8 flex-1">
@@ -423,7 +673,7 @@ export default async function HomePage() {
                   ))}
                 </ul>
                 <Link
-                  href={tier.href}
+                  href={`${tier.href}${activeSector ? `${tier.href.includes("?") ? "&" : "?"}sector=${activeSector}` : ""}`}
                   className={`block text-center py-3 px-4 rounded-lg font-medium text-sm transition ${
                     tier.highlighted
                       ? "bg-white text-brand-600 hover:bg-brand-50"
@@ -438,32 +688,23 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* FAQ */}
       <section id="faq" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            Veelgestelde vragen
-          </h2>
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Veelgestelde vragen</h2>
           <div className="space-y-4">
-            {faqs.map((faq) => (
-              <details
-                key={faq.q}
-                className="group bg-white rounded-xl border border-gray-200 overflow-hidden"
-              >
+            {pageFaqs.map((faq) => (
+              <details key={faq.q} className="group bg-white rounded-xl border border-gray-200 overflow-hidden">
                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
                   <span className="font-medium text-gray-900">{faq.q}</span>
                   <ChevronDown className="h-5 w-5 text-gray-400 group-open:rotate-180 transition-transform" />
                 </summary>
-                <div className="px-6 pb-6 text-gray-600 text-sm leading-relaxed">
-                  {faq.a}
-                </div>
+                <div className="px-6 pb-6 text-gray-600 text-sm leading-relaxed">{faq.a}</div>
               </details>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Disclaimer */}
       <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-3xl mx-auto">
           <div className="border-l-4 border-amber-500 bg-amber-50 p-6 rounded-r-lg">
@@ -475,20 +716,23 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Bottom CTA */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-brand-600">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
-            {v.bottomCta.title}
+            {sector ? sector.bottom.title : v.bottomCta.title}
           </h2>
           <p className="text-brand-100 text-lg mb-8">
-            {v.bottomCta.text}
+            {sector ? sector.bottom.text : v.bottomCta.text}
           </p>
-          <HeroCTA variant={variant} cta={v.bottomCta.button} isBottom />
+          <HeroCTA
+            variant={variant}
+            cta={sector ? sector.bottom.button : v.bottomCta.button}
+            isBottom
+            href={sectorHref}
+          />
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-900 text-gray-400">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
@@ -513,7 +757,6 @@ export default async function HomePage() {
         </div>
       </footer>
 
-      {/* Structured Data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
