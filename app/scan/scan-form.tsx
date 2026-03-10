@@ -22,6 +22,8 @@ const SECTOR_TO_BRANCHE: Record<string, string> = {
   bouw: "bouw",
   transport: "transport",
   horeca: "horeca",
+  retail: "detailhandel",
+  zorg: "zorg",
 };
 
 const MEDEWERKER_RANGES = [
