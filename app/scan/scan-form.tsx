@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Shield, ArrowLeft, ArrowRight, Loader2, Clock } from "lucide-react";
 import Link from "next/link";
+import { trackFormStart, trackFormStep, trackFormSubmit } from "@/lib/analytics";
 
 const BRANCHES = [
   { value: "beveiliging", label: "Beveiliging" },
@@ -120,8 +121,14 @@ export default function ScanForm() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const formStartTracked = useRef(false);
 
   const updateField = (field: string, value: string) => {
+    // Track first interaction as form_start
+    if (!formStartTracked.current) {
+      formStartTracked.current = true;
+      trackFormStart(field === "branche" ? value : form.branche);
+    }
     setForm((prev) => ({ ...prev, [field]: value }));
 
     if (field === "branche") {
@@ -162,6 +169,7 @@ export default function ScanForm() {
   const handleSubmit = async () => {
     setLoading(true);
     setError("");
+    trackFormSubmit(form.branche, form.aantalMedewerkers, preselectedTier);
 
     try {
       const res = await fetch("/api/rie/generate", {
@@ -418,7 +426,12 @@ export default function ScanForm() {
 
           {step < 2 ? (
             <button
-              onClick={() => canProceed() && setStep(step + 1)}
+              onClick={() => {
+                if (canProceed()) {
+                  trackFormStep(step + 1, form.branche, form.aantalMedewerkers);
+                  setStep(step + 1);
+                }
+              }}
               disabled={!canProceed()}
               className="flex items-center gap-2 px-6 py-3 bg-brand-600 text-white rounded-lg font-medium hover:bg-brand-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >

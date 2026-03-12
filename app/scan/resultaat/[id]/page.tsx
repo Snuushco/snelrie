@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -15,6 +15,13 @@ import {
   MessageCircle,
 } from "lucide-react";
 import UpgradePopup from "@/components/UpgradePopup";
+import {
+  trackResultView,
+  trackUpgradeClick,
+  trackCheckoutStart,
+  trackPdfDownload,
+  trackChatOpened,
+} from "@/lib/analytics";
 
 type Report = {
   id: string;
@@ -40,6 +47,25 @@ export default function ResultaatPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const resultViewTracked = useRef(false);
+
+  // Track scan_result_view when report is done
+  useEffect(() => {
+    if (
+      report &&
+      report.status === "DONE" &&
+      !resultViewTracked.current
+    ) {
+      resultViewTracked.current = true;
+      const risicos = report.generatedContent?.risicos || [];
+      trackResultView(
+        report.id,
+        report.branche,
+        report.tier,
+        risicos.length
+      );
+    }
+  }, [report]);
 
   useEffect(() => {
     const poll = async () => {
@@ -62,6 +88,7 @@ export default function ResultaatPage() {
   }, [id]);
 
   const handleCheckout = async (tier: string) => {
+    trackUpgradeClick(tier, id as string);
     setCheckoutLoading(true);
     try {
       const res = await fetch("/api/stripe/checkout", {
@@ -70,6 +97,7 @@ export default function ResultaatPage() {
         body: JSON.stringify({ reportId: id, tier }),
       });
       const { url } = await res.json();
+      trackCheckoutStart(tier, id as string);
       window.location.href = url;
     } catch (e) {
       setCheckoutLoading(false);
@@ -77,6 +105,7 @@ export default function ResultaatPage() {
   };
 
   const handleDownloadPdf = async () => {
+    if (report) trackPdfDownload(report.id, report.tier);
     window.open(`/api/pdf/${id}`, "_blank");
   };
 
