@@ -5,10 +5,7 @@ description: "Wat kost een RI&E in 2026? Actuele prijzen voor MKB (€400 - €5
 date: "2026-03-12"
 author: "SnelRIE Redactie"
 keywords: ["RI&E kosten 2026", "RI&E goedkoop", "digitale RI&E", "RI&E kosten", "RI&E prijs MKB", "goedkope RI&E", "RI&E besparen", "risico-inventarisatie kosten"]
-ogImage: "https://snelrie.nl/og/rie-kosten-2026.png"
 ---
-
-# RI&E kosten 2026: wat betaal je en hoe kan het goedkoper?
 
 De RI&E is verplicht voor élke werkgever in Nederland. Maar de kosten lopen flink uiteen — van een paar honderd euro tot ruim vijfduizend. In dit artikel zetten we de actuele RI&E kosten voor 2026 op een rij, leggen we uit welke factoren je prijs bepalen en delen we vijf bewezen manieren om flink te besparen. Zonder dat je inlevert op kwaliteit.
 

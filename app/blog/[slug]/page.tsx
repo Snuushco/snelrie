@@ -30,12 +30,19 @@ export async function generateMetadata({
       type: "article",
       publishedTime: post.date,
       authors: [post.author],
-      images: post.ogImage ? [post.ogImage] : undefined,
+      images: [
+        post.ogImage ||
+          `https://snelrie.nl/og?title=${encodeURIComponent(post.title)}&description=${encodeURIComponent(post.description.slice(0, 120))}`,
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description: post.description,
+      images: [
+        post.ogImage ||
+          `https://snelrie.nl/og?title=${encodeURIComponent(post.title)}&description=${encodeURIComponent(post.description.slice(0, 120))}`,
+      ],
     },
   };
 }

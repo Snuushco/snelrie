@@ -47,6 +47,8 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
 }
 
 export async function markdownToHtml(markdown: string): Promise<string> {
-  const result = await remark().use(html, { sanitize: false }).process(markdown);
+  // Strip leading H1 — already rendered in the page template header
+  const cleaned = markdown.replace(/^\s*#\s+[^\n]+\n+/, "");
+  const result = await remark().use(html, { sanitize: false }).process(cleaned);
   return result.toString();
 }

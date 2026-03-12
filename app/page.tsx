@@ -951,6 +951,68 @@ export default async function HomePage({
         </div>
       </section>
 
+      {/* Blog Section — Internal Linking for SEO */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center justify-between mb-10">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                Laatste artikelen
+              </h2>
+              <p className="text-gray-600 mt-2">
+                Tips, wet- en regelgeving en praktijkverhalen over de RI&E
+              </p>
+            </div>
+            <Link
+              href="/blog"
+              className="hidden sm:inline-flex items-center gap-1.5 text-brand-600 font-medium hover:text-brand-700 transition text-sm"
+            >
+              Alle artikelen →
+            </Link>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                title: "RI&E kosten 2026: wat betaal je en hoe kan het goedkoper?",
+                description: "Actuele prijzen voor MKB (€400 - €5.000+) en 5 slimme manieren om te besparen.",
+                href: "/blog/rie-kosten-2026-wat-betaal-je-en-hoe-goedkoper",
+                date: "12 maart 2026",
+              },
+              {
+                title: "Boete bij geen RI&E: wat riskeert u?",
+                description: "De Arbeidsinspectie deelt boetes van €4.500+ uit. Zo voorkomt u problemen.",
+                href: "/blog/boete-geen-rie-arbeidsinspectie-handhaving",
+                date: "9 maart 2026",
+              },
+              {
+                title: "RI&E voor kleine bedrijven (<25 medewerkers)",
+                description: "Wat is er verplicht, wanneer mag je toetsing overslaan en hoe pak je het slim aan?",
+                href: "/blog/rie-kleine-bedrijven-onder-25-medewerkers",
+                date: "7 maart 2026",
+              },
+            ].map((post) => (
+              <Link
+                key={post.href}
+                href={post.href}
+                className="group rounded-2xl border border-gray-200 p-6 hover:border-brand-200 hover:shadow-md transition"
+              >
+                <p className="text-xs text-gray-400 mb-2">{post.date}</p>
+                <h3 className="font-semibold text-gray-900 group-hover:text-brand-600 transition mb-2 line-clamp-2">
+                  {post.title}
+                </h3>
+                <p className="text-sm text-gray-600 line-clamp-2">{post.description}</p>
+              </Link>
+            ))}
+          </div>
+          <Link
+            href="/blog"
+            className="sm:hidden mt-6 inline-flex items-center gap-1.5 text-brand-600 font-medium text-sm"
+          >
+            Alle artikelen →
+          </Link>
+        </div>
+      </section>
+
       <footer className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-900 text-gray-400">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
@@ -958,6 +1020,9 @@ export default async function HomePage({
             <span className="text-white font-bold">SnelRIE</span>
           </div>
           <div className="flex gap-6 text-sm">
+            <Link href="/blog" className="hover:text-white transition">
+              Blog
+            </Link>
             <Link href="/privacy" className="hover:text-white transition">
               Privacy
             </Link>
