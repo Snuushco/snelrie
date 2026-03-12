@@ -23,6 +23,20 @@ export const metadata: Metadata = {
     siteName: "SnelRIE",
     locale: "nl_NL",
     type: "website",
+    images: [
+      {
+        url: "https://snelrie.nl/og",
+        width: 1200,
+        height: 630,
+        alt: "SnelRIE — Je RI&E in minuten, niet weken",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SnelRIE — Je RI&E in minuten, niet weken",
+    description: "AI-gestuurde RI&E voor elk bedrijf. Vanaf €99.",
+    images: ["https://snelrie.nl/og"],
   },
 };
 
