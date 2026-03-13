@@ -39,14 +39,7 @@ export async function POST(req: NextRequest) {
       payment_method_types: ["card", "ideal"],
       line_items: [
         {
-          price_data: {
-            currency: "eur",
-            product_data: {
-              name: pricing.label,
-              description: pricing.description,
-            },
-            unit_amount: pricing.price,
-          },
+          price: pricing.stripePriceId,
           quantity: 1,
         },
       ],
@@ -57,6 +50,7 @@ export async function POST(req: NextRequest) {
       metadata: {
         reportId,
         tier,
+        project: "snelrie",
       },
     });
 
