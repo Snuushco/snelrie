@@ -468,6 +468,9 @@ export default async function HomePage({
             <a href="#faq" className="text-sm text-gray-600 hover:text-gray-900">
               FAQ
             </a>
+            <Link href="/checklist" className="text-sm text-gray-600 hover:text-gray-900">
+              Gratis Checklist
+            </Link>
             <Link href="/blog" className="text-sm text-gray-600 hover:text-gray-900">
               Blog
             </Link>

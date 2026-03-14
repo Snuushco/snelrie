@@ -1,0 +1,447 @@
+/**
+ * Generate RI&E Checklist PDF
+ * 
+ * This script creates an HTML file that can be printed to PDF.
+ * Run: node scripts/generate-checklist-pdf.js
+ * Then open the HTML in a browser and print to PDF, or use puppeteer/playwright.
+ * 
+ * The output HTML is saved to public/rie-checklist.html for conversion.
+ * Final PDF should be placed at public/rie-checklist.pdf
+ */
+
+const fs = require("fs");
+const path = require("path");
+
+const checklistItems = [
+  {
+    nr: 1,
+    category: "Basis RI&E",
+    item: "RI&E is opgesteld en actueel (niet ouder dan 3 jaar of bij wijzigingen geactualiseerd)",
+    law: "Arbowet art. 5 lid 1",
+  },
+  {
+    nr: 2,
+    category: "Basis RI&E",
+    item: "Plan van Aanpak is bijgevoegd met concrete maatregelen, deadlines en verantwoordelijken",
+    law: "Arbowet art. 5 lid 3",
+  },
+  {
+    nr: 3,
+    category: "Basis RI&E",
+    item: "RI&E is getoetst door gecertificeerde arbodienst/arbodeskundige (verplicht bij >25 werknemers)",
+    law: "Arbowet art. 14",
+  },
+  {
+    nr: 4,
+    category: "Basis RI&E",
+    item: "Medewerkers zijn geïnformeerd over de RI&E-uitkomsten en het Plan van Aanpak",
+    law: "Arbowet art. 5 lid 6",
+  },
+  {
+    nr: 5,
+    category: "Organisatie",
+    item: "Preventiemedewerker is aangesteld en benoemd (verplicht voor elke werkgever)",
+    law: "Arbowet art. 13",
+  },
+  {
+    nr: 6,
+    category: "Organisatie",
+    item: "BHV-organisatie is ingericht: voldoende BHV'ers, EHBO, brandbestrijding, ontruimingsplan",
+    law: "Arbowet art. 15",
+  },
+  {
+    nr: 7,
+    category: "Organisatie",
+    item: "Arbodienst of bedrijfsarts is gecontracteerd (basiscontract verplicht)",
+    law: "Arbowet art. 14",
+  },
+  {
+    nr: 8,
+    category: "Organisatie",
+    item: "OR/personeelsvertegenwoordiging is betrokken bij de RI&E (instemmingsrecht)",
+    law: "WOR art. 27 lid 1d",
+  },
+  {
+    nr: 9,
+    category: "Werkplekken",
+    item: "Alle werkplekken zijn geïnventariseerd (kantoor, werkplaats, buitenlocaties, voertuigen)",
+    law: "Arbobesluit art. 3.2-3.22",
+  },
+  {
+    nr: 10,
+    category: "Werkplekken",
+    item: "Beeldschermwerk is beoordeeld: ergonomie, beeldschermhouding, werkonderbrekingen",
+    law: "Arbobesluit art. 5.4",
+  },
+  {
+    nr: 11,
+    category: "Gezondheidsrisico's",
+    item: "Fysieke belasting is in kaart gebracht: tillen, duwen, trekken, repeterende bewegingen",
+    law: "Arbobesluit art. 5.2-5.3",
+  },
+  {
+    nr: 12,
+    category: "Gezondheidsrisico's",
+    item: "Gevaarlijke stoffen zijn geregistreerd en blootstellingsbeoordeling is uitgevoerd",
+    law: "Arbobesluit art. 4.2",
+  },
+  {
+    nr: 13,
+    category: "Gezondheidsrisico's",
+    item: "Biologische agentia (infectierisico's) zijn beoordeeld indien van toepassing",
+    law: "Arbobesluit art. 4.84-4.102",
+  },
+  {
+    nr: 14,
+    category: "Psychosociaal",
+    item: "Psychosociale arbeidsbelasting (PSA) is beoordeeld: werkdruk, pesten, agressie, discriminatie",
+    law: "Arbowet art. 3 lid 2",
+  },
+  {
+    nr: 15,
+    category: "Psychosociaal",
+    item: "Beleid tegen ongewenst gedrag is vastgelegd en gecommuniceerd (vertrouwenspersoon, klachtenprocedure)",
+    law: "Arbobesluit art. 2.15",
+  },
+  {
+    nr: 16,
+    category: "Werktijden & diensten",
+    item: "Nacht- en ploegendiensten zijn beoordeeld op gezondheidsrisico's",
+    law: "ATW art. 4:5-4:6",
+  },
+  {
+    nr: 17,
+    category: "Werktijden & diensten",
+    item: "Alleen werken is geïnventariseerd en beoordeeld (extra maatregelen indien nodig)",
+    law: "Arbobesluit art. 3.2",
+  },
+  {
+    nr: 18,
+    category: "Specifieke risico's",
+    item: "Machineveiligheid en arbeidsmiddelen zijn gecontroleerd en gekeurd",
+    law: "Arbobesluit art. 7.2-7.5",
+  },
+  {
+    nr: 19,
+    category: "Specifieke risico's",
+    item: "Persoonlijke beschermingsmiddelen (PBM) zijn beschikbaar en het gebruik is geborgd",
+    law: "Arbobesluit art. 8.1-8.3",
+  },
+  {
+    nr: 20,
+    category: "Evaluatie",
+    item: "Evaluatiemoment is ingepland: jaarlijkse review van RI&E en Plan van Aanpak",
+    law: "Arbowet art. 5 lid 4",
+  },
+];
+
+const categories = [...new Set(checklistItems.map((i) => i.category))];
+
+const html = `<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RI&E Checklist — 20 Controlepunten | SnelRIE</title>
+<style>
+  @page {
+    size: A4;
+    margin: 15mm 18mm;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: #1e293b;
+    line-height: 1.5;
+    background: #fff;
+  }
+  .page { max-width: 210mm; margin: 0 auto; padding: 20px; }
+  
+  /* Header */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 3px solid #2563eb;
+    margin-bottom: 20px;
+  }
+  .logo {
+    font-size: 28px;
+    font-weight: 800;
+    color: #1e293b;
+  }
+  .logo span { color: #2563eb; }
+  .header-right {
+    text-align: right;
+    font-size: 12px;
+    color: #64748b;
+  }
+  
+  /* Title block */
+  .title-block {
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+  .title-block h1 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1e3a8a;
+    margin-bottom: 4px;
+  }
+  .title-block p {
+    font-size: 13px;
+    color: #3b82f6;
+  }
+  
+  /* Company fields */
+  .company-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 24px;
+    margin-bottom: 20px;
+    font-size: 13px;
+  }
+  .field {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    padding: 6px 0;
+    border-bottom: 1px dotted #cbd5e1;
+  }
+  .field label {
+    font-weight: 600;
+    color: #475569;
+    white-space: nowrap;
+    min-width: 100px;
+  }
+  .field .fill {
+    flex: 1;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  
+  /* Category */
+  .category {
+    margin-top: 16px;
+    margin-bottom: 8px;
+  }
+  .category-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #2563eb;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 4px 0;
+    border-bottom: 2px solid #bfdbfe;
+  }
+  
+  /* Checklist table */
+  .checklist-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .checklist-table th {
+    text-align: left;
+    padding: 6px 8px;
+    background: #f8fafc;
+    color: #475569;
+    font-weight: 600;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .checklist-table td {
+    padding: 8px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: top;
+  }
+  .checklist-table tr:hover { background: #fafbfc; }
+  
+  .nr { width: 30px; text-align: center; font-weight: 700; color: #2563eb; }
+  .check-col { width: 32px; text-align: center; }
+  .checkbox {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #94a3b8;
+    border-radius: 3px;
+    vertical-align: middle;
+  }
+  .item-text { color: #1e293b; line-height: 1.4; }
+  .law-ref { 
+    font-size: 10px; 
+    color: #94a3b8; 
+    margin-top: 2px;
+    font-style: italic;
+  }
+  
+  /* Footer */
+  .footer {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 2px solid #e2e8f0;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .footer-box {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 12px;
+  }
+  .footer-box h3 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1e3a8a;
+    margin-bottom: 6px;
+  }
+  .footer-box p { color: #64748b; line-height: 1.5; }
+  
+  .cta-box {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    border-radius: 8px;
+    padding: 16px 20px;
+    color: white;
+    text-align: center;
+  }
+  .cta-box h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .cta-box p { font-size: 12px; opacity: 0.9; margin-bottom: 8px; }
+  .cta-box a {
+    display: inline-block;
+    background: white;
+    color: #2563eb;
+    padding: 8px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 13px;
+  }
+  
+  .disclaimer {
+    font-size: 10px;
+    color: #94a3b8;
+    text-align: center;
+    margin-top: 12px;
+    line-height: 1.4;
+  }
+  
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { padding: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">Snel<span>RIE</span></div>
+    <div class="header-right">
+      snelrie.nl<br>
+      Gratis RI&E Checklist 2026
+    </div>
+  </div>
+
+  <!-- Title -->
+  <div class="title-block">
+    <h1>Zijn jullie RI&E-compliant? — 20-Punten Checklist</h1>
+    <p>Loop deze 20 controlepunten door en ontdek direct waar uw bedrijf staat.</p>
+  </div>
+
+  <!-- Company fields -->
+  <div class="company-fields">
+    <div class="field"><label>Bedrijfsnaam:</label><span class="fill">_______________________</span></div>
+    <div class="field"><label>Datum:</label><span class="fill">___ / ___ / 20___</span></div>
+    <div class="field"><label>Ingevuld door:</label><span class="fill">_______________________</span></div>
+    <div class="field"><label>Functie:</label><span class="fill">_______________________</span></div>
+  </div>
+
+  <!-- Checklist -->
+${categories
+  .map((cat) => {
+    const items = checklistItems.filter((i) => i.category === cat);
+    return `  <div class="category">
+    <div class="category-title">${cat}</div>
+  </div>
+  <table class="checklist-table">
+    <thead>
+      <tr>
+        <th class="nr">#</th>
+        <th>Controlepunt</th>
+        <th class="check-col">✓</th>
+      </tr>
+    </thead>
+    <tbody>
+${items
+  .map(
+    (item) => `      <tr>
+        <td class="nr">${item.nr}</td>
+        <td>
+          <div class="item-text">${item.item}</div>
+          <div class="law-ref">${item.law}</div>
+        </td>
+        <td class="check-col"><span class="checkbox"></span></td>
+      </tr>`
+  )
+  .join("\n")}
+    </tbody>
+  </table>`;
+  })
+  .join("\n")}
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-grid">
+      <div class="footer-box">
+        <h3>📋 Hoe deze checklist te gebruiken</h3>
+        <p>
+          Loop alle 20 punten door met uw preventiemedewerker of HR-afdeling. 
+          Elk niet-aangevinkt punt is een potentieel verbeterpunt voor uw RI&E. 
+          Gebruik het resultaat als input voor uw Plan van Aanpak.
+        </p>
+      </div>
+      <div class="footer-box">
+        <h3>⚠️ Scoring</h3>
+        <p>
+          <strong>18-20 ✓:</strong> Goed op weg — actualiseer jaarlijks.<br>
+          <strong>13-17 ✓:</strong> Aandachtspunten — prioriteer het Plan van Aanpak.<br>
+          <strong>&lt;13 ✓:</strong> Actie nodig — uw RI&E is waarschijnlijk onvolledig.
+        </p>
+      </div>
+    </div>
+
+    <div class="cta-box">
+      <h3>Van checklist naar volledige RI&E?</h3>
+      <p>Genereer in minuten een complete, AI-gestuurde RI&E op maat voor uw branche. Inclusief Plan van Aanpak.</p>
+      <a href="https://snelrie.nl/scan?utm_source=pdf&utm_medium=lead_magnet&utm_campaign=checklist">Start Gratis RI&E Scan →</a>
+    </div>
+
+    <div class="disclaimer">
+      © ${new Date().getFullYear()} SnelRIE — onderdeel van Praesidion Holding B.V. | KvK: 97640794<br>
+      Deze checklist is een hulpmiddel en vervangt geen professioneel arbo-advies. Bij &gt;25 werknemers is toetsing door een gecertificeerde arbodienst verplicht (Arbowet art. 14).
+    </div>
+  </div>
+</div>
+</body>
+</html>`;
+
+// Write HTML
+const outDir = path.join(__dirname, "..", "public");
+fs.writeFileSync(path.join(outDir, "rie-checklist.html"), html, "utf-8");
+console.log("✅ Written: public/rie-checklist.html");
+
+// Also write to workspace documents
+const docDir = path.resolve("C:\\Users\\Gebruiker\\.openclaw\\workspace\\documents\\snelrie\\lead-magnets");
+fs.mkdirSync(docDir, { recursive: true });
+fs.writeFileSync(path.join(docDir, "rie-checklist.html"), html, "utf-8");
+console.log("✅ Written: documents/snelrie/lead-magnets/rie-checklist.html");
+console.log("");
+console.log("📌 Next: Open rie-checklist.html in browser → Print → Save as PDF → public/rie-checklist.pdf");
+
+process.exit(0);
