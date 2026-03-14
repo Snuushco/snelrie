@@ -587,20 +587,20 @@ export default async function HomePage({
             ) : (
               <>
                 <div>
-                  <div className="text-3xl font-extrabold text-brand-600">500+</div>
-                  <div className="text-sm text-gray-500 mt-1">RI&E&apos;s gegenereerd</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-extrabold text-brand-600">4.8/5</div>
-                  <div className="text-sm text-gray-500 mt-1">klantwaardering</div>
+                  <div className="text-3xl font-extrabold text-brand-600">AI</div>
+                  <div className="text-sm text-gray-500 mt-1">gegenereerde RI&E</div>
                 </div>
                 <div>
                   <div className="text-3xl font-extrabold text-brand-600">&lt;5 min</div>
                   <div className="text-sm text-gray-500 mt-1">gemiddelde doorlooptijd</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-extrabold text-brand-600">€1.900+</div>
-                  <div className="text-sm text-gray-500 mt-1">bespaard vs. adviseur</div>
+                  <div className="text-3xl font-extrabold text-brand-600">24/7</div>
+                  <div className="text-sm text-gray-500 mt-1">direct beschikbaar</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-extrabold text-brand-600">Gratis</div>
+                  <div className="text-sm text-gray-500 mt-1">eerste risicoscan</div>
                 </div>
               </>
             )}
@@ -628,7 +628,7 @@ export default async function HomePage({
           </div>
           <div className="flex items-center gap-2">
             <Star className="h-5 w-5 text-amber-400" />
-            <span>Branche-erkend</span>
+            <span>AI-gegenereerd</span>
           </div>
         </div>
       </section>
