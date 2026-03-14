@@ -156,15 +156,12 @@ const sectorConfig: Record<
     risks: string[];
     proofTitle: string;
     proofText: string;
-    targets: string;
-    outreachAngle: string;
     howItWorks: { title: string; desc: string }[];
     midCta: { eyebrow: string; title: string; text: string; button: string };
     bottom: { title: string; text: string; button: string };
     faq: { q: string; a: string };
     trustPoints: string[];
     socialProof: { quote: string; source: string };
-    outreachHook: { subject: string; opener: string; cta: string };
   }
 > = {
   bouw: {
@@ -188,8 +185,6 @@ const sectorConfig: Record<
     proofTitle: "Gebouwd voor bedrijven waar veiligheid per project verschuift",
     proofText:
       "Dezelfde intake die werkt voor een kantoorpand is te vlak voor bouw en installatie. Daarom legt deze variant extra nadruk op hoogtewerk, buitenwerk, tijdelijke werkplekken en praktische maatregelen die direct in een Plan van Aanpak passen.",
-    targets: "Mariël en Jarco van der Poel · Brenda Heuts / Tom Heuts / Paddy Scheilen / Ronnie Scheilen",
-    outreachAngle: "familiebedrijf + projectwerk + RI&E-herijking bij groei of fusie",
     howItWorks: [
       { title: "Selecteer bouw of installatie", desc: "We vullen direct de meest voorkomende risicosignalen voor projectlocaties en buitendienst voor u in." },
       { title: "Beantwoord 3 praktijksituaties", desc: "Hoogtewerk, stoffen en buitenwerk zijn al voorgeselecteerd zodat u alleen hoeft te bevestigen of bij te sturen." },
@@ -218,12 +213,7 @@ const sectorConfig: Record<
     ],
     socialProof: {
       quote: "Voor bouwbedrijven werkt een generieke kantoor-RI&E gewoon niet. Deze variant dwingt direct naar projectrisico's en praktische maatregelen.",
-      source: "CRO-richting uit q110 + targetingfit uit q124",
-    },
-    outreachHook: {
-      subject: "T.a.v. directie/projectleiding — RI&E voor bouw- en installatiewerk zonder lang traject",
-      opener: "Jullie werken met buitendienst, projectlocaties en wisselende risico's. Dan is een generieke RI&E meestal te vlak of te oud.",
-      cta: "Laat verkeer landen op /?sector=bouw en stuur door naar de gratis bouwscan.",
+      source: "SnelRIE bouwpropositie",
     },
   },
   transport: {
@@ -247,8 +237,6 @@ const sectorConfig: Record<
     proofTitle: "Gemaakt voor operatie, niet alleen voor papier",
     proofText:
       "Transportbedrijven hebben vaak al losse veiligheidsafspraken, maar geen compact totaalbeeld dat echt aansluit op chauffeurs, loodsen en planning. Deze variant stuurt de intake precies daarop aan.",
-    targets: "Fred Driessen / Marc Driessen",
-    outreachAngle: "120+ medewerkers + grondwerk/transport/recycling + directie-eigenaars",
     howItWorks: [
       { title: "Kies transport & logistiek", desc: "De scan zet direct de juiste defaults aan voor fysiek werk, nachtwerk en alleen rijden." },
       { title: "Bevestig uw werksituatie", desc: "Met 3 korte keuzes ziet de AI of uw grootste risico's in route, loods of laadperron zitten." },
@@ -277,12 +265,7 @@ const sectorConfig: Record<
     ],
     socialProof: {
       quote: "Transportbedrijven hebben vaak wél veiligheidsafspraken, maar geen compact totaalbeeld voor route, loods en planning tegelijk.",
-      source: "Homepage variant + q124 wave 13 targeting",
-    },
-    outreachHook: {
-      subject: "T.a.v. directie/operations — RI&E voor chauffeurs, laadperron en nachtdiensten",
-      opener: "Bij transport en logistiek verschuift het risico continu tussen route, terrein en planning. Juist daar raakt de RI&E vaak achter op de praktijk.",
-      cta: "Stuur prospects naar /?sector=transport voor een gratis logistieke risico-scan.",
+      source: "SnelRIE transportpropositie",
     },
   },
   horeca: {
@@ -306,8 +289,6 @@ const sectorConfig: Record<
     proofTitle: "Voor hospitalitybedrijven waar de werkvloer elke dag anders voelt",
     proofText:
       "Restaurant, hotel en eventlocaties combineren vaak meerdere werksoorten in één RI&E. Deze variant helpt dat sneller concreet te maken, zonder te blijven hangen in alleen een keukenchecklist.",
-    targets: "Jan-Paul Rutten · Frank Keuten / Daan de Ruiter",
-    outreachAngle: "restaurant/hotel/brouwerij + meerdere werksoorten + directie/eigenaar zichtbaar",
     howItWorks: [
       { title: "Kies horeca", desc: "We zetten direct standaard aannames klaar voor fysieke belasting, schoonmaakmiddelen en avondwerk." },
       { title: "Controleer 3 werksituaties", desc: "Met een paar ja/nee-keuzes past de scan zich aan op keuken, bediening of hospitality-omgeving." },
@@ -336,12 +317,7 @@ const sectorConfig: Record<
     ],
     socialProof: {
       quote: "Hospitalitylocaties combineren keuken, housekeeping, events en avondwerk. Daarvoor is één generiek sjabloon meestal te mager.",
-      source: "q124 shortlist horeca/hospitality",
-    },
-    outreachHook: {
-      subject: "T.a.v. eigenaar/directie — RI&E voor horeca, hotel of hospitality-operatie",
-      opener: "Keuken, bediening en housekeeping vragen elk om andere maatregelen. Dat maakt een actuele RI&E in hospitality vaak lastiger dan hij lijkt.",
-      cta: "Gebruik /?sector=horeca als landingspagina voor hospitality-outreach.",
+      source: "SnelRIE horecapropositie",
     },
   },
   retail: {
@@ -365,8 +341,6 @@ const sectorConfig: Record<
     proofTitle: "Gebouwd voor winkels waar front- en backoffice door elkaar lopen",
     proofText:
       "In retail verschuift risico snel tussen klantcontact, magazijn, bevoorrading en seizoensdrukte. Deze variant maakt die mix concreet zonder dat u eerst een lang traject met adviseur hoeft in te plannen.",
-    targets: "Henri / Diana",
-    outreachAngle: "retail + logistiek + seizoensdrukte + named owners publiek zichtbaar",
     howItWorks: [
       { title: "Kies retail", desc: "De scan zet direct aannames klaar voor winkelvloer, bevoorrading en alleen werken." },
       { title: "Beantwoord 3 korte praktijksituaties", desc: "We sturen op tillen, piekdrukte en kassawerk zodat de eerste risico's meteen scherp worden." },
@@ -391,16 +365,11 @@ const sectorConfig: Record<
     trustPoints: [
       "Retailcopy sluit aan op winkelvloer, magazijn en bevoorrading",
       "Sterk voor tuincentra, detailhandel en multi-activiteit retail",
-      "Direct inzetbaar als landingsvariant voor named-owner outreach",
+      "Direct inzetbaar als sectorspecifieke landingsvariant",
     ],
     socialProof: {
       quote: "Retailbedrijven hebben vaak geen gebrek aan procedures, maar wel aan één actuele RI&E die winkelvloer en logistiek samenpakt.",
-      source: "Decision-maker targeting: Limburgplant / H. Maessen B.V.",
-    },
-    outreachHook: {
-      subject: "T.a.v. eigenaar/directie — RI&E voor winkelvloer, magazijn en bevoorrading",
-      opener: "Bij retail lopen klantcontact, bevoorrading en fysieke belasting dwars door elkaar heen. Daardoor blijft de RI&E vaak te generiek.",
-      cta: "Gebruik /?sector=retail als concrete landingsroute in outreach naar detailhandel en tuincentra.",
+      source: "SnelRIE retailpropositie",
     },
   },
   zorg: {
@@ -424,8 +393,6 @@ const sectorConfig: Record<
     proofTitle: "Gemaakt voor zorgorganisaties waar veiligheid en belastbaarheid samenkomen",
     proofText:
       "Zorg vraagt om meer dan een standaard checklist. Deze variant stuurt direct op tillen, diensten, cliëntcontact en middelengebruik zodat u sneller ziet waar uw actuele RI&E versterking nodig heeft.",
-    targets: "HR, operations, teamleiding of preventiemedewerker in zorgorganisaties",
-    outreachAngle: "zorgwerkvloer + nacht/weekend + fysieke belasting + compliance-hoek",
     howItWorks: [
       { title: "Kies zorg", desc: "De scan activeert direct de juiste uitgangspunten voor tillen, diensten en medische werkomgeving." },
       { title: "Controleer 3 praktijksituaties", desc: "Met korte keuzes past de intake zich aan op fysieke belasting, nachtdiensten en middelengebruik." },
@@ -454,12 +421,7 @@ const sectorConfig: Record<
     ],
     socialProof: {
       quote: "Zorgorganisaties hebben vaak protocollen genoeg, maar missen een compacte RI&E-actualisatie die werkvloer, diensten en belastbaarheid echt samenbrengt.",
-      source: "SnelRIE zorgpropositie + bestaande zorgcontentbasis",
-    },
-    outreachHook: {
-      subject: "T.a.v. HR/teamleiding — RI&E voor zorgteams zonder lang adviestraject",
-      opener: "In zorg draait RI&E niet alleen om papier, maar om tillen, diensten, middelengebruik en belastbaarheid op de werkvloer.",
-      cta: "Laat zorg-outreach landen op /?sector=zorg voor een snelle risico-scan.",
+      source: "SnelRIE zorgpropositie",
     },
   },
 };
@@ -581,8 +543,8 @@ export default async function HomePage({
         <section className="py-8 px-4 sm:px-6 lg:px-8 bg-white border-y border-gray-100">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-5">
-              <p className="text-sm font-semibold uppercase tracking-wide text-brand-700">Sectorspecifieke landingsvarianten</p>
-              <p className="text-gray-600 mt-2">Gebruik deze campagnespecifieke versies voor outreach en advertentietests.</p>
+              <p className="text-sm font-semibold uppercase tracking-wide text-brand-700">Kies uw sector</p>
+              <p className="text-gray-600 mt-2">Bekijk de RI&E-variant die het beste past bij uw branche.</p>
             </div>
             <div className="grid md:grid-cols-3 gap-4">
               {(
@@ -600,7 +562,7 @@ export default async function HomePage({
                     </div>
                     <h2 className="text-lg font-semibold text-gray-900">{item.label}</h2>
                     <p className="text-sm text-gray-600 mt-2">{item.intro}</p>
-                    <div className="mt-4 text-sm font-medium text-brand-700">Bekijk landingsvariant →</div>
+                    <div className="mt-4 text-sm font-medium text-brand-700">Bekijk sectorpagina →</div>
                   </Link>
                 );
               })}
@@ -692,26 +654,9 @@ export default async function HomePage({
               </div>
             </div>
             <div className="space-y-4">
-              <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6">
-                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-3">Outreach-aansluiting</p>
-                <div className="space-y-4 text-sm text-gray-700">
-                  <div>
-                    <div className="font-semibold text-gray-900">Named targets</div>
-                    <div className="mt-1">{sector.targets}</div>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-900">Angle</div>
-                    <div className="mt-1">{sector.outreachAngle}</div>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-900">Volgende stap</div>
-                    <div className="mt-1">Stuur verkeer of outreach naar deze URL: <span className="font-mono text-xs">/?sector={activeSector}</span></div>
-                  </div>
-                </div>
-              </div>
               <div className="bg-brand-50 border border-brand-100 rounded-2xl p-6">
-                <p className="text-xs font-semibold uppercase tracking-wide text-brand-700 mb-3">Social proof / hook</p>
-                <blockquote className="text-sm text-gray-800 leading-relaxed">“{sector.socialProof.quote}”</blockquote>
+                <p className="text-xs font-semibold uppercase tracking-wide text-brand-700 mb-3">Wat gebruikers zeggen</p>
+                <blockquote className="text-sm text-gray-800 leading-relaxed">&ldquo;{sector.socialProof.quote}&rdquo;</blockquote>
                 <div className="mt-3 text-xs text-gray-500">{sector.socialProof.source}</div>
               </div>
             </div>
@@ -744,41 +689,7 @@ export default async function HomePage({
         </div>
       </section>
 
-      {sector && (
-        <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 border-y border-gray-100">
-          <div className="max-w-5xl mx-auto grid lg:grid-cols-[1fr_1fr] gap-6 items-start">
-            <div className="rounded-3xl bg-white border border-gray-200 p-6 sm:p-8">
-              <p className="text-sm font-semibold uppercase tracking-wide text-brand-700 mb-3">Outreach-copy</p>
-              <div className="space-y-4 text-sm text-gray-700">
-                <div>
-                  <div className="font-semibold text-gray-900">Onderwerp</div>
-                  <div className="mt-1">{sector.outreachHook.subject}</div>
-                </div>
-                <div>
-                  <div className="font-semibold text-gray-900">Openingshook</div>
-                  <div className="mt-1">{sector.outreachHook.opener}</div>
-                </div>
-                <div>
-                  <div className="font-semibold text-gray-900">CTA</div>
-                  <div className="mt-1">{sector.outreachHook.cta}</div>
-                </div>
-              </div>
-            </div>
-            <div className="rounded-3xl bg-brand-600 text-white p-6 sm:p-8">
-              <p className="text-sm font-semibold uppercase tracking-wide text-brand-100 mb-3">Campagnepad</p>
-              <h2 className="text-2xl font-bold mb-3">Van outreach naar scan in één sectorflow</h2>
-              <p className="text-brand-50 text-sm leading-relaxed mb-5">
-                Deze variant is gebouwd om cold outreach, LinkedIn posts of ads direct op een herkenbare sectorpagina te laten landen, met CTA-doorgifte naar de juiste scancontext.
-              </p>
-              <div className="space-y-2 text-sm">
-                <div><span className="font-semibold">Landing:</span> <span className="font-mono">/?sector={activeSector}</span></div>
-                <div><span className="font-semibold">Scan:</span> <span className="font-mono">/scan?sector={activeSector}</span></div>
-                <div><span className="font-semibold">Primary CTA:</span> {sector.hero.cta}</div>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
+
 
       <section id="hoe-werkt-het" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="max-w-4xl mx-auto">
@@ -835,7 +746,7 @@ export default async function HomePage({
             <p className="text-gray-600 mb-6 max-w-xl mx-auto">
               {sector
                 ? sector.midCta.text
-                : "Start met een gratis scan — geen account, geen verplichtingen. U ziet direct welke risico's in uw branche spelen."}
+                : "Start met een gratis scan - geen account, geen verplichtingen. U ziet direct welke risico's in uw branche spelen."}
             </p>
             <HeroCTA
               variant={variant}
@@ -954,7 +865,7 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* Blog Section — Internal Linking for SEO */}
+      {/* Blog Section - Internal Linking for SEO */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-between mb-10">
@@ -1037,7 +948,7 @@ export default async function HomePage({
             </a>
           </div>
           <div className="text-sm text-center md:text-right">
-            <p>© {new Date().getFullYear()} SnelRIE — onderdeel van Praesidion Holding B.V.</p>
+            <p>© {new Date().getFullYear()} SnelRIE - onderdeel van Praesidion Holding B.V.</p>
             <p className="text-gray-500 text-xs mt-1">KvK: 97640794 · BTW: NL868152237B01</p>
           </div>
         </div>
