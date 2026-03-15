@@ -110,3 +110,19 @@ model Payment {
   @@index([stripeSessionId])
   @@index([reportId])
 }
+
+model EmailEvent {
+  id        String   @id @default(cuid())
+  type      String   // email.sent, email.delivered, email.opened, email.clicked, email.bounced, email.complained
+  email     String   // recipient email address
+  subject   String?  // email subject (if available)
+  messageId String?  // Resend message ID
+  link      String?  // clicked link (for email.clicked events)
+  metadata  Json?    // full event payload from Resend
+  createdAt DateTime @default(now())
+
+  @@index([email])
+  @@index([type])
+  @@index([messageId])
+  @@index([createdAt])
+}
