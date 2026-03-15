@@ -142,6 +142,319 @@ export const GRATIS_TO_BASIS_DRIP: DripEmail[] = [
   },
 ];
 
+/**
+ * Free-to-paid conversion drip: 5 emails over 14 days.
+ * Targets users who completed a free RI&E scan but haven't upgraded.
+ * More spaced out than GRATIS_TO_BASIS for less aggressive nurturing.
+ */
+export const FREE_TO_PAID_CONVERSION_DRIP: DripEmail[] = [
+  {
+    dayOffset: 1,
+    subject: "Je gratis RI&E is klaar — maar heb je het compleet?",
+    previewText: "Je hebt een goed begin gemaakt. Maar er zijn risico's die je nog niet ziet.",
+    bodyHtml: `
+<div style="font-family:'Segoe UI',system-ui,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a;">
+  <div style="padding:32px 24px;">
+    <p style="font-size:20px;font-weight:700;color:#2563eb;">Snel<span style="color:#1a1a1a;">RIE</span></p>
+
+    <h1 style="font-size:22px;margin:24px 0 12px;">Goed bezig! Maar er is meer.</h1>
+
+    <p>Je hebt je gratis RI&E afgerond — complimenten. Veel bedrijven komen niet eens zo ver.</p>
+
+    <p>Maar de gratis versie toont slechts <strong>3 van de gevonden risico's</strong>. De rest blijft verborgen. En juist die risico's kunnen het verschil maken tussen een veilige werkplek en een boete van de Arbeidsinspectie.</p>
+
+    <p><strong>Wat je mist:</strong></p>
+    <ul style="padding-left:20px;color:#4b5563;">
+      <li>Alle geïdentificeerde risico's met prioriteit</li>
+      <li>Concrete maatregelen per risico</li>
+      <li>Een compleet Plan van Aanpak</li>
+      <li>Downloadbaar PDF-rapport</li>
+    </ul>
+
+    <div style="text-align:center;margin:32px 0;">
+      <a href="{{REPORT_URL}}" style="display:inline-block;background:#2563eb;color:white;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px;">Bekijk je volledige RI&E →</a>
+    </div>
+
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:14px 18px;margin:16px 0 0;text-align:center;">
+      <p style="margin:0;font-size:14px;color:#15803d;">💡 Gebruik code <strong>SNELSTART20</strong> voor 20% korting op je eerste upgrade.</p>
+    </div>
+
+    <p style="color:#6b7280;font-size:13px;">Vanaf €99 — eenmalig, geen abonnement.</p>
+  </div>
+</div>`,
+  },
+  {
+    dayOffset: 3,
+    subject: "De Arbeidsinspectie kijkt naar je volledige RI&E — niet de eerste 3 risico's",
+    previewText: "Wat je in je gratis rapport zag is het topje van de ijsberg.",
+    bodyHtml: `
+<div style="font-family:'Segoe UI',system-ui,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a;">
+  <div style="padding:32px 24px;">
+    <p style="font-size:20px;font-weight:700;color:#2563eb;">Snel<span style="color:#1a1a1a;">RIE</span></p>
+
+    <h1 style="font-size:22px;margin:24px 0 12px;">Wist je dit over je RI&E?</h1>
+
+    <p>De 3 risico's die je in je gratis rapport zag? Dat is het topje van de ijsberg.</p>
+
+    <p>Typisch vinden we bij bedrijven in jouw branche <strong>8 tot 15 risico's</strong>. Hier zijn 3 categorieën die bijna altijd naar voren komen — maar niet in de gratis versie:</p>
+
+    <div style="background:#fef2f2;border-left:4px solid #ef4444;padding:16px;border-radius:0 8px 8px 0;margin:16px 0;">
+      <p style="margin:0;font-weight:600;color:#b91c1c;">1. Psychosociale arbeidsbelasting (PSA)</p>
+      <p style="margin:4px 0 0;font-size:14px;color:#4b5563;">Werkdruk, pesten, agressie — verplicht onderdeel van elke RI&E.</p>
+    </div>
+
+    <div style="background:#fefce8;border-left:4px solid #f59e0b;padding:16px;border-radius:0 8px 8px 0;margin:16px 0;">
+      <p style="margin:0;font-weight:600;color:#a16207;">2. Bedrijfshulpverlening (BHV)</p>
+      <p style="margin:4px 0 0;font-size:14px;color:#4b5563;">Ontruimingsplan, EHBO, brand — de inspectie vraagt hier altijd naar.</p>
+    </div>
+
+    <div style="background:#fef2f2;border-left:4px solid #ef4444;padding:16px;border-radius:0 8px 8px 0;margin:16px 0;">
+      <p style="margin:0;font-weight:600;color:#b91c1c;">3. Fysieke belasting</p>
+      <p style="margin:4px 0 0;font-size:14px;color:#4b5563;">Tillen, beeldschermwerk, repeterende bewegingen — vaak onderschat.</p>
+    </div>
+
+    <div style="text-align:center;margin:32px 0;">
+      <a href="{{REPORT_URL}}" style="display:inline-block;background:#2563eb;color:white;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px;">Ontgrendel alle risico's →</a>
+    </div>
+
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:14px 18px;margin:16px 0 0;text-align:center;">
+      <p style="margin:0;font-size:14px;color:#15803d;">💡 Gebruik code <strong>SNELSTART20</strong> voor 20% korting.</p>
+    </div>
+
+    <p style="color:#6b7280;font-size:13px;">Basis pakket — €99 eenmalig.</p>
+  </div>
+</div>`,
+  },
+  {
+    dayOffset: 5,
+    subject: "Wat andere ondernemers kiezen (en waarom)",
+    previewText: "De meeste MKB-bedrijven kiezen Basis of Professional. Hier is het verschil.",
+    bodyHtml: `
+<div style="font-family:'Segoe UI',system-ui,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a;">
+  <div style="padding:32px 24px;">
+    <p style="font-size:20px;font-weight:700;color:#2563eb;">Snel<span style="color:#1a1a1a;">RIE</span></p>
+
+    <h1 style="font-size:22px;margin:24px 0 12px;">Welk pakket past bij jouw bedrijf?</h1>
+
+    <p>Je hebt al een gratis scan gedaan — goed begin. Maar welk pakket past als je wilt upgraden?</p>
+
+    <table style="width:100%;border-collapse:collapse;margin:20px 0;">
+      <tr style="background:#eff6ff;">
+        <td style="padding:12px;border:1px solid #e5e7eb;font-weight:700;color:#2563eb;">Basis — €99</td>
+        <td style="padding:12px;border:1px solid #e5e7eb;">Volledige RI&E met alle risico's + maatregelen + PDF-rapport</td>
+      </tr>
+      <tr>
+        <td style="padding:12px;border:1px solid #e5e7eb;font-weight:700;color:#2563eb;">Professional — €249</td>
+        <td style="padding:12px;border:1px solid #e5e7eb;">Alles van Basis + Plan van Aanpak + prioritering + deadlines</td>
+      </tr>
+      <tr style="background:#f9fafb;">
+        <td style="padding:12px;border:1px solid #e5e7eb;font-weight:700;color:#2563eb;">Enterprise — €499</td>
+        <td style="padding:12px;border:1px solid #e5e7eb;">Alles van Professional + AI Expert Chat + uitgebreide analyse</td>
+      </tr>
+    </table>
+
+    <p><strong>Tip:</strong> De meeste MKB-bedrijven kiezen <strong>Basis</strong> voor directe compliance, of <strong>Professional</strong> als ze ook een kant-en-klaar Plan van Aanpak willen voor de preventiemedewerker.</p>
+
+    <div style="text-align:center;margin:32px 0;">
+      <a href="https://www.snelrie.nl/#pricing?utm_source=drip&utm_medium=email&utm_campaign=free_to_paid" style="display:inline-block;background:#2563eb;color:white;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px;">Vergelijk pakketten →</a>
+    </div>
+
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:14px 18px;margin:16px 0 0;text-align:center;">
+      <p style="margin:0;font-size:14px;color:#15803d;">💡 Code <strong>SNELSTART20</strong> geeft 20% korting op elk pakket.</p>
+    </div>
+
+    <p style="color:#6b7280;font-size:13px;">Eenmalig bedrag. Geen abonnement.</p>
+  </div>
+</div>`,
+  },
+  {
+    dayOffset: 10,
+    subject: "Een boete kost je meer dan een volledige RI&E",
+    previewText: "De Arbeidsinspectie deelt boetes van €4.500+ uit. Je RI&E upgraden kost €99.",
+    bodyHtml: `
+<div style="font-family:'Segoe UI',system-ui,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a;">
+  <div style="padding:32px 24px;">
+    <p style="font-size:20px;font-weight:700;color:#2563eb;">Snel<span style="color:#1a1a1a;">RIE</span></p>
+
+    <h1 style="font-size:22px;margin:24px 0 12px;">Wat kost niks doen?</h1>
+
+    <p>Even de feiten op een rij:</p>
+
+    <div style="display:flex;gap:16px;margin:20px 0;">
+      <div style="flex:1;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:20px;text-align:center;">
+        <p style="margin:0;font-size:14px;color:#b91c1c;font-weight:600;">Boete Arbeidsinspectie</p>
+        <p style="margin:8px 0 0;font-size:28px;font-weight:700;color:#b91c1c;">€4.500+</p>
+        <p style="margin:4px 0 0;font-size:13px;color:#6b7280;">bij ontbrekende RI&E</p>
+      </div>
+      <div style="flex:1;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:20px;text-align:center;">
+        <p style="margin:0;font-size:14px;color:#15803d;font-weight:600;">Volledige RI&E via SnelRIE</p>
+        <p style="margin:8px 0 0;font-size:28px;font-weight:700;color:#15803d;">€99</p>
+        <p style="margin:4px 0 0;font-size:13px;color:#6b7280;">eenmalig, klaar in minuten</p>
+      </div>
+    </div>
+
+    <p>Je hebt al een gratis scan gedaan — je weet dat er meer risico's zijn. De vraag is: wacht je tot de Arbeidsinspectie langskomt, of regel je het nu voor minder dan een tankbeurt?</p>
+
+    <div style="text-align:center;margin:32px 0;">
+      <a href="{{REPORT_URL}}" style="display:inline-block;background:#2563eb;color:white;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px;">Upgrade nu — vanaf €99 →</a>
+    </div>
+
+    <div style="background:#fef3c7;border:1px solid #fde68a;border-radius:8px;padding:14px 18px;margin:16px 0 0;text-align:center;">
+      <p style="margin:0;font-size:14px;color:#92400e;">⏳ Code <strong>SNELSTART20</strong> geeft je 20% korting — nog geldig.</p>
+    </div>
+  </div>
+</div>`,
+  },
+  {
+    dayOffset: 14,
+    subject: "Laatste herinnering: je RI&E-rapport wacht op je",
+    previewText: "Je gratis rapport is nog beschikbaar. Upgrade naar de volledige versie — zonder abonnement.",
+    bodyHtml: `
+<div style="font-family:'Segoe UI',system-ui,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a;">
+  <div style="padding:32px 24px;">
+    <p style="font-size:20px;font-weight:700;color:#2563eb;">Snel<span style="color:#1a1a1a;">RIE</span></p>
+
+    <h1 style="font-size:22px;margin:24px 0 12px;">Je rapport wacht nog steeds</h1>
+
+    <p>Twee weken geleden heb je een gratis RI&E scan gedaan. Je rapport is er nog — maar niet voor altijd.</p>
+
+    <p>Dit is wat je krijgt bij een upgrade:</p>
+    <ul style="padding-left:20px;color:#4b5563;">
+      <li>✅ Álle risico's — niet alleen de eerste 3</li>
+      <li>✅ Concrete maatregelen per risico</li>
+      <li>✅ Professioneel PDF-rapport voor je dossier</li>
+      <li>✅ Plan van Aanpak (bij Professional/Enterprise)</li>
+    </ul>
+
+    <p><strong>Eenmalig. Geen abonnement. Klaar in minuten.</strong></p>
+
+    <div style="text-align:center;margin:32px 0;">
+      <a href="{{REPORT_URL}}" style="display:inline-block;background:#16a34a;color:white;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px;">Bekijk je volledige RI&E →</a>
+    </div>
+
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:14px 18px;margin:16px 0 0;text-align:center;">
+      <p style="margin:0;font-size:15px;font-weight:600;color:#15803d;">🎁 Laatste kans: <strong>SNELSTART20</strong> voor 20% korting.</p>
+    </div>
+
+    <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;">
+    <p style="color:#9ca3af;font-size:12px;">Je ontvangt deze email omdat je een gratis RI&E hebt gemaakt op SnelRIE. <a href="{{UNSUBSCRIBE_URL}}" style="color:#9ca3af;">Uitschrijven</a></p>
+  </div>
+</div>`,
+  },
+];
+
+/**
+ * Abandoned checkout recovery drip: 3 emails over 3 days.
+ * Targets users who started a checkout/upgrade but didn't complete payment.
+ * Fast cadence — urgency-driven.
+ */
+export const ABANDONED_CHECKOUT_RECOVERY_DRIP: DripEmail[] = [
+  {
+    dayOffset: 0,  // same day, ~1 hour after abandonment ideally
+    subject: "Je bestelling staat nog open — ronden we het af?",
+    previewText: "Je was bijna klaar met je RI&E upgrade. We hebben je plek bewaard.",
+    bodyHtml: `
+<div style="font-family:'Segoe UI',system-ui,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a;">
+  <div style="padding:32px 24px;">
+    <p style="font-size:20px;font-weight:700;color:#2563eb;">Snel<span style="color:#1a1a1a;">RIE</span></p>
+
+    <h1 style="font-size:22px;margin:24px 0 12px;">Je was er bijna!</h1>
+
+    <p>Je was bezig met het upgraden van je RI&E naar <strong>{{TIER_NAME}}</strong>, maar het afrekenproces is niet afgerond.</p>
+
+    <p>Geen zorgen — je plek en je rapport staan nog klaar. Je kunt precies verdergaan waar je gebleven was:</p>
+
+    <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:20px;margin:20px 0;text-align:center;">
+      <p style="margin:0;font-size:14px;color:#1d4ed8;font-weight:600;">Je gekozen pakket</p>
+      <p style="margin:8px 0 4px;font-size:24px;font-weight:700;color:#2563eb;">{{TIER_NAME}} — {{TIER_PRICE}}</p>
+      <p style="margin:0;font-size:13px;color:#6b7280;">Eenmalig, geen abonnement</p>
+    </div>
+
+    <div style="text-align:center;margin:32px 0;">
+      <a href="{{CHECKOUT_URL}}" style="display:inline-block;background:#2563eb;color:white;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px;">Afrekenen afronden →</a>
+    </div>
+
+    <p style="color:#6b7280;font-size:13px;">Problemen bij het afrekenen? Reply op deze email en we helpen je verder.</p>
+  </div>
+</div>`,
+  },
+  {
+    dayOffset: 1,
+    subject: "Nog steeds geïnteresseerd? Hier is 20% korting.",
+    previewText: "We snappen het — soms moet je er even over nadenken. Daarom krijg je 20% korting.",
+    bodyHtml: `
+<div style="font-family:'Segoe UI',system-ui,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a;">
+  <div style="padding:32px 24px;">
+    <p style="font-size:20px;font-weight:700;color:#2563eb;">Snel<span style="color:#1a1a1a;">RIE</span></p>
+
+    <h1 style="font-size:22px;margin:24px 0 12px;">We begrijpen het — timing is alles.</h1>
+
+    <p>Gisteren was je bezig met het upgraden van je RI&E. Misschien was het niet het juiste moment, of had je nog een vraag.</p>
+
+    <p>Daarom geven we je een extra reden om vandaag af te ronden:</p>
+
+    <div style="background:#f0fdf4;border:2px solid #22c55e;border-radius:12px;padding:24px;margin:24px 0;text-align:center;">
+      <p style="margin:0;font-size:13px;color:#15803d;text-transform:uppercase;letter-spacing:1px;font-weight:600;">Exclusieve korting</p>
+      <p style="margin:8px 0;font-size:32px;font-weight:800;color:#15803d;">20% KORTING</p>
+      <p style="margin:0;font-size:16px;color:#1a1a1a;">met code <strong style="background:#dcfce7;padding:4px 12px;border-radius:4px;font-size:18px;">SNELSTART20</strong></p>
+    </div>
+
+    <p><strong>Veelgestelde twijfels:</strong></p>
+    <ul style="padding-left:20px;color:#4b5563;line-height:1.8;">
+      <li><strong>"Is het juridisch geldig?"</strong> — Ja, SnelRIE volgt de Arbowet-vereisten voor RI&E.</li>
+      <li><strong>"Kan ik het uitproberen?"</strong> — Je hebt de gratis scan al gedaan! De upgrade ontgrendelt het volledige rapport.</li>
+      <li><strong>"Is het een abonnement?"</strong> — Nee, eenmalige betaling. Nooit terugkerende kosten.</li>
+    </ul>
+
+    <div style="text-align:center;margin:32px 0;">
+      <a href="{{CHECKOUT_URL}}" style="display:inline-block;background:#16a34a;color:white;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px;">Afrekenen met 20% korting →</a>
+    </div>
+
+    <p style="color:#6b7280;font-size:13px;">Korting is 24 uur geldig. Vragen? Reply op deze mail.</p>
+  </div>
+</div>`,
+  },
+  {
+    dayOffset: 3,
+    subject: "Laatste kans: je RI&E rapport verloopt binnenkort",
+    previewText: "Je gratis rapport wordt niet eeuwig bewaard. Upgrade nu of begin opnieuw.",
+    bodyHtml: `
+<div style="font-family:'Segoe UI',system-ui,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a;">
+  <div style="padding:32px 24px;">
+    <p style="font-size:20px;font-weight:700;color:#2563eb;">Snel<span style="color:#1a1a1a;">RIE</span></p>
+
+    <h1 style="font-size:22px;margin:24px 0 12px;">Je rapport verloopt binnenkort</h1>
+
+    <p>Je hebt een paar dagen geleden een gratis RI&E scan gedaan en was bezig met upgraden. We bewaren je rapport nog even, maar niet voor altijd.</p>
+
+    <div style="background:#fef3c7;border:1px solid #fde68a;border-radius:10px;padding:20px;margin:20px 0;">
+      <p style="margin:0;font-weight:600;color:#92400e;">⚠️ Na deze periode moet je de scan opnieuw invullen</p>
+      <p style="margin:8px 0 0;font-size:14px;color:#78716c;">Upgrade nu en krijg direct toegang tot je volledige rapport met alle risico's, maatregelen en een professioneel PDF-document.</p>
+    </div>
+
+    <p>Wat je krijgt:</p>
+    <ul style="padding-left:20px;color:#4b5563;">
+      <li>✅ Alle risico's — niet alleen de eerste 3</li>
+      <li>✅ Concrete maatregelen per risico</li>
+      <li>✅ Downloadbaar PDF-rapport</li>
+      <li>✅ Compliance-ready voor de Arbeidsinspectie</li>
+    </ul>
+
+    <div style="text-align:center;margin:32px 0;">
+      <a href="{{CHECKOUT_URL}}" style="display:inline-block;background:#dc2626;color:white;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px;">Upgrade nu — laatste kans →</a>
+    </div>
+
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:14px 18px;margin:16px 0 0;text-align:center;">
+      <p style="margin:0;font-size:14px;color:#15803d;">💡 Code <strong>SNELSTART20</strong> geeft je nog steeds 20% korting.</p>
+    </div>
+
+    <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;">
+    <p style="color:#9ca3af;font-size:12px;">Je ontvangt deze email omdat je een RI&E upgrade hebt gestart op SnelRIE. <a href="{{UNSUBSCRIBE_URL}}" style="color:#9ca3af;">Uitschrijven</a></p>
+  </div>
+</div>`,
+  },
+];
+
 export const MKB_BOUW_OUTBOUND_DRIP: DripEmail[] = [
   {
     dayOffset: 1,
