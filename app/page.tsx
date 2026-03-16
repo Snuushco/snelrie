@@ -114,7 +114,7 @@ const genericFaqs = [
   },
   {
     q: "Welke branches worden ondersteund?",
-    a: "We starten met de beveiligingsbranche en breiden snel uit naar horeca, bouw, kinderopvang, schoonmaak, detailhandel, transport en meer. Heeft u een specifieke branche nodig? Neem contact op.",
+    a: "SnelRIE ondersteunt alle gangbare branches: beveiliging, horeca, bouw, kinderopvang, schoonmaak, detailhandel, transport, zorg, logistiek en meer. Onze AI past de RI&E automatisch aan op uw branche en bijbehorende arbocatalogus.",
   },
   {
     q: "Wat zit er in het Plan van Aanpak?",
