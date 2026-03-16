@@ -55,10 +55,10 @@ export default function StartHierPage() {
       <nav className="bg-white border-b border-gray-100">
         <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <Shield className="h-6 w-6 text-blue-600" />
-            <span className="text-lg font-bold">Snel<span className="text-blue-600">RIE</span></span>
+            <Shield className="h-6 w-6 text-brand-600" />
+            <span className="text-lg font-bold">Snel<span className="text-brand-600">RIE</span></span>
           </Link>
-          <Link href="/scan" className="text-sm font-medium text-blue-600 hover:text-blue-700">
+          <Link href="/scan" className="text-sm font-medium text-brand-600 hover:text-brand-700">
             Start Scan →
           </Link>
         </div>
@@ -67,7 +67,7 @@ export default function StartHierPage() {
       <div className="max-w-3xl mx-auto px-4 py-12 sm:py-16">
         {/* Hero */}
         <div className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-brand-50 text-brand-700 rounded-full text-sm font-medium mb-6">
             <Clock className="w-4 h-4" />
             30 minuten naar een bruikbare RI&E
           </div>
@@ -93,21 +93,21 @@ export default function StartHierPage() {
           {steps.map((step) => (
             <div key={step.number} className="relative flex gap-4 sm:gap-6">
               <div className="flex flex-col items-center">
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-600 text-white font-bold text-sm shrink-0">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-brand-600 text-white font-bold text-sm shrink-0">
                   {step.number}
                 </div>
-                {step.number < 6 && <div className="w-0.5 flex-1 bg-blue-100 mt-2" />}
+                {step.number < 6 && <div className="w-0.5 flex-1 bg-brand-100 mt-2" />}
               </div>
               <div className="pb-8 flex-1">
                 <h3 className="text-lg font-semibold text-gray-900">{step.title}</h3>
-                <span className="inline-block text-xs text-blue-600 font-medium bg-blue-50 px-2 py-0.5 rounded mt-1">
+                <span className="inline-block text-xs text-brand-600 font-medium bg-brand-50 px-2 py-0.5 rounded mt-1">
                   {step.time}
                 </span>
                 <p className="mt-2 text-gray-600 text-sm leading-relaxed">{step.description}</p>
                 {step.action && (
                   <Link
                     href={step.action.href}
-                    className="inline-flex items-center gap-1.5 mt-3 text-sm font-medium text-blue-600 hover:text-blue-700"
+                    className="inline-flex items-center gap-1.5 mt-3 text-sm font-medium text-brand-600 hover:text-brand-700"
                   >
                     {step.action.label}
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -119,12 +119,12 @@ export default function StartHierPage() {
         </div>
 
         {/* CTA */}
-        <div className="mt-12 text-center p-8 bg-blue-50 rounded-2xl">
+        <div className="mt-12 text-center p-8 bg-brand-50 rounded-2xl">
           <h2 className="text-2xl font-bold text-gray-900">Klaar om te beginnen?</h2>
           <p className="mt-2 text-gray-600">Geen account nodig. Start direct met je gratis scan.</p>
           <Link
             href="/scan"
-            className="inline-flex items-center gap-2 mt-6 px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center gap-2 mt-6 px-6 py-3 bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 transition-colors"
           >
             Start Gratis Scan
             <ArrowRight className="w-4 h-4" />

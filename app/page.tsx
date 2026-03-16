@@ -8,7 +8,6 @@ import {
   Clock,
   Building2,
   Scale,
-  Star,
   ChevronDown,
   AlertTriangle,
   ShieldAlert,
@@ -25,6 +24,7 @@ import {
 import { variantConfig, type ABVariant } from "@/lib/ab-variants";
 import { ABTracker } from "@/components/ABTracker";
 import { HeroCTA } from "@/components/HeroCTA";
+import { MobileNav } from "@/components/MobileNav";
 
 type SectorKey = "bouw" | "transport" | "horeca" | "retail" | "zorg";
 
@@ -56,8 +56,8 @@ const pricingTiers = [
       "Professioneel PDF-rapport",
       "Wettelijke verwijzingen",
     ],
-    cta: "Bestel Basis RI&E",
-    href: "/scan?tier=BASIS",
+    cta: "Start Gratis Scan",
+    href: "/scan",
     highlighted: false,
     tier: "BASIS",
   },
@@ -72,8 +72,8 @@ const pricingTiers = [
       "Concrete deadlines & verantwoordelijken",
       "Kostenramingen per maatregel",
     ],
-    cta: "Bestel Professional",
-    href: "/scan?tier=PROFESSIONAL",
+    cta: "Start Gratis Scan",
+    href: "/scan",
     highlighted: true,
     tier: "PROFESSIONAL",
   },
@@ -88,8 +88,8 @@ const pricingTiers = [
       "Jaarlijkse update-herinnering",
       "Persoonlijke AI-assistent met volledige kennis van uw RI&E",
     ],
-    cta: "Bestel Enterprise",
-    href: "/scan?tier=ENTERPRISE",
+    cta: "Start Gratis Scan",
+    href: "/scan",
     highlighted: false,
     tier: "ENTERPRISE",
   },
@@ -477,10 +477,11 @@ export default async function HomePage({
           </div>
           <Link
             href={sectorHref}
-            className="bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-brand-700 transition"
+            className="hidden md:inline-block bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-brand-700 transition"
           >
             {sector ? sector.hero.cta : v.hero.cta}
           </Link>
+          <MobileNav sectorHref={sectorHref} ctaLabel={sector ? sector.hero.cta : v.hero.cta} />
         </div>
       </nav>
 
@@ -627,8 +628,8 @@ export default async function HomePage({
             <span>AVG/GDPR Compliant</span>
           </div>
           <div className="flex items-center gap-2">
-            <Star className="h-5 w-5 text-amber-400" />
-            <span>AI-gegenereerd</span>
+            <FileText className="h-5 w-5 text-gray-400" />
+            <span>Gebaseerd op erkende arbocatalogi</span>
           </div>
         </div>
       </section>
@@ -764,7 +765,7 @@ export default async function HomePage({
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-4">Transparante prijzen</h2>
           <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-            Geen verborgen kosten, geen abonnement. Eenmalige betaling voor uw complete RI&E.
+            Iedereen begint met een gratis scan. Na uw scan kiest u het pakket dat past. Geen abonnement, eenmalige betaling.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {pricingTiers.map((tier) => (
@@ -951,8 +952,9 @@ export default async function HomePage({
             </a>
           </div>
           <div className="text-sm text-center md:text-right">
-            <p>© {new Date().getFullYear()} SnelRIE - onderdeel van Praesidion Holding B.V.</p>
+            <p>© {new Date().getFullYear()} SnelRIE — onderdeel van Praesidion Holding B.V.</p>
             <p className="text-gray-500 text-xs mt-1">KvK: 97640794 · BTW: NL868152237B01</p>
+            <p className="text-gray-500 text-xs mt-0.5">Tel: 046 240 2401 · info@snelrie.nl</p>
           </div>
         </div>
       </footer>
