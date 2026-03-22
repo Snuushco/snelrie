@@ -33,7 +33,12 @@ export type FunnelEvent =
   | 'hero_cta_click'
   | 'ab_variant_assigned'
   | 'pdf_download'
-  | 'chat_opened';
+  | 'chat_opened'
+  | 'demo_start'
+  | 'demo_step'
+  | 'demo_preview_view'
+  | 'demo_email_capture'
+  | 'demo_cta_click';
 
 export type EventParams = Record<string, string | number | boolean | undefined>;
 
@@ -142,5 +147,52 @@ export function trackPdfDownload(reportId: string, tier: string) {
 export function trackChatOpened(reportId: string) {
   trackEvent('chat_opened', {
     report_id: reportId,
+  });
+}
+
+// ─── Demo flow tracking ─────────────────────────────────────────────────
+
+/** Demo page loaded / flow started */
+export function trackDemoStart(sector?: string) {
+  trackEvent('demo_start', {
+    form_name: 'demo_flow',
+    sector: sector || 'none',
+  });
+}
+
+/** User progresses to the next demo step */
+export function trackDemoStep(step: number, branche: string, data?: Record<string, string>) {
+  trackEvent('demo_step', {
+    form_name: 'demo_flow',
+    step_number: step,
+    branche,
+    ...data,
+  });
+}
+
+/** AI preview shown after completing all 5 questions */
+export function trackDemoPreviewView(branche: string, score: number) {
+  trackEvent('demo_preview_view', {
+    form_name: 'demo_flow',
+    branche,
+    risk_score: score,
+  });
+}
+
+/** Email captured from demo flow */
+export function trackDemoEmailCapture(branche: string, medewerkers: string) {
+  trackEvent('demo_email_capture', {
+    form_name: 'demo_flow',
+    branche,
+    aantal_medewerkers: medewerkers,
+  });
+}
+
+/** CTA click from demo results page */
+export function trackDemoCtaClick(ctaLabel: string, branche: string) {
+  trackEvent('demo_cta_click', {
+    form_name: 'demo_flow',
+    cta_label: ctaLabel,
+    branche,
   });
 }
