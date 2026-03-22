@@ -11,6 +11,7 @@ export interface BlogPost {
   title: string;
   description: string;
   date: string;
+  dateModified?: string;
   author: string;
   keywords: string[];
   ogImage?: string;
@@ -31,6 +32,7 @@ export function getAllPosts(): BlogPost[] {
         title: data.title,
         description: data.description,
         date: data.date,
+        dateModified: data.dateModified || undefined,
         author: data.author,
         keywords: data.keywords || [],
         ogImage: data.ogImage,

@@ -58,12 +58,18 @@ export default async function BlogPostPage({
 
   const htmlContent = await markdownToHtml(post.content);
 
+  const articleImage =
+    post.ogImage ||
+    `https://snelrie.nl/og?title=${encodeURIComponent(post.title)}&description=${encodeURIComponent(post.description.slice(0, 120))}`;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.title,
     description: post.description,
+    image: articleImage,
     datePublished: post.date,
+    dateModified: post.dateModified || post.date,
     author: {
       "@type": "Organization",
       name: post.author,

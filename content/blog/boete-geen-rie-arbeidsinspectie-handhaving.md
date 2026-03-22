@@ -1,135 +1,133 @@
 ---
-title: "Boete geen RI&E: wat kost het als de Arbeidsinspectie langskomt?"
+title: "Boete geen RI&E: alle sancties en boetebedragen op een rij (2026)"
 slug: "boete-geen-rie-arbeidsinspectie-handhaving"
 description: "Geen RI&E? De Nederlandse Arbeidsinspectie deelt boetes uit tot €50.000. Ontdek welke sancties je riskeert, hoe handhaving werkt, en hoe je boetes voorkomt met een snelle RI&E."
-date: "2026-03-09"
+date: "2026-03-16"
 author: "SnelRIE Redactie"
-keywords: ["boete geen RI&E", "arbeidsinspectie boete", "RI&E boete hoogte", "handhaving arbowet", "boete arbeidsinspectie RI&E", "sancties geen risico-inventarisatie", "NLA inspectie boete 2026", "RI&E handhaving MKB"]
+keywords: ["boete geen RI&E", "arbeidsinspectie boete", "RI&E boete hoogte", "handhaving arbowet", "boete arbeidsinspectie RI&E", "sancties geen risico-inventarisatie", "NLA inspectie boete 2026", "RI&E handhaving MKB", "straf geen RI&E", "boete RI&E 2026"]
 ogImage: "https://snelrie.nl/og/boete-geen-rie.png"
 ---
 
-# Boete geen RI&E: wat kost het als de Arbeidsinspectie langskomt?
+# Boete geen RI&E: alle sancties en boetebedragen op een rij (2026)
 
-De Risico-Inventarisatie en -Evaluatie (RI&E) is niet optioneel — het is **wettelijk verplicht** voor elke werkgever in Nederland. Toch heeft meer dan 50% van de bedrijven geen actuele RI&E. De Nederlandse Arbeidsinspectie (NLA) controleert hier actief op, en de boetes zijn fors. In dit artikel lees je precies welke sancties je riskeert, hoe de handhaving in de praktijk werkt, en hoe je boetes eenvoudig voorkomt.
+De Risico-Inventarisatie en -Evaluatie (RI&E) is niet optioneel — het is **wettelijk verplicht** voor elke werkgever in Nederland. Toch heeft meer dan de helft van alle bedrijven geen actuele RI&E. De Nederlandse Arbeidsinspectie (NLA) controleert hier actief op, en de boetes zijn fors. In dit artikel lees je precies welke sancties je riskeert en hoe je boetes voorkomt.
 
 ## Welke boetes staan er op het ontbreken van een RI&E?
 
-De Arbeidsinspectie hanteert een **gefaseerd boetesysteem**. De hoogte van de boete hangt af van de overtreding, de bedrijfsgrootte en of het een eerste of herhaalde overtreding is.
+De Arbeidsinspectie hanteert een **gefaseerd boetesysteem**. De hoogte hangt af van het type overtreding, de bedrijfsgrootte en of het een eerste of herhaalde overtreding is.
 
-### Overzicht boetebedragen RI&E (2026)
+### Boetebedragen RI&E-overtredingen (2026)
 
-| Overtreding | Boete (indicatief) |
+| Overtreding | Boete eerste keer | Boete bij recidive |
+|---|---|---|
+| Geen RI&E aanwezig | €3.000 – €13.500 | €6.000 – €27.000 |
+| Geen Plan van Aanpak | €3.000 – €13.500 | €6.000 – €27.000 |
+| RI&E niet getoetst (terwijl verplicht) | €1.500 – €4.500 | €3.000 – €9.000 |
+| Geen voorlichting aan werknemers over risico's | €1.500 – €4.500 | €3.000 – €9.000 |
+| RI&E niet actueel (verouderd) | €1.500 – €4.500 | €3.000 – €9.000 |
+| Ernstig gevaar + geen RI&E | Tot €50.000+ | Strafrechtelijke vervolging mogelijk |
+
+> ⚠️ Bij een **dodelijk arbeidsongeval** waarbij blijkt dat er geen RI&E was, kunnen boetes oplopen tot tienduizenden euro's. In extreme gevallen volgt strafrechtelijke vervolging van de werkgever.
+
+### Hoe bepaalt de NLA de boetehoogte?
+
+De Arbeidsinspectie houdt rekening met:
+
+1. **Bedrijfsgrootte** — grotere bedrijven krijgen hogere boetes
+2. **Ernst van de overtreding** — direct gevaar weegt zwaarder
+3. **Verwijtbaarheid** — wist de werkgever van het risico?
+4. **Recidive** — herhaalde overtredingen worden verdubbeld
+5. **Maatregelen na constatering** — snel herstellen kan boeteverlagend werken
+
+## Hoe verloopt een inspectie van de Arbeidsinspectie?
+
+### Aanleiding voor een inspectie
+
+De NLA voert inspecties uit op basis van:
+
+- **Programmatische inspecties** — sectorgericht (bouw, horeca, zorg zijn prioriteitssectoren)
+- **Meldingen** — klachten van werknemers, vakbonden of derden
+- **Arbeidsongevallen** — elk ernstig ongeval wordt onderzocht
+- **Hercontroles** — follow-up na eerdere overtredingen
+- **NLA verscherping 2026** — extra capaciteit voor RI&E-controles ([lees meer](/blog/nla-verscherping-rie-controles-2026))
+
+### Wat controleert de inspecteur?
+
+Bij een bezoek vraagt de inspecteur standaard naar:
+
+1. **De RI&E** — is deze aanwezig, volledig en actueel?
+2. **Het Plan van Aanpak** — zijn er concrete maatregelen met deadlines?
+3. **Toetsingsverslag** — is de RI&E getoetst door een arbodeskundige (indien verplicht)?
+4. **Voorlichting** — zijn werknemers geïnformeerd over risico's?
+5. **Preventiemedewerker** — is er een preventiemedewerker aangewezen?
+6. **BHV-organisatie** — is de bedrijfshulpverlening op orde?
+
+### Na de inspectie: wat kan er gebeuren?
+
+| Uitkomst | Wat betekent dit? |
 |---|---|
-| Geen RI&E aanwezig | €3.000 – €13.500 |
-| Geen Plan van Aanpak | €3.000 – €13.500 |
-| RI&E niet getoetst door arbodeskundige | €1.500 – €4.500 |
-| Geen voorlichting aan werknemers | €1.500 – €4.500 |
-| Herhaalovertreding (recidive) | Verdubbeling boetebedrag |
-| Ernstig gevaar + geen RI&E | Tot €50.000+ |
+| **Geen overtredingen** | Compliment — je bent in orde |
+| **Waarschuwing** | Lichte overtreding, kans om te herstellen |
+| **Eis tot naleving** | Je moet binnen een gestelde termijn voldoen |
+| **Boeterapport** | Formele overtreding, boete volgt |
+| **Stillegging** | Bij direct gevaar wordt het werk stilgelegd |
 
-Bij **ernstige overtredingen** — bijvoorbeeld een dodelijk ongeval waarbij blijkt dat er geen RI&E was — lopen boetes op tot tienduizenden euro's. In extreme gevallen kan er zelfs strafrechtelijke vervolging plaatsvinden.
+## De verborgen kosten van géén RI&E
 
-> **Belangrijk:** De boetebedragen worden periodiek geïndexeerd. Check altijd de meest recente [boetenormbedragen van de Arbeidsinspectie](https://www.nlarbeidsinspectie.nl) voor actuele cijfers.
+Naast de directe boete zijn er meer financiële risico's:
 
-## Hoe werkt handhaving door de Arbeidsinspectie?
+- **Hogere verzekeringspremies** — verzekeraars vragen steeds vaker naar de RI&E
+- **Aansprakelijkheid bij ongevallen** — zonder RI&E sta je juridisch zwak
+- **Gemiste opdrachten** — opdrachtgevers eisen steeds vaker bewijs van arbobeleid (VCA, aanbestedingen)
+- **Personeelsverloop** — onveilige werkomstandigheden leiden tot ziekteverzuim en vertrek
+- **Reputatieschade** — een stillegging of boete is openbaar
 
-De Nederlandse Arbeidsinspectie voert jaarlijks duizenden inspecties uit. Hierbij wordt onderscheid gemaakt tussen:
+## Hoe voorkom je een boete?
 
-### 1. Proactieve inspecties
+De oplossing is simpel: **zorg dat je een actuele, volledige RI&E hebt**. Dit hoeft geen wekenlang traject te zijn.
 
-De NLA selecteert sectoren en bedrijven op basis van **risicoanalyses**. Branches met veel arbeidsongevallen of bekende risico's — zoals [bouw](/blog/rie-bouwplaats-veiligheid-bouwsector), [transport en logistiek](/blog/rie-transport-logistiek-warehouse) en [horeca](/blog/rie-in-de-horeca) — worden vaker gecontroleerd.
+### Minimale vereisten om boetevrij te zijn
 
-### 2. Reactieve inspecties
+- ✅ RI&E is **aanwezig** en **actueel** (aangepast na bedrijfswijzigingen)
+- ✅ **Plan van Aanpak** met concrete maatregelen, verantwoordelijken en deadlines
+- ✅ RI&E is **getoetst** door arbodeskundige (indien >25 werknemers of geen erkend instrument)
+- ✅ Werknemers zijn **geïnformeerd** over risico's en maatregelen
+- ✅ Er is een **preventiemedewerker** aangewezen
 
-Na een **arbeidsongeval**, klacht van een werknemer, of melding door een ondernemingsraad komt de inspectie langs. Bij een ernstig ongeval is de werkgever wettelijk verplicht dit te melden. Blijkt dan dat er geen RI&E is? Dan is de boete vrijwel gegarandeerd.
+### De snelste route naar compliance
 
-### 3. Vervolginspecties
+Met [SnelRIE](https://snelrie.nl) heb je binnen **5 minuten** een volledige, professionele RI&E:
 
-Na een eerste overtreding komt de inspectie terug om te controleren of je de situatie hebt hersteld. Is er nog steeds geen RI&E? Dan volgt een **verhoogde boete** (recidive) die kan oplopen tot het dubbele.
+- AI-gestuurde risicoscan afgestemd op jouw branche
+- Automatisch gegenereerd Plan van Aanpak
+- Professioneel PDF-rapport voor de Arbeidsinspectie
+- Vanaf **€99** — goedkoper dan de laagste boete
 
-## Wat controleert de inspecteur precies?
+> 💡 Een RI&E via SnelRIE kost minder dan 5% van de boete die je riskeert zonder RI&E.
 
-Bij een inspectie vraagt de Arbeidsinspectie doorgaans naar:
+👉 [Start je gratis RI&E-scan](https://snelrie.nl/scan) en wees binnen 5 minuten compliant.
 
-1. **De RI&E zelf** — Is er een schriftelijk rapport met alle geïnventariseerde risico's?
-2. **Het Plan van Aanpak** — Zijn er concrete maatregelen beschreven met deadlines en verantwoordelijken? Lees meer over het [opstellen van een Plan van Aanpak](/blog/plan-van-aanpak-rie-opstellen-stappen).
-3. **De toetsing** — Is de RI&E getoetst door een gecertificeerde arbodeskundige? Voor bedrijven met minder dan 25 medewerkers geldt een [verlicht regime](/blog/rie-kleine-bedrijven-onder-25-medewerkers).
-4. **Actualiteit** — Is de RI&E recent genoeg? Een RI&E van vijf jaar oud zonder updates voldoet niet.
-5. **Voorlichting** — Zijn medewerkers geïnformeerd over de risico's en maatregelen? Meer hierover in ons artikel over [medewerkers betrekken bij de RI&E](/blog/medewerkers-betrekken-bij-rie).
+## Veelgestelde vragen
 
-Wil je weten of je klaar bent voor een inspectie? Gebruik dan onze [RI&E compliance check](/blog/rie-compliance-check-klaar-voor-inspectie) of de uitgebreide [audit voorbereidingschecklist](/blog/rie-audit-voorbereiding-checklist-inspectie).
+### Krijg ik altijd een boete als ik geen RI&E heb?
 
-## De verborgen kosten van geen RI&E
-
-De boete is slechts het topje van de ijsberg. Bedrijven zonder RI&E lopen ook andere risico's:
-
-### Hogere verzekeringskosten
-Verzekeraars controleren steeds vaker of een werkgever een actuele RI&E heeft. Zonder RI&E kan je **aansprakelijkheidsverzekering** weigeren uit te keren bij een bedrijfsongeval.
-
-### Aansprakelijkheid bij ongevallen
-Zonder RI&E sta je juridisch zwak als een werknemer letselschade claimt. De rechter beschouwt het ontbreken van een RI&E als **bewijs van nalatigheid**. Dit kan leiden tot schadevergoedingen van honderdduizenden euro's.
-
-### Reputatieschade
-Boetes van de Arbeidsinspectie worden **openbaar gepubliceerd**. Klanten, opdrachtgevers en potentiële werknemers kunnen zien dat je bedrijf in overtreding was. In sectoren waar [aanbestedingen](/blog/veiligheid-in-aanbestedingen-via-deadline-juli-2026) een rol spelen, kan dit fataal zijn.
-
-### ROI van wél een RI&E
-De kosten van een RI&E zijn minimaal vergeleken met de risico's. Lees onze analyse van de [ROI van een RI&E](/blog/rie-audit-roi-besparing-noncompliance) en ontdek [wat een RI&E kost](/blog/wat-kost-een-rie-prijzen-vergelijken-2026).
-
-## Welke sectoren worden het vaakst gecontroleerd?
-
-De Arbeidsinspectie richt zich in 2026 extra op:
-
-- **Bouwsector** — Hoog risico op valongevallen en blootstelling aan [gevaarlijke stoffen](/blog/rie-eisen-verscherpt-2026-gevaarlijke-stoffen-psa). Lees meer over de [RI&E voor bouwplaatsen](/blog/rie-bouwplaats-veiligheid-bouwsector).
-- **Transport & logistiek** — Zwaar tilwerk, lange werktijden. Zie onze [sector-specifieke gids](/blog/rie-transport-logistiek-warehouse).
-- **Horeca** — Werkdruk, agressie, onveilige keukens. Bekijk de [RI&E in de horeca](/blog/rie-in-de-horeca).
-- **Zorg** — Psychosociale belasting, agressie, fysieke belasting. Meer in onze [zorgsector gids](/blog/rie-zorgsector-ziekenhuis-verpleeghuis).
-- **Retail** — Agressie, ergonomie, werkdruk. Lees het artikel over de [RI&E in retail](/blog/rie-retail-sector).
-- **Uitzendbranche** — Complexe verantwoordelijkheidsverdeling. Check de [regels voor uitzendkrachten en flexwerkers](/blog/rie-uitzendkrachten-flexwerkers-verplichtingen).
-
-## Hoe voorkom je een boete? 5 concrete stappen
-
-### Stap 1: Controleer of je een actuele RI&E hebt
-
-Heb je geen RI&E, of is die ouder dan 3 jaar zonder update? Dan moet je actie ondernemen. Bekijk een [RI&E voorbeeld](/blog/rie-voorbeeld-goede-risico-inventarisatie) om te zien wat een goede RI&E bevat.
-
-### Stap 2: Maak je RI&E (snel)
-
-Je hoeft er geen maanden over te doen. Met moderne [digitale RI&E tools](/blog/digitale-rie-voordelen) maak je een complete RI&E in een fractie van de tijd. Vergelijk de opties in [RI&E software vs. spreadsheet](/blog/rie-software-vs-spreadsheet).
-
-### Stap 3: Stel een Plan van Aanpak op
-
-Elke RI&E moet vergezeld gaan van een [Plan van Aanpak](/blog/plan-van-aanpak-rie-opstellen-stappen). Hierin beschrijf je welke maatregelen je neemt, wie verantwoordelijk is, en wanneer het klaar moet zijn.
-
-### Stap 4: Laat je RI&E toetsen
-
-Bedrijven met meer dan 25 medewerkers moeten de RI&E laten toetsen door een gecertificeerde arbodeskundige. [Kleine bedrijven](/blog/rie-kleine-bedrijven-onder-25-medewerkers) kunnen vaak gebruikmaken van een erkend RI&E-instrument en zijn vrijgesteld van toetsing.
-
-### Stap 5: Informeer je medewerkers
-
-Zorg dat alle werknemers op de hoogte zijn van de geïdentificeerde risico's en de genomen maatregelen. [Betrek je medewerkers actief](/blog/medewerkers-betrekken-bij-rie) bij het proces.
-
-## Veelgestelde vragen over RI&E-boetes
-
-### Kan de Arbeidsinspectie zomaar binnenvallen?
-
-Ja. Inspecteurs van de NLA hebben het **recht om zonder afspraak** bedrijven te betreden. Ze mogen documenten inzien, werknemers ondervragen en de werkomgeving inspecteren. Lees hoe je je het beste kunt [voorbereiden op een Arbo-inspectie](/blog/arbo-inspectie-voorbereiding-mkb).
-
-### Geldt de boete ook voor ZZP'ers?
-
-Nee, ZZP'ers zonder personeel zijn uitgezonderd. Maar zodra je één werknemer in dienst hebt — ook een stagiair of uitzendkracht — [is de RI&E verplicht](/blog/rie-verplicht-wat-werkgevers-moeten-weten-2026).
+Niet per se. Bij een eerste constatering kan de inspecteur een waarschuwing of eis tot naleving geven. Maar bij ernstige risico's, een ongeval, of recidive volgt direct een boeterapport.
 
 ### Kan ik bezwaar maken tegen een boete?
 
-Ja, je kunt binnen zes weken bezwaar aantekenen bij de Minister van SZW. Vervolgens is beroep mogelijk bij de bestuursrechter. In de praktijk worden boetes zelden volledig teruggedraaid als er daadwerkelijk geen RI&E was.
+Ja. Je kunt binnen 6 weken bezwaar maken bij de NLA. Als de boete onterecht of disproportioneel is, kan deze worden verlaagd of ingetrokken.
 
-### Hoe lang heb ik om een RI&E op te stellen na een waarschuwing?
+### Geldt de RI&E-plicht ook voor ZZP'ers?
 
-De inspecteur stelt een **termijn** waarbinnen je de overtreding moet herstellen. Dit is doorgaans 4 tot 12 weken. Haal je die deadline niet? Dan volgt de boete.
+Nee, de RI&E-plicht geldt alleen voor **werkgevers** — dus bedrijven met werknemers (inclusief uitzendkrachten en stagiairs). ZZP'ers zonder personeel zijn vrijgesteld.
 
-## Voorkom boetes: start vandaag met je RI&E
+### Telt een verouderde RI&E als "geen RI&E"?
 
-Een RI&E opstellen hoeft niet ingewikkeld of duur te zijn. Of je nu kiest voor [zelf doen of uitbesteden](/blog/rie-uitbesteden-vs-zelf-doen-mkb), het belangrijkste is dat je **nu** begint. De kosten van een RI&E vallen in het niet bij de potentiële boetes en aansprakelijkheidsrisico's.
+Een RI&E die niet meer aansluit bij de huidige situatie (nieuwe machines, andere processen, verhuisd) kan door de inspecteur als **onvoldoende** worden beoordeeld. Dit levert dezelfde overtredingen op.
 
-Wil je weten wat de [5 grootste risico's zijn die MKB'ers over het hoofd zien](/blog/5-grootste-risicos-mkb-over-hoofd-zien)? Of hoe een RI&E je bedrijf juist [geld bespaart](/blog/hoe-rie-besparing-oplevert-roi-rie-efficiency)?
+## Gerelateerde artikelen
 
-**[Start nu je RI&E met SnelRIE →](/start-hier)** en wees binnen enkele uren compliant. Geen gedoe, geen boetes.
+- [Brief van de Arbeidsinspectie ontvangen? Zo handel je](/blog/brief-arbeidsinspectie-ontvangen-rie-regelen)
+- [RI&E zelf maken: compleet stappenplan](/blog/rie-zelf-maken-stappenplan-werkgevers)
+- [NLA verscherping controles 2026](/blog/nla-verscherping-rie-controles-2026)
+- [RI&E toetsing: wanneer verplicht?](/blog/rie-toetsing-wanneer-verplicht-hoe-regelen)
