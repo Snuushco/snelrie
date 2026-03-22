@@ -514,7 +514,105 @@ const PREVIEW_DATA: Record<string, PreviewData> = {
 };
 
 /* ------------------------------------------------------------------ */
-/* Animated typing for AI preview                                      */
+/* Streaming AI preview hook                                           */
+/* ------------------------------------------------------------------ */
+
+function useStreamingSummary() {
+  const [text, setText] = useState("");
+  const [done, setDone] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [ttft, setTtft] = useState<number | null>(null);
+  const abortRef = useState<AbortController | null>(null);
+
+  const startStream = async (answers: Answers) => {
+    // Abort any existing stream
+    if (abortRef[0]) abortRef[0].abort();
+    const controller = new AbortController();
+    abortRef[1](controller);
+
+    setText("");
+    setDone(false);
+    setLoading(true);
+    setTtft(null);
+
+    const clientStart = performance.now();
+
+    try {
+      const res = await fetch("/api/demo/preview", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          branche: answers.branche,
+          medewerkers: answers.medewerkers,
+          fysiekWerk: answers.fysiekWerk,
+          gevaarlijkeStoffen: answers.gevaarlijkeStoffen,
+          nachtwerk: answers.nachtwerk,
+        }),
+        signal: controller.signal,
+      });
+
+      if (!res.ok || !res.body) {
+        setDone(true);
+        setLoading(false);
+        return;
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let firstText = true;
+
+      while (true) {
+        const { done: readerDone, value } = await reader.read();
+        if (readerDone) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() || "";
+
+        for (const line of lines) {
+          if (!line.startsWith("data: ")) continue;
+          const payload = line.slice(6).trim();
+          if (payload === "[DONE]") {
+            setDone(true);
+            setLoading(false);
+            return;
+          }
+
+          try {
+            const parsed = JSON.parse(payload);
+            if (parsed.meta?.ttft) {
+              setTtft(parsed.meta.ttft);
+            }
+            if (parsed.text) {
+              if (firstText) {
+                const clientTtft = Math.round(performance.now() - clientStart);
+                if (!ttft) setTtft(clientTtft);
+                firstText = false;
+              }
+              setText((prev) => prev + parsed.text);
+            }
+          } catch {
+            // skip
+          }
+        }
+      }
+
+      setDone(true);
+      setLoading(false);
+    } catch (e: any) {
+      if (e.name !== "AbortError") {
+        setDone(true);
+        setLoading(false);
+      }
+    }
+  };
+
+  return { text, done, loading, ttft, startStream };
+}
+
+/* ------------------------------------------------------------------ */
+/* Animated typing fallback for recommendation text                    */
 /* ------------------------------------------------------------------ */
 
 function useTypewriter(text: string, speed = 18) {
@@ -638,10 +736,13 @@ export default function DemoFlow() {
   }, []);
 
   const preview = PREVIEW_DATA[answers.branche || "overig"] || PREVIEW_DATA.overig;
-  const { displayed: typedSummary, done: summaryDone } = useTypewriter(
-    showingPreview ? preview.samenvatting : "",
-    12
-  );
+  const {
+    text: streamedSummary,
+    done: summaryDone,
+    loading: summaryLoading,
+    ttft: summaryTtft,
+    startStream,
+  } = useStreamingSummary();
 
   const goNext = () => {
     if (step < 4) {
@@ -664,6 +765,8 @@ export default function DemoFlow() {
       trackDemoPreviewView(answers.branche || "overig", previewData.score);
       setStep(5);
       setShowingPreview(true);
+      // Start streaming AI summary
+      startStream(answers);
     }
   };
 
@@ -936,16 +1039,21 @@ export default function DemoFlow() {
                 <ScoreBadge score={preview.score} />
               </div>
 
-              {/* AI Summary with typing effect */}
+              {/* AI Summary with streaming */}
               <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-8 h-8 bg-brand-100 rounded-lg flex items-center justify-center">
                     <Sparkles className="h-4 w-4 text-brand-600" />
                   </div>
                   <span className="text-sm font-semibold text-gray-900">AI Samenvatting</span>
+                  {summaryTtft !== null && (
+                    <span className="text-xs text-gray-400 ml-auto">
+                      {summaryTtft < 1000 ? `${summaryTtft}ms` : `${(summaryTtft / 1000).toFixed(1)}s`} first token
+                    </span>
+                  )}
                 </div>
                 <p className="text-gray-700 leading-relaxed">
-                  {typedSummary}
+                  {streamedSummary || (summaryLoading ? "" : preview.samenvatting)}
                   {!summaryDone && <span className="animate-pulse text-brand-600">▊</span>}
                 </p>
               </div>
@@ -1056,6 +1164,12 @@ export default function DemoFlow() {
                 >
                   ← Opnieuw beginnen met andere antwoorden
                 </button>
+                {/* Debug: timing info (visible in dev) */}
+                {process.env.NODE_ENV === "development" && summaryTtft !== null && (
+                  <p className="text-xs text-gray-300 mt-2">
+                    TTFT: {summaryTtft}ms | Target: &lt;1000ms | {summaryTtft < 1000 ? "✅ PASS" : "⚠️ OVER TARGET"}
+                  </p>
+                )}
               </div>
             </div>
           )}
