@@ -23,6 +23,11 @@
   }
 }
 
+/* Safe area for iOS notch/home indicator on sticky CTA */
+.safe-bottom {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
 .blur-content {
   filter: blur(6px);
   user-select: none;

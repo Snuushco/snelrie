@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { StickyMobileCTA } from "@/components/StickyMobileCTA";
 import {
   Shield,
   ArrowRight,
@@ -599,8 +600,10 @@ export default function VergelijkenPage() {
         </div>
       </section>
 
+      <StickyMobileCTA href="/scan" label="Start Gratis Scan" />
+
       {/* Footer */}
-      <footer className="bg-white border-t border-gray-100 py-8">
+      <footer className="bg-white border-t border-gray-100 py-8 pb-24 md:pb-8">
         <div className="max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500">
           <Link href="/" className="flex items-center gap-2">
             <Shield className="h-5 w-5 text-brand-600" />

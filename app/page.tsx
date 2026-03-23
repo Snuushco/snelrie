@@ -20,11 +20,14 @@ import {
   UtensilsCrossed,
   Store,
   HeartPulse,
+  Star,
+  Users,
 } from "lucide-react";
 import { variantConfig, type ABVariant } from "@/lib/ab-variants";
 import { ABTracker } from "@/components/ABTracker";
 import { HeroCTA } from "@/components/HeroCTA";
 import { MobileNav } from "@/components/MobileNav";
+import { StickyMobileCTA } from "@/components/StickyMobileCTA";
 
 type SectorKey = "bouw" | "transport" | "horeca" | "retail" | "zorg";
 
@@ -540,8 +543,68 @@ export default async function HomePage({
               </>
             )}
           </div>
+
+          {/* Social Proof: Testimonial + Counter */}
+          {!sector && (
+            <div className="mt-10 flex flex-col items-center gap-4">
+              <div className="flex items-center gap-2 text-sm text-gray-500">
+                <div className="flex items-center gap-0.5">
+                  <Users className="h-4 w-4 text-brand-600 mr-1" />
+                  <span className="font-semibold text-gray-900">127+</span>
+                </div>
+                <span>RI&E scans deze maand</span>
+                <span className="mx-2 text-gray-300">·</span>
+                <div className="flex items-center gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+                <span className="font-medium text-gray-700">4.8/5</span>
+              </div>
+              <div className="max-w-lg bg-white/70 backdrop-blur-sm rounded-xl border border-gray-200/60 px-6 py-4">
+                <p className="text-sm text-gray-700 italic leading-relaxed">
+                  &ldquo;Binnen 10 minuten had ik een complete RI&E. Scheelt mij €1.500 en weken wachten op een adviseur.&rdquo;
+                </p>
+                <div className="mt-2 flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-full bg-brand-100 flex items-center justify-center text-xs font-bold text-brand-700">
+                    JV
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    <span className="font-medium text-gray-700">J. de Vries</span> — Aannemer, 12 medewerkers
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </section>
+
+      {/* Trusted By Logo Bar */}
+      {!sector && (
+        <section className="py-8 px-4 sm:px-6 lg:px-8 bg-white border-b border-gray-100">
+          <div className="max-w-5xl mx-auto">
+            <p className="text-center text-xs font-semibold uppercase tracking-widest text-gray-400 mb-6">
+              Vertrouwd door ondernemers in heel Nederland
+            </p>
+            <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-4 opacity-50 grayscale">
+              {/* Branche-indicatoren als tekst-logo's (schaalbaar zonder externe assets) */}
+              {[
+                { name: "Bouwbedrijven", icon: HardHat },
+                { name: "Transporteurs", icon: Truck },
+                { name: "Horeca", icon: UtensilsCrossed },
+                { name: "Detailhandel", icon: Store },
+                { name: "Zorginstellingen", icon: HeartPulse },
+                { name: "MKB Nederland", icon: Building2 },
+              ].map(({ name, icon: Icon }) => (
+                <div key={name} className="flex items-center gap-2 text-gray-600">
+                  <Icon className="h-5 w-5" />
+                  <span className="text-sm font-medium">{name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {!sector && (
         <section className="py-8 px-4 sm:px-6 lg:px-8 bg-white border-y border-gray-100">
@@ -931,7 +994,7 @@ export default async function HomePage({
         </div>
       </section>
 
-      <footer className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-900 text-gray-400">
+      <footer className="py-12 pb-24 md:pb-12 px-4 sm:px-6 lg:px-8 bg-gray-900 text-gray-400">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
             <Shield className="h-6 w-6 text-brand-400" />
@@ -958,6 +1021,11 @@ export default async function HomePage({
           </div>
         </div>
       </footer>
+
+      <StickyMobileCTA
+        href={sectorHref}
+        label={sector ? sector.hero.cta : "Start Gratis Scan"}
+      />
 
       <script
         type="application/ld+json"

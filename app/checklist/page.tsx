@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { StickyMobileCTA } from "@/components/StickyMobileCTA";
 import {
   Shield,
   CheckCircle2,
@@ -214,8 +215,10 @@ export default function ChecklistPage() {
         </div>
       </section>
 
+      <StickyMobileCTA href="/scan" label="Start Gratis Scan" />
+
       {/* Footer */}
-      <footer className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-900 text-gray-400">
+      <footer className="py-12 pb-24 md:pb-12 px-4 sm:px-6 lg:px-8 bg-gray-900 text-gray-400">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
             <Shield className="h-6 w-6 text-brand-400" />
