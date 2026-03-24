@@ -465,9 +465,9 @@ export default async function HomePage({
             <a href="#hoe-werkt-het" className="text-sm text-gray-600 hover:text-gray-900">
               Hoe werkt het
             </a>
-            <a href="#prijzen" className="text-sm text-gray-600 hover:text-gray-900">
+            <Link href="/pricing" className="text-sm text-gray-600 hover:text-gray-900">
               Prijzen
-            </a>
+            </Link>
             <a href="#faq" className="text-sm text-gray-600 hover:text-gray-900">
               FAQ
             </a>
@@ -1003,6 +1003,9 @@ export default async function HomePage({
           <div className="flex gap-6 text-sm">
             <Link href="/blog" className="hover:text-white transition">
               Blog
+            </Link>
+            <Link href="/pricing" className="hover:text-white transition">
+              Prijzen
             </Link>
             <Link href="/privacy" className="hover:text-white transition">
               Privacy

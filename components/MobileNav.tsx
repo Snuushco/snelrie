@@ -27,13 +27,13 @@ export function MobileNav({ sectorHref, ctaLabel }: { sectorHref: string; ctaLab
             >
               Hoe werkt het
             </a>
-            <a
-              href="#prijzen"
+            <Link
+              href="/pricing"
               onClick={() => setOpen(false)}
               className="text-sm text-gray-600 hover:text-gray-900 py-2"
             >
               Prijzen
-            </a>
+            </Link>
             <a
               href="#faq"
               onClick={() => setOpen(false)}
