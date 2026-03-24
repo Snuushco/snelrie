@@ -241,7 +241,8 @@ export default function ResultaatPage() {
           </h2>
 
           {risicos.map((risico: any, index: number) => {
-            const shouldBlur = showBlur && index >= 3;
+            const shouldBlur = showBlur && index >= 2;
+            const shouldBlurMeasures = showBlur && index === 1; // Blur maatregelen bij het 2e risico
 
             return (
               <div
@@ -292,7 +293,17 @@ export default function ResultaatPage() {
                 )}
 
                 {risico.maatregelen && risico.maatregelen.length > 0 && (
-                  <div>
+                  <div className={shouldBlurMeasures ? "relative" : ""}>
+                    {shouldBlurMeasures && (
+                      <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex items-center justify-center rounded-lg">
+                        <div className="text-center">
+                          <Lock className="h-6 w-6 text-gray-400 mx-auto mb-1" />
+                          <p className="text-xs text-gray-600 font-medium">
+                            Upgrade voor maatregelen en plan van aanpak
+                          </p>
+                        </div>
+                      </div>
+                    )}
                     <h4 className="text-sm font-medium text-gray-700 mb-2">
                       Maatregelen:
                     </h4>
@@ -319,7 +330,63 @@ export default function ResultaatPage() {
               </div>
             );
           })}
+
+          {/* Urgente counter na zichtbare risico's */}
+          {showBlur && risicos.length > 2 && (
+            <div className="bg-gradient-to-r from-red-500 to-orange-500 rounded-xl p-6 text-white text-center shadow-lg border-l-4 border-red-600">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <AlertTriangle className="h-6 w-6" />
+                <span className="text-lg font-bold">
+                  ⚠️ Er zijn nog {risicos.length - 2} risico's gevonden in uw bedrijf die actie vereisen.
+                </span>
+              </div>
+              <p className="text-red-100 text-sm">
+                Deze risico's kunnen gevolgen hebben voor de veiligheid van uw medewerkers en bedrijfsvoering.
+              </p>
+            </div>
+          )}
         </div>
+
+        {/* Geblurde risico's als extra bewijs na de CTA */}
+        {showBlur && risicos.length > 2 && (
+          <div className="space-y-4 mb-8">
+            <h3 className="text-lg font-semibold text-gray-900 opacity-60">
+              Overige risico's (gescand maar vergrendeld)
+            </h3>
+            {risicos.slice(2).map((risico: any, index: number) => (
+              <div
+                key={risico.id || `blurred-${index}`}
+                className="bg-white rounded-xl border border-gray-200 p-6 relative overflow-hidden opacity-75"
+              >
+                <div className="absolute inset-0 bg-white/70 backdrop-blur-md z-10 flex items-center justify-center">
+                  <div className="text-center">
+                    <Lock className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+                    <p className="text-sm text-gray-600 font-medium">
+                      Upgrade om dit risico te bekijken
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row justify-between items-start gap-3 mb-3">
+                  <h4 className="text-lg font-semibold text-gray-900">
+                    {risico.categorie}
+                  </h4>
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-medium border ${
+                      prioriteitKleur[risico.prioriteit] || "bg-gray-100 text-gray-700"
+                    }`}
+                  >
+                    {risico.prioriteit}
+                  </span>
+                </div>
+
+                <p className="text-gray-600 text-sm">
+                  {risico.beschrijving}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Plan van Aanpak (if available and paid) */}
         {content?.planVanAanpak &&
@@ -374,47 +441,50 @@ export default function ResultaatPage() {
             </div>
           )}
 
-        {/* Upgrade CTA */}
-        {showBlur && (
-          <div className="bg-gradient-to-r from-brand-600 to-brand-700 rounded-2xl p-8 text-white text-center">
-            <h2 className="text-2xl font-bold mb-3">
-              Ontgrendel uw volledige RI&E
-            </h2>
-            <p className="text-brand-100 mb-6 max-w-xl mx-auto">
-              U heeft {risicos.length} risico's in uw bedrijf. Krijg toegang tot
-              alle risico's, maatregelen en een professioneel PDF-rapport.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button
-                onClick={() => handleCheckout("BASIS")}
-                disabled={checkoutLoading}
-                className="bg-white text-brand-600 px-6 py-3 rounded-lg font-semibold hover:bg-brand-50 transition disabled:opacity-50"
-              >
-                Basis — €99
-              </button>
-              <button
-                onClick={() => handleCheckout("PROFESSIONAL")}
-                disabled={checkoutLoading}
-                className="bg-white text-brand-600 px-6 py-3 rounded-lg font-semibold hover:bg-brand-50 transition disabled:opacity-50 ring-2 ring-white/50"
-              >
-                Professional — €249 ⭐
-              </button>
-              <button
-                onClick={() => handleCheckout("ENTERPRISE")}
-                disabled={checkoutLoading}
-                className="bg-white/10 text-white border border-white/30 px-6 py-3 rounded-lg font-semibold hover:bg-white/20 transition disabled:opacity-50"
-              >
-                Enterprise — €499
-              </button>
-            </div>
-            {checkoutLoading && (
-              <p className="mt-4 text-brand-200 text-sm flex items-center justify-center gap-2">
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Doorsturen naar betaalpagina...
+          {/* Upgrade CTA direct na counter */}
+          {showBlur && (
+            <div className="bg-gradient-to-r from-brand-600 to-brand-700 rounded-2xl p-8 text-white text-center">
+              <h2 className="text-2xl font-bold mb-3">
+                Ontgrendel uw volledige RI&E
+              </h2>
+              <p className="text-brand-100 mb-4 max-w-xl mx-auto">
+                U heeft {risicos.length} risico's in uw bedrijf. Krijg toegang tot
+                alle risico's, maatregelen en een professioneel PDF-rapport.
               </p>
-            )}
-          </div>
-        )}
+              <p className="text-brand-200 text-sm mb-6 font-medium">
+                87% van de bedrijven in uw branche heeft minimaal 3 hoge risico's die direct aandacht vereisen
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button
+                  onClick={() => handleCheckout("BASIS")}
+                  disabled={checkoutLoading}
+                  className="bg-white text-brand-600 px-6 py-3 rounded-lg font-semibold hover:bg-brand-50 transition disabled:opacity-50"
+                >
+                  Basis — €99
+                </button>
+                <button
+                  onClick={() => handleCheckout("PROFESSIONAL")}
+                  disabled={checkoutLoading}
+                  className="bg-white text-brand-600 px-6 py-3 rounded-lg font-semibold hover:bg-brand-50 transition disabled:opacity-50 ring-2 ring-white/50"
+                >
+                  Professional — €249 ⭐
+                </button>
+                <button
+                  onClick={() => handleCheckout("ENTERPRISE")}
+                  disabled={checkoutLoading}
+                  className="bg-white/10 text-white border border-white/30 px-6 py-3 rounded-lg font-semibold hover:bg-white/20 transition disabled:opacity-50"
+                >
+                  Enterprise — €499
+                </button>
+              </div>
+              {checkoutLoading && (
+                <p className="mt-4 text-brand-200 text-sm flex items-center justify-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Doorsturen naar betaalpagina...
+                </p>
+              )}
+            </div>
+          )}
 
         {/* Paid + download */}
         {hasPaid && (
