@@ -104,6 +104,8 @@ const BRANCHE_DEFAULTS: Record<string, Record<string, string>> = {
 type FormData = {
   branche: string;
   aantalMedewerkers: string;
+  email: string;
+  naam?: string;
   [key: string]: string;
 };
 
@@ -118,6 +120,8 @@ export default function ScanForm() {
   const [form, setForm] = useState<FormData>({
     branche: "",
     aantalMedewerkers: "",
+    email: "",
+    naam: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -161,6 +165,8 @@ export default function ScanForm() {
         return form.branche && form.aantalMedewerkers;
       case 2:
         return true;
+      case 3:
+        return form.email && form.email.includes("@");
       default:
         return false;
     }
@@ -181,6 +187,8 @@ export default function ScanForm() {
           aantalMedewerkers: parseInt(form.aantalMedewerkers),
           aantalLocaties: 1,
           tier: preselectedTier,
+          email: form.email,
+          naam: form.naam || "",
           gevaarlijkeStoffen: form.gevaarlijkeStoffen || "nee",
           beeldschermwerk: form.beeldschermwerk || "nee",
           fysiekWerk: form.fysiekWerk || "nee",
@@ -225,7 +233,7 @@ export default function ScanForm() {
           </Link>
           <div className="flex items-center gap-3 text-sm text-gray-500">
             <Clock className="h-4 w-4" />
-            Stap {step} van 2 · Nog ~1 minuut
+            Stap {step} van 3 · Nog ~1 minuut
           </div>
         </div>
       </nav>
@@ -236,6 +244,7 @@ export default function ScanForm() {
             {[
               { num: 1, label: "Uw bedrijf" },
               { num: 2, label: "Situatie" },
+              { num: 3, label: "Contact" },
             ].map((s, i) => (
               <div key={s.num} className="flex items-center flex-1 last:flex-none max-w-[200px]">
                 <div className="flex flex-col items-center w-full">
@@ -254,7 +263,7 @@ export default function ScanForm() {
                     {s.label}
                   </span>
                 </div>
-                {i < 1 && (
+                {i < 2 && (
                   <div className={`flex-1 h-0.5 mx-3 mt-[-12px] ${step > s.num ? "bg-green-500" : "bg-gray-200"}`} />
                 )}
               </div>
@@ -396,10 +405,57 @@ export default function ScanForm() {
               ))}
             </div>
 
+          </div>
+        )}
+
+        {step === 3 && (
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">
+                Uw contactgegevens
+              </h2>
+              <p className="text-gray-600 mt-1">
+                We hebben uw email nodig om het rapport te kunnen versturen en voor eventuele vragen.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                  E-mailadres *
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  value={form.email}
+                  onChange={(e) => updateField("email", e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+                  placeholder="uw.email@bedrijf.nl"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="naam" className="block text-sm font-medium text-gray-700 mb-2">
+                  Naam (optioneel)
+                </label>
+                <input
+                  type="text"
+                  id="naam"
+                  name="naam"
+                  value={form.naam || ""}
+                  onChange={(e) => updateField("naam", e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+                  placeholder="Uw naam"
+                />
+              </div>
+            </div>
+
             <div className="bg-brand-50 border border-brand-200 rounded-xl p-4 text-sm text-brand-800">
-              <p className="font-medium">🔒 Geen account of email nodig</p>
+              <p className="font-medium">🔒 Uw privacy is veilig</p>
               <p className="text-brand-600 mt-1">
-                U ziet direct uw risico-overzicht. Gratis en vrijblijvend.
+                We gebruiken uw email alleen voor het versturen van het rapport. Geen spam, geen verkoop van gegevens.
               </p>
             </div>
           </div>
@@ -424,7 +480,7 @@ export default function ScanForm() {
             <div />
           )}
 
-          {step < 2 ? (
+          {step < 3 ? (
             <button
               onClick={() => {
                 if (canProceed()) {
