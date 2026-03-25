@@ -106,7 +106,7 @@ type FormData = {
   aantalMedewerkers: string;
   email: string;
   naam?: string;
-  [key: string]: string;
+  [key: string]: string | undefined;
 };
 
 export default function ScanForm() {
