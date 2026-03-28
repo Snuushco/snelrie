@@ -2,21 +2,25 @@
 
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { trackHeroClick } from './ABTracker';
-import type { ABVariant } from '@/lib/ab-variants';
+import { useABVariant } from '@/lib/ab-context';
+import { trackEvent } from '@/lib/analytics';
 
 export function HeroCTA({
-  variant,
   cta,
   isBottom,
   href = '/scan',
 }: {
-  variant: ABVariant;
   cta: string;
   isBottom?: boolean;
   href?: string;
 }) {
-  const handleClick = () => trackHeroClick(variant);
+  const variant = useABVariant();
+  const handleClick = () => {
+    trackEvent('hero_cta_click', {
+      ab_variant: variant,
+      cta_location: 'hero',
+    });
+  };
 
   if (isBottom) {
     return (

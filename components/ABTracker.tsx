@@ -1,23 +1,15 @@
 'use client';
 
 import { useEffect } from 'react';
-import type { ABVariant } from '@/lib/ab-variants';
-import { trackEvent } from '@/lib/analytics';
+import { useABVariant } from '@/lib/ab-context';
 
-export function ABTracker({ variant }: { variant: ABVariant }) {
+export function ABTracker() {
+  const variant = useABVariant();
+
   useEffect(() => {
-    trackEvent('ab_variant_assigned', {
-      ab_variant: variant,
-      ab_variant_label: { a: 'control', b: 'benefit', c: 'pain' }[variant],
-    });
+    // Tracking is now handled in ABProvider on initial assignment
+    // This component is kept for backward compatibility but does nothing
   }, [variant]);
 
   return null;
-}
-
-export function trackHeroClick(variant: ABVariant) {
-  trackEvent('hero_cta_click', {
-    ab_variant: variant,
-    cta_location: 'hero',
-  });
 }
