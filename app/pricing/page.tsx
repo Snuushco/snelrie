@@ -96,7 +96,7 @@ const comparisonFeatures = [
 ];
 
 export default function PricingPage() {
-  const [isYearly, setIsYearly] = useState(false);
+  const [isYearly, setIsYearly] = useState(true);
 
   const handleCheckout = async (tier: string) => {
     try {
@@ -174,7 +174,7 @@ export default function PricingPage() {
           </h1>
           <p className="mt-6 text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
             Start met een gratis scan en kies daarna het abonnement dat past bij jouw organisatie.
-            Bespaar tot €299 met een jaarabonnement.
+            Bespaar tot €299 met een jaarabonnement. Minimaal 12 maanden — precies één RI&E-cyclus.
           </p>
 
           {/* Billing toggle */}
@@ -295,13 +295,24 @@ export default function PricingPage() {
 
                   {isYearly && (
                     <p
-                      className={`text-sm mb-4 ${
+                      className={`text-sm mb-2 ${
                         plan.highlighted ? "text-brand-200" : "text-gray-500"
                       }`}
                     >
                       €{totalYearly} per jaar gefactureerd
                     </p>
                   )}
+
+                  <p
+                    className={`text-xs mb-4 inline-flex items-center gap-1 px-2 py-0.5 rounded-full ${
+                      plan.highlighted
+                        ? "bg-white/10 text-brand-200"
+                        : "bg-gray-100 text-gray-500"
+                    }`}
+                  >
+                    <Shield className="h-3 w-3" />
+                    12 maanden · auto-verlenging
+                  </p>
 
                   <p
                     className={`text-base mb-6 ${
@@ -486,8 +497,8 @@ export default function PricingPage() {
                 a: "Ja! Je kunt altijd een eenmalig rapport kopen zonder abonnement. Start een gratis scan en kies daarna het eenmalige pakket dat bij je past.",
               },
               {
-                q: "Kan ik op elk moment opzeggen?",
-                a: "Ja, je kunt je abonnement op elk moment opzeggen. Je houdt toegang tot het einde van je lopende periode. Geen opzegtermijn, geen verborgen kosten.",
+                q: "Hoe werkt het abonnement?",
+                a: "Alle abonnementen hebben een minimale looptijd van 12 maanden — dit past precies bij de wettelijke RI&E-cyclus. Na 12 maanden wordt je abonnement automatisch verlengd, zodat je RI&E altijd actueel blijft. Opzeggen kan tot 30 dagen voor de verlengdatum. Zo heb je altijd zekerheid dat je compliant bent.",
               },
               {
                 q: "Wat gebeurt er als ik upgrade of downgrade?",

@@ -64,6 +64,8 @@ export async function POST(req: NextRequest) {
           tier,
           billingCycle,
           project: "snelrie",
+          commitmentMonths: "12",
+          commitmentStart: new Date().toISOString(),
         },
       },
       metadata: {

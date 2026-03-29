@@ -27,6 +27,9 @@ export async function POST(req: NextRequest) {
     const portalSession = await getStripe().billingPortal.sessions.create({
       customer: subscription.stripeCustomerId,
       return_url: `${appUrl}/dashboard/abonnement`,
+      // Note: cancellation is handled via our own /api/subscriptions/cancel
+      // endpoint with 12-month commitment enforcement.
+      // Stripe Portal can be configured to hide cancel button via Dashboard > Settings > Billing > Portal.
     });
 
     return NextResponse.json({ url: portalSession.url });
