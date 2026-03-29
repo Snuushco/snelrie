@@ -29,16 +29,100 @@ enum PricingTier {
   ENTERPRISE
 }
 
+enum UserRole {
+  OWNER
+  EDITOR
+  VIEWER
+}
+
+enum SubscriptionTier {
+  STARTER
+  PROFESSIONAL
+  ENTERPRISE
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  PAST_DUE
+  TRIALING
+}
+
+enum BillingCycle {
+  MONTHLY
+  YEARLY
+}
+
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  naam      String?
-  reports   RieReport[]
-  branding  BrandingConfig?
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  naam          String?
+  password      String?
+  image         String?
+  role          UserRole  @default(OWNER)
+
+  // Relations
+  accounts     Account[]
+  sessions     Session[]
+  reports      RieReport[]
+  branding     BrandingConfig?
+  subscription Subscription?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([email])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Subscription {
+  id                   String             @id @default(cuid())
+  userId               String             @unique
+  user                 User               @relation(fields: [userId], references: [id])
+  tier                 SubscriptionTier   @default(STARTER)
+  status               SubscriptionStatus @default(ACTIVE)
+  billingCycle         BillingCycle       @default(MONTHLY)
+  stripeCustomerId     String?            @unique
+  stripeSubscriptionId String?            @unique
+  currentPeriodStart   DateTime?
+  currentPeriodEnd     DateTime?
+  cancelAtPeriodEnd    Boolean            @default(false)
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
 }
 
 model BrandingConfig {
@@ -95,7 +179,7 @@ model Payment {
   id                  String        @id @default(cuid())
   stripeSessionId     String        @unique
   stripePaymentIntent String?
-  amount              Int           // cents
+  amount              Int
   currency            String        @default("eur")
   status              PaymentStatus @default(PENDING)
   tier                PricingTier
@@ -113,12 +197,12 @@ model Payment {
 
 model EmailEvent {
   id        String   @id @default(cuid())
-  type      String   // email.sent, email.delivered, email.opened, email.clicked, email.bounced, email.complained
-  email     String   // recipient email address
-  subject   String?  // email subject (if available)
-  messageId String?  // Resend message ID
-  link      String?  // clicked link (for email.clicked events)
-  metadata  Json?    // full event payload from Resend
+  type      String
+  email     String
+  subject   String?
+  messageId String?
+  link      String?
+  metadata  Json?
   createdAt DateTime @default(now())
 
   @@index([email])
