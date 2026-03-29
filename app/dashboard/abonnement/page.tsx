@@ -10,10 +10,22 @@ import {
   Crown,
   Sparkles,
   ExternalLink,
+  Lock,
+  Calendar,
+  RefreshCw,
+  Shield,
 } from "lucide-react";
 import { SUBSCRIPTION_PRICING } from "@/lib/stripe";
 import { getRemainingReports } from "@/lib/stripe-client";
 import { SubscriptionActions } from "./SubscriptionActions";
+
+function formatDateNL(date: Date): string {
+  return date.toLocaleDateString("nl-NL", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
 
 export default async function AbonnementPage({
   searchParams,
@@ -34,12 +46,33 @@ export default async function AbonnementPage({
   const currentPlan = SUBSCRIPTION_PRICING[currentTier];
   const reports = await getRemainingReports(session.user.id);
 
+  // Calculate commitment info server-side for display
+  const subscriptionStart = subscription?.currentPeriodStart;
+  const hasPaidSubscription = !!subscription?.stripeSubscriptionId;
+
+  // Commitment end = start + 12 months
+  let commitmentEndDate: Date | null = null;
+  let withinCommitment = false;
+  let daysRemaining = 0;
+
+  if (subscriptionStart && hasPaidSubscription) {
+    commitmentEndDate = new Date(subscriptionStart);
+    commitmentEndDate.setMonth(commitmentEndDate.getMonth() + 12);
+    const now = new Date();
+    withinCommitment = now < commitmentEndDate;
+    daysRemaining = withinCommitment
+      ? Math.ceil(
+          (commitmentEndDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
+        )
+      : 0;
+  }
+
   return (
     <div>
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Abonnement</h1>
         <p className="text-gray-500 text-sm mt-1">
-          Beheer je abonnement en bekijk je limieten
+          Beheer je abonnement, bekijk je looptijd en limieten
         </p>
       </div>
 
@@ -48,9 +81,12 @@ export default async function AbonnementPage({
         <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6 flex items-start gap-3">
           <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
           <div>
-            <p className="font-medium text-green-800">Abonnement geactiveerd!</p>
+            <p className="font-medium text-green-800">
+              Abonnement geactiveerd!
+            </p>
             <p className="text-sm text-green-600">
-              Je {currentPlan.name} abonnement is succesvol gestart. Je hebt nu toegang tot alle functies.
+              Je {currentPlan.name} abonnement is succesvol gestart. Je hebt nu
+              toegang tot alle functies.
             </p>
           </div>
         </div>
@@ -62,7 +98,8 @@ export default async function AbonnementPage({
           <div>
             <p className="font-medium text-yellow-800">Betaling geannuleerd</p>
             <p className="text-sm text-yellow-600">
-              Je betaling is geannuleerd. Je kunt op elk moment een nieuw abonnement kiezen.
+              Je betaling is geannuleerd. Je kunt op elk moment een nieuw
+              abonnement kiezen.
             </p>
           </div>
         </div>
@@ -75,7 +112,26 @@ export default async function AbonnementPage({
           <div>
             <p className="font-medium text-red-800">Betaling mislukt</p>
             <p className="text-sm text-red-600">
-              Je laatste betaling is mislukt. Werk je betaalmethode bij om je abonnement actief te houden.
+              Je laatste betaling is mislukt. Werk je betaalmethode bij om je
+              abonnement actief te houden.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Cancelled badge */}
+      {subscription?.cancelAtPeriodEnd && subscription?.currentPeriodEnd && (
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 flex items-start gap-3">
+          <AlertTriangle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+          <div>
+            <p className="font-medium text-amber-800">
+              Opgezegd — actief tot{" "}
+              {formatDateNL(new Date(subscription.currentPeriodEnd))}
+            </p>
+            <p className="text-sm text-amber-600">
+              Je abonnement is opgezegd en stopt automatisch na de huidige
+              periode. Daarna wordt je account omgezet naar het gratis Starter
+              plan.
             </p>
           </div>
         </div>
@@ -95,56 +151,116 @@ export default async function AbonnementPage({
               <p className="text-sm text-gray-500">Huidig abonnement</p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 flex-wrap justify-end">
             {subscription?.billingCycle && (
               <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 text-gray-600">
-                {subscription.billingCycle === "YEARLY" ? "Jaarlijks" : "Maandelijks"}
+                {subscription.billingCycle === "YEARLY"
+                  ? "Jaarlijks"
+                  : "Maandelijks"}
               </span>
             )}
             <span
               className={`text-xs font-medium px-2.5 py-1 rounded-full ${
-                subscription?.status === "ACTIVE"
-                  ? "bg-green-50 text-green-700"
-                  : subscription?.status === "TRIALING"
-                    ? "bg-blue-50 text-blue-700"
-                    : subscription?.status === "PAST_DUE"
-                      ? "bg-red-50 text-red-700"
-                      : subscription?.status === "CANCELLED"
-                        ? "bg-yellow-50 text-yellow-700"
-                        : "bg-gray-50 text-gray-700"
+                subscription?.cancelAtPeriodEnd
+                  ? "bg-amber-50 text-amber-700"
+                  : subscription?.status === "ACTIVE"
+                    ? "bg-green-50 text-green-700"
+                    : subscription?.status === "TRIALING"
+                      ? "bg-blue-50 text-blue-700"
+                      : subscription?.status === "PAST_DUE"
+                        ? "bg-red-50 text-red-700"
+                        : subscription?.status === "CANCELLED"
+                          ? "bg-gray-100 text-gray-600"
+                          : "bg-gray-50 text-gray-700"
               }`}
             >
-              {subscription?.status === "ACTIVE"
-                ? "Actief"
-                : subscription?.status === "TRIALING"
-                  ? "Proefperiode"
-                  : subscription?.status === "PAST_DUE"
-                    ? "Betaling mislukt"
-                    : subscription?.status === "CANCELLED"
-                      ? "Opgezegd"
-                      : "Gratis"}
+              {subscription?.cancelAtPeriodEnd
+                ? "Opgezegd"
+                : subscription?.status === "ACTIVE"
+                  ? "Actief"
+                  : subscription?.status === "TRIALING"
+                    ? "Proefperiode"
+                    : subscription?.status === "PAST_DUE"
+                      ? "Betaling mislukt"
+                      : subscription?.status === "CANCELLED"
+                        ? "Beëindigd"
+                        : "Gratis"}
             </span>
           </div>
         </div>
 
-        {/* Period info */}
-        {subscription?.currentPeriodEnd && (
-          <p className="text-sm text-gray-500 mb-4">
-            {subscription.cancelAtPeriodEnd
-              ? "Eindigt op"
-              : "Volgende factuurdatum"}:{" "}
-            <span className="font-medium text-gray-700">
-              {new Date(subscription.currentPeriodEnd).toLocaleDateString("nl-NL", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
-            </span>
-          </p>
+        {/* Period & commitment details */}
+        {hasPaidSubscription && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 p-4 bg-gray-50 rounded-xl">
+            {/* Current period */}
+            {subscription?.currentPeriodStart &&
+              subscription?.currentPeriodEnd && (
+                <div className="flex items-start gap-3">
+                  <Calendar className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-xs text-gray-500 mb-0.5">
+                      Huidige periode
+                    </p>
+                    <p className="text-sm font-medium text-gray-900">
+                      {formatDateNL(
+                        new Date(subscription.currentPeriodStart)
+                      )}{" "}
+                      →{" "}
+                      {formatDateNL(new Date(subscription.currentPeriodEnd))}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+            {/* Next renewal / end date */}
+            {subscription?.currentPeriodEnd && (
+              <div className="flex items-start gap-3">
+                <RefreshCw className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 mb-0.5">
+                    {subscription.cancelAtPeriodEnd
+                      ? "Eindigt op"
+                      : "Volgende verlenging"}
+                  </p>
+                  <p className="text-sm font-medium text-gray-900">
+                    {formatDateNL(new Date(subscription.currentPeriodEnd))}
+                  </p>
+                  {!subscription.cancelAtPeriodEnd && (
+                    <p className="text-xs text-gray-400 mt-0.5">
+                      Wordt automatisch verlengd
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Commitment status */}
+            {commitmentEndDate && (
+              <div className="flex items-start gap-3 sm:col-span-2">
+                <Shield className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 mb-0.5">
+                    Minimale looptijd
+                  </p>
+                  {withinCommitment ? (
+                    <p className="text-sm font-medium text-amber-700">
+                      🔒 Minimale looptijd tot{" "}
+                      {formatDateNL(commitmentEndDate)} ({daysRemaining}{" "}
+                      {daysRemaining === 1 ? "dag" : "dagen"})
+                    </p>
+                  ) : (
+                    <p className="text-sm font-medium text-green-700">
+                      ✅ Opzegbaar tot 30 dagen voor verlenging
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
         )}
 
         {/* Usage stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 pt-4 border-t border-gray-100">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-gray-100">
           <div>
             <p className="text-xs text-gray-500 mb-1">Rapporten deze maand</p>
             <p className="text-lg font-semibold text-gray-900">
@@ -181,85 +297,109 @@ export default async function AbonnementPage({
         hasSubscription={!!subscription?.stripeCustomerId}
         currentTier={currentTier}
         status={subscription?.status || null}
+        cancelAtPeriodEnd={subscription?.cancelAtPeriodEnd || false}
+        currentPeriodEnd={
+          subscription?.currentPeriodEnd?.toISOString() || null
+        }
       />
+
+      {/* Commitment info notice */}
+      {hasPaidSubscription && (
+        <div className="mt-6 p-4 bg-blue-50 border border-blue-100 rounded-xl">
+          <p className="text-xs text-blue-700 leading-relaxed">
+            <span className="font-medium">ℹ️ Over de looptijd:</span> Alle
+            SnelRIE abonnementen hebben een minimale looptijd van 12 maanden,
+            passend bij de wettelijke RI&E-actualisatiecyclus. Opzeggen is
+            mogelijk tot 30 dagen voor de verlengdatum.
+          </p>
+        </div>
+      )}
 
       {/* Available plans */}
       <h2 className="text-lg font-semibold text-gray-900 mt-10 mb-4">
-        {subscription?.stripeSubscriptionId ? "Upgrade je plan" : "Kies een abonnement"}
+        {subscription?.stripeSubscriptionId
+          ? "Upgrade je plan"
+          : "Kies een abonnement"}
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {(Object.entries(SUBSCRIPTION_PRICING) as [string, typeof SUBSCRIPTION_PRICING.STARTER][]).map(
-          ([tier, plan]) => {
-            const isCurrent = tier === currentTier;
-            const isHigher =
-              ["STARTER", "PROFESSIONAL", "ENTERPRISE"].indexOf(tier) >
-              ["STARTER", "PROFESSIONAL", "ENTERPRISE"].indexOf(currentTier);
+        {(
+          Object.entries(SUBSCRIPTION_PRICING) as [
+            string,
+            (typeof SUBSCRIPTION_PRICING)["STARTER"],
+          ][]
+        ).map(([tier, plan]) => {
+          const isCurrent = tier === currentTier;
+          const isHigher =
+            ["STARTER", "PROFESSIONAL", "ENTERPRISE"].indexOf(tier) >
+            ["STARTER", "PROFESSIONAL", "ENTERPRISE"].indexOf(currentTier);
 
-            return (
-              <div
-                key={tier}
-                className={`bg-white rounded-xl border-2 p-6 ${
-                  isCurrent
-                    ? "border-brand-300 bg-brand-50/30"
-                    : tier === "PROFESSIONAL"
-                      ? "border-brand-200 shadow-md"
-                      : "border-gray-200"
-                }`}
-              >
-                {tier === "PROFESSIONAL" && !isCurrent && (
-                  <div className="text-xs font-semibold text-brand-600 mb-2 flex items-center gap-1">
-                    <Sparkles className="h-3 w-3" />
-                    Populairst
-                  </div>
-                )}
-
-                <h3 className="text-xl font-bold text-gray-900">{plan.name}</h3>
-                <p className="text-3xl font-bold text-gray-900 mt-3">
-                  {plan.monthly.label}
-                </p>
-                <p className="text-sm text-gray-500 mt-1">
-                  of {plan.yearly.label}{" "}
-                  <span className="text-green-600 font-medium">
-                    ({plan.yearly.monthlyCost})
-                  </span>
-                </p>
-
-                <ul className="mt-5 space-y-2.5">
-                  {plan.features.slice(0, 5).map((feature) => (
-                    <li key={feature} className="flex items-start gap-2 text-sm">
-                      <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-gray-700">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-6">
-                  {isCurrent ? (
-                    <button
-                      disabled
-                      className="w-full py-2.5 px-4 rounded-lg text-sm font-medium bg-brand-50 text-brand-600 cursor-not-allowed border border-brand-200"
-                    >
-                      Huidig plan
-                    </button>
-                  ) : (
-                    <SubscriptionActions
-                      mode="inline"
-                      targetTier={tier}
-                      isUpgrade={isHigher}
-                      hasSubscription={!!subscription?.stripeCustomerId}
-                    />
-                  )}
+          return (
+            <div
+              key={tier}
+              className={`bg-white rounded-xl border-2 p-6 ${
+                isCurrent
+                  ? "border-brand-300 bg-brand-50/30"
+                  : tier === "PROFESSIONAL"
+                    ? "border-brand-200 shadow-md"
+                    : "border-gray-200"
+              }`}
+            >
+              {tier === "PROFESSIONAL" && !isCurrent && (
+                <div className="text-xs font-semibold text-brand-600 mb-2 flex items-center gap-1">
+                  <Sparkles className="h-3 w-3" />
+                  Populairst
                 </div>
+              )}
+
+              <h3 className="text-xl font-bold text-gray-900">{plan.name}</h3>
+              <p className="text-3xl font-bold text-gray-900 mt-3">
+                {plan.monthly.label}
+              </p>
+              <p className="text-sm text-gray-500 mt-1">
+                of {plan.yearly.label}{" "}
+                <span className="text-green-600 font-medium">
+                  ({plan.yearly.monthlyCost})
+                </span>
+              </p>
+
+              <ul className="mt-5 space-y-2.5">
+                {plan.features.slice(0, 5).map((feature) => (
+                  <li key={feature} className="flex items-start gap-2 text-sm">
+                    <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-6">
+                {isCurrent ? (
+                  <button
+                    disabled
+                    className="w-full py-2.5 px-4 rounded-lg text-sm font-medium bg-brand-50 text-brand-600 cursor-not-allowed border border-brand-200"
+                  >
+                    Huidig plan
+                  </button>
+                ) : (
+                  <SubscriptionActions
+                    mode="inline"
+                    targetTier={tier}
+                    isUpgrade={isHigher}
+                    hasSubscription={!!subscription?.stripeCustomerId}
+                  />
+                )}
               </div>
-            );
-          }
-        )}
+            </div>
+          );
+        })}
       </div>
 
       <p className="text-center text-sm text-gray-400 mt-8">
         Vragen over je abonnement? Mail naar{" "}
-        <a href="mailto:info@snelrie.nl" className="text-brand-600 hover:underline">
+        <a
+          href="mailto:info@snelrie.nl"
+          className="text-brand-600 hover:underline"
+        >
           info@snelrie.nl
         </a>
       </p>
