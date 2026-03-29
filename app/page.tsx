@@ -38,10 +38,11 @@ const pricingTiers = [
     href: "/scan",
     highlighted: false,
     tier: "GRATIS",
+    suffix: "",
   },
   {
-    name: "Basis",
-    price: "€99",
+    name: "Starter",
+    price: "€19",
     description: "Volledige RI&E voor kleine bedrijven",
     features: [
       "Volledige risico-inventarisatie",
@@ -52,32 +53,34 @@ const pricingTiers = [
     cta: "Start Gratis Scan",
     href: "/scan",
     highlighted: false,
-    tier: "BASIS",
+    tier: "STARTER",
+    suffix: "/mnd",
   },
   {
     name: "Professional",
-    price: "€249",
+    price: "€49",
     description: "RI&E + Plan van Aanpak",
     features: [
-      "Alles van Basis",
+      "Alles van Starter",
       "Uitgebreid Plan van Aanpak",
       "Prioriteitenmatrix",
+      "AI Expert Chat",
       "Concrete deadlines & verantwoordelijken",
-      "Kostenramingen per maatregel",
     ],
     cta: "Start Gratis Scan",
     href: "/scan",
     highlighted: true,
     tier: "PROFESSIONAL",
+    suffix: "/mnd",
   },
   {
     name: "Enterprise",
-    price: "€499",
-    description: "Voor grotere organisaties",
+    price: "€129",
+    description: "Onbeperkt voor grotere organisaties",
     features: [
       "Alles van Professional",
-      "Uitgebreide rapportage",
-      "AI Expert Chat (24/7)",
+      "Onbeperkte rapportages",
+      "White-label opties",
       "Jaarlijkse update-herinnering",
       "Persoonlijke AI-assistent met volledige kennis van uw RI&E",
     ],
@@ -85,6 +88,7 @@ const pricingTiers = [
     href: "/scan",
     highlighted: false,
     tier: "ENTERPRISE",
+    suffix: "/mnd",
   },
 ];
 
@@ -95,7 +99,7 @@ const genericFaqs = [
   },
   {
     q: "Wat is het verschil met een traditionele RI&E?",
-    a: "Een traditionele RI&E wordt uitgevoerd door een externe arbodeskundige en kost €500 tot €5.000+. Dat duurt vaak weken. SnelRIE gebruikt AI om in minuten een branchespecifieke RI&E te genereren, op basis van dezelfde wettelijke kaders en arbocatalogi.",
+    a: "Een traditionele RI&E wordt uitgevoerd door een externe arbodeskundige en kost €500 tot €5.000+. Dat duurt vaak weken. SnelRIE gebruikt AI om in minuten een branchespecifieke RI&E te genereren, op basis van dezelfde wettelijke kaders en arbocatalogi. Vanaf €19 per maand heeft u toegang, of kies een eenmalig rapport vanaf €249.",
   },
   {
     q: "Is deze RI&E rechtsgeldig?",
@@ -107,11 +111,11 @@ const genericFaqs = [
   },
   {
     q: "Welke branches worden ondersteund?",
-    a: "SnelRIE ondersteunt alle gangbare branches: beveiliging, horeca, bouw, kinderopvang, schoonmaak, detailhandel, transport, zorg, logistiek en meer. Onze AI past de RI&E automatisch aan op uw branche en bijbehorende arbocatalogus.",
+    a: "SnelRIE ondersteunt 20 branches: beveiliging, horeca, bouw, kinderopvang, schoonmaak, detailhandel, transport, zorg, kantoor & ICT, onderwijs, landbouw, industrie, automotive, installatietechniek, kappers & beauty, vastgoed, financiële dienstverlening, recreatie & evenementen, overheid & non-profit, en overig. Onze AI past de RI&E automatisch aan op uw branche en bijbehorende arbocatalogus.",
   },
   {
     q: "Wat zit er in het Plan van Aanpak?",
-    a: "Het Plan van Aanpak (Professional en Enterprise tier) bevat concrete maatregelen per risico, geprioriteerd op urgentie, met deadlines, verantwoordelijken en kostenramingen. Dit is het document dat u aan de Inspectie SZW kunt tonen.",
+    a: "Het Plan van Aanpak (Professional en Enterprise abonnement) bevat concrete maatregelen per risico, geprioriteerd op urgentie, met deadlines, verantwoordelijken en kostenramingen. Dit is het document dat u aan de Inspectie SZW kunt tonen.",
   },
   {
     q: "Kan ik de RI&E later aanpassen?",
@@ -212,7 +216,7 @@ const sectorConfig: Record<
       { value: "Chauffeurs", label: "alleen op pad of op wisselende routes" },
       { value: "Laadperron", label: "fysieke belasting en verkeersbewegingen" },
       { value: "Nachtwerk", label: "onregelmatige diensten en vermoeidheid" },
-      { value: "€99", label: "voor volledige RI&E" },
+      { value: "Vanaf €19/mnd", label: "of eenmalig vanaf €249" },
     ],
     risks: ["alleen werken op route of terrein", "laden/lossen en fysieke belasting", "nachtdiensten en vermoeidheid"],
     proofTitle: "Gemaakt voor operatie, niet alleen voor papier",
@@ -368,7 +372,7 @@ const sectorConfig: Record<
       { value: "Tillen", label: "patiënten, bedden en hulpmiddelen" },
       { value: "Diensten", label: "nacht, weekend en onregelmaat" },
       { value: "Cliëntcontact", label: "agressie, PSA en belastbaarheid" },
-      { value: "€99", label: "voor volledige zorg-RI&E" },
+      { value: "Vanaf €19/mnd", label: "of eenmalig vanaf €249" },
     ],
     risks: ["tillen en fysieke belasting", "nachtdiensten en vermoeidheid", "medicatie, biologisch materiaal en agressie"],
     proofTitle: "Gemaakt voor zorgorganisaties waar veiligheid en belastbaarheid samenkomen",
@@ -483,7 +487,7 @@ export default async function HomePage({
               <>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-5 w-5 text-green-500" />
-                  Vanaf €99
+                  Vanaf €19/mnd
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-5 w-5 text-green-500" />
@@ -743,9 +747,12 @@ export default async function HomePage({
 
       <section id="prijzen" className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-4">Transparante prijzen</h2>
-          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-            Iedereen begint met een gratis scan. Na uw scan kiest u het pakket dat past. Geen abonnement, eenmalige betaling.
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-4">Kies het abonnement dat bij u past</h2>
+          <p className="text-center text-gray-600 mb-4 max-w-2xl mx-auto">
+            Start met een gratis scan. Upgrade wanneer u wilt — maandelijks opzegbaar.
+          </p>
+          <p className="text-center text-sm font-medium text-brand-700 mb-12 max-w-2xl mx-auto">
+            Eén rapport kost €249. Een heel jaar onbeperkt kost €179.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {pricingTiers.map((tier) => (
@@ -769,9 +776,11 @@ export default async function HomePage({
                   <span className={`text-3xl font-extrabold ${tier.highlighted ? "text-white" : "text-gray-900"}`}>
                     {tier.price}
                   </span>
-                  <span className={`text-sm ml-1 ${tier.highlighted ? "text-brand-200" : "text-gray-500"}`}>
-                    eenmalig
-                  </span>
+                  {tier.suffix && (
+                    <span className={`text-sm ml-1 ${tier.highlighted ? "text-brand-200" : "text-gray-500"}`}>
+                      {tier.suffix}
+                    </span>
+                  )}
                 </div>
                 <p className={`text-sm mb-6 ${tier.highlighted ? "text-brand-100" : "text-gray-600"}`}>
                   {tier.description}
@@ -948,7 +957,7 @@ export default async function HomePage({
             offers: {
               "@type": "AggregateOffer",
               lowPrice: "0",
-              highPrice: "499",
+              highPrice: "129",
               priceCurrency: "EUR",
             },
             description:

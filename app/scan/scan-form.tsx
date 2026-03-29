@@ -16,6 +16,16 @@ const BRANCHES = [
   { value: "transport", label: "Transport & Logistiek" },
   { value: "zorg", label: "Zorg" },
   { value: "kantoor", label: "Kantoor & ICT" },
+  { value: "onderwijs", label: "Onderwijs" },
+  { value: "landbouw", label: "Landbouw & Agrarisch" },
+  { value: "industrie", label: "Industrie & Productie" },
+  { value: "automotive", label: "Automotive" },
+  { value: "installatietechniek", label: "Installatietechniek" },
+  { value: "kappersbeauty", label: "Kappers & Beauty" },
+  { value: "vastgoed", label: "Vastgoed & Makelaardij" },
+  { value: "financieel", label: "Financiële dienstverlening" },
+  { value: "recreatie", label: "Recreatie & Evenementen" },
+  { value: "overheid", label: "Overheid & Non-profit" },
   { value: "overig", label: "Overig" },
 ];
 
@@ -81,6 +91,56 @@ const BRANCHE_VRAGEN: Record<string, { field: string; label: string }[]> = {
     { field: "alleenWerken", label: "Werken medewerkers veel vanuit huis?" },
     { field: "fysiekWerk", label: "Is de werkplek ergonomisch ingericht (bureau, stoel, beeldscherm)?" },
   ],
+  onderwijs: [
+    { field: "fysiekWerk", label: "Wordt er gewerkt met zware materialen (meubilair, sporttoestellen)?" },
+    { field: "beeldschermwerk", label: "Werken docenten langdurig achter een beeldscherm?" },
+    { field: "gevaarlijkeStoffen", label: "Wordt er gewerkt met chemicaliën in practica of techniekruimtes?" },
+  ],
+  landbouw: [
+    { field: "fysiekWerk", label: "Wordt er zwaar fysiek werk verricht (tillen, bukken, oogsten)?" },
+    { field: "gevaarlijkeStoffen", label: "Wordt er gewerkt met bestrijdingsmiddelen of meststoffen?" },
+    { field: "buitenwerk", label: "Wordt er voornamelijk buiten gewerkt (weer, UV, hitte)?" },
+  ],
+  industrie: [
+    { field: "fysiekWerk", label: "Wordt er gewerkt met zware machines of productielijnen?" },
+    { field: "gevaarlijkeStoffen", label: "Wordt er gewerkt met gevaarlijke stoffen of dampen?" },
+    { field: "nachtwerk", label: "Wordt er in ploegendienst of nachtdienst gewerkt?" },
+  ],
+  automotive: [
+    { field: "fysiekWerk", label: "Wordt er zwaar getild (banden, onderdelen, gereedschap)?" },
+    { field: "gevaarlijkeStoffen", label: "Wordt er gewerkt met oliën, smeermiddelen of uitlaatgassen?" },
+    { field: "alleenWerken", label: "Werken monteurs weleens alleen in de werkplaats?" },
+  ],
+  installatietechniek: [
+    { field: "fysiekWerk", label: "Wordt er gewerkt op hoogte of in kruipruimtes?" },
+    { field: "gevaarlijkeStoffen", label: "Wordt er gewerkt met elektriciteit, gas of loodvrij soldeer?" },
+    { field: "buitenwerk", label: "Wordt er regelmatig op wisselende locaties buiten gewerkt?" },
+  ],
+  kappersbeauty: [
+    { field: "gevaarlijkeStoffen", label: "Wordt er gewerkt met haarverf, bleek of chemische producten?" },
+    { field: "fysiekWerk", label: "Is er langdurig staand werk of repeterende bewegingen?" },
+    { field: "beeldschermwerk", label: "Wordt er gewerkt met UV-lampen of laserapparatuur?" },
+  ],
+  vastgoed: [
+    { field: "beeldschermwerk", label: "Werken medewerkers langdurig achter een beeldscherm?" },
+    { field: "alleenWerken", label: "Doen medewerkers alleen bezichtigingen of inspectiebezoeken?" },
+    { field: "fysiekWerk", label: "Worden panden bezocht die mogelijk onveilig zijn (leegstand, verbouwing)?" },
+  ],
+  financieel: [
+    { field: "beeldschermwerk", label: "Werken medewerkers >6 uur per dag achter een beeldscherm?" },
+    { field: "alleenWerken", label: "Werken medewerkers regelmatig vanuit huis of alleen op kantoor?" },
+    { field: "fysiekWerk", label: "Is de werkplek ergonomisch ingericht (sta-zit bureau, goede stoel)?" },
+  ],
+  recreatie: [
+    { field: "fysiekWerk", label: "Wordt er zwaar getild (podia, tenten, attractie-onderdelen)?" },
+    { field: "buitenwerk", label: "Wordt er voornamelijk buiten gewerkt (weer, zon, kou)?" },
+    { field: "nachtwerk", label: "Zijn er avond- of nachtdiensten bij evenementen?" },
+  ],
+  overheid: [
+    { field: "beeldschermwerk", label: "Werken medewerkers langdurig achter een beeldscherm?" },
+    { field: "alleenWerken", label: "Werken medewerkers in buitendienst of alleen op locatie?" },
+    { field: "fysiekWerk", label: "Is er sprake van publiekscontact met risico op agressie?" },
+  ],
   overig: [
     { field: "fysiekWerk", label: "Is er sprake van zwaar fysiek werk?" },
     { field: "gevaarlijkeStoffen", label: "Wordt er gewerkt met gevaarlijke stoffen?" },
@@ -98,6 +158,16 @@ const BRANCHE_DEFAULTS: Record<string, Record<string, string>> = {
   transport: { fysiekWerk: "ja", nachtwerk: "ja" },
   zorg: { fysiekWerk: "ja", nachtwerk: "ja" },
   kantoor: { beeldschermwerk: "ja" },
+  onderwijs: { beeldschermwerk: "ja" },
+  landbouw: { fysiekWerk: "ja", buitenwerk: "ja" },
+  industrie: { fysiekWerk: "ja", gevaarlijkeStoffen: "ja" },
+  automotive: { fysiekWerk: "ja", gevaarlijkeStoffen: "ja" },
+  installatietechniek: { fysiekWerk: "ja", buitenwerk: "ja" },
+  kappersbeauty: { gevaarlijkeStoffen: "ja" },
+  vastgoed: { beeldschermwerk: "ja" },
+  financieel: { beeldschermwerk: "ja" },
+  recreatie: { fysiekWerk: "ja", buitenwerk: "ja" },
+  overheid: { beeldschermwerk: "ja" },
   overig: {},
 };
 
