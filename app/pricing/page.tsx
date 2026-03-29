@@ -1,57 +1,129 @@
-import Link from "next/link";
-import { Shield, CheckCircle2, ArrowRight, Star, Zap, Building2, Users } from "lucide-react";
+"use client";
 
-const pricingTiers = [
+import Link from "next/link";
+import { useState } from "react";
+import {
+  Shield,
+  CheckCircle2,
+  ArrowRight,
+  Star,
+  Zap,
+  Building2,
+  Users,
+  Sparkles,
+  Crown,
+} from "lucide-react";
+
+const subscriptionPlans = [
   {
-    name: "Basis",
-    price: "€99",
-    description: "Volledige RI&E voor kleine bedrijven",
+    tier: "STARTER",
+    name: "Starter",
+    monthlyPrice: 19,
+    yearlyPrice: 179,
+    yearlyMonthly: 15,
+    yearlySavings: 49,
+    description: "Voor kleine bedrijven die willen starten",
     features: [
-      "Volledige risico-inventarisatie",
-      "Alle risico's met maatregelen",
-      "Professioneel PDF-rapport",
-      "Wettelijke verwijzingen",
+      "1 RI&E rapport per maand",
+      "Basis risico-analyse",
+      "PDF download",
+      "Email support",
     ],
-    cta: "Start Gratis Scan",
-    href: "/scan",
     highlighted: false,
-    tier: "BASIS",
+    icon: Zap,
   },
   {
-    name: "Professional",
-    price: "€249",
-    description: "RI&E + Plan van Aanpak",
-    features: [
-      "Alles van Basis",
-      "Uitgebreid Plan van Aanpak",
-      "Prioriteitenmatrix",
-      "Concrete deadlines & verantwoordelijken",
-      "Kostenramingen per maatregel",
-    ],
-    cta: "Start Gratis Scan",
-    href: "/scan",
-    highlighted: true,
     tier: "PROFESSIONAL",
+    name: "Professional",
+    monthlyPrice: 49,
+    yearlyPrice: 469,
+    yearlyMonthly: 39,
+    yearlySavings: 119,
+    description: "Voor groeiende bedrijven",
+    features: [
+      "5 RI&E rapporten per maand",
+      "Uitgebreide risico-analyse",
+      "Plan van Aanpak",
+      "Branding & huisstijl",
+      "Tot 3 locaties",
+      "AI chat assistent",
+      "Prioriteit support",
+    ],
+    highlighted: true,
+    icon: Star,
   },
   {
-    name: "Enterprise",
-    price: "€499",
-    description: "Voor grotere organisaties",
-    features: [
-      "Alles van Professional",
-      "Uitgebreide rapportage",
-      "AI Expert Chat (24/7)",
-      "Jaarlijkse update-herinnering",
-      "Persoonlijke AI-assistent met volledige kennis van uw RI&E",
-    ],
-    cta: "Start Gratis Scan",
-    href: "/scan",
-    highlighted: false,
     tier: "ENTERPRISE",
+    name: "Enterprise",
+    monthlyPrice: 129,
+    yearlyPrice: 1249,
+    yearlyMonthly: 104,
+    yearlySavings: 299,
+    description: "Voor grote organisaties",
+    features: [
+      "Onbeperkt rapporten",
+      "Uitgebreide rapportage",
+      "Plan van Aanpak + prioritering",
+      "Branding & huisstijl",
+      "Onbeperkt locaties",
+      "AI Expert Chat (24/7)",
+      "Multi-user toegang",
+      "API toegang",
+      "Dedicated support",
+    ],
+    highlighted: false,
+    icon: Crown,
   },
 ];
 
+const oneTimePrices = [
+  { name: "Basis", price: 249, tier: "BASIS" },
+  { name: "Professional", price: 649, tier: "PROFESSIONAL" },
+  { name: "Enterprise", price: 1499, tier: "ENTERPRISE" },
+];
+
+const comparisonFeatures = [
+  { name: "RI&E rapporten per maand", starter: "1", professional: "5", enterprise: "Onbeperkt" },
+  { name: "Risico-analyse", starter: "Basis", professional: "Uitgebreid", enterprise: "Uitgebreid+" },
+  { name: "Plan van Aanpak", starter: "—", professional: "✓", enterprise: "✓" },
+  { name: "Branding & huisstijl", starter: "—", professional: "✓", enterprise: "✓" },
+  { name: "Locaties", starter: "1", professional: "3", enterprise: "Onbeperkt" },
+  { name: "AI chat assistent", starter: "—", professional: "✓", enterprise: "24/7 Expert" },
+  { name: "Team leden", starter: "1", professional: "5", enterprise: "Onbeperkt" },
+  { name: "PDF download", starter: "✓", professional: "✓", enterprise: "✓" },
+  { name: "API toegang", starter: "—", professional: "—", enterprise: "✓" },
+  { name: "Support", starter: "Email", professional: "Prioriteit", enterprise: "Dedicated" },
+];
+
 export default function PricingPage() {
+  const [isYearly, setIsYearly] = useState(false);
+
+  const handleCheckout = async (tier: string) => {
+    try {
+      const res = await fetch("/api/subscriptions/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          tier,
+          billingCycle: isYearly ? "YEARLY" : "MONTHLY",
+        }),
+      });
+
+      if (res.status === 401) {
+        // Not logged in, redirect to register
+        window.location.href = `/register?redirect=/pricing&tier=${tier}&cycle=${isYearly ? "YEARLY" : "MONTHLY"}`;
+        return;
+      }
+
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch {
+      alert("Er ging iets mis. Probeer het opnieuw.");
+    }
+  };
+
   return (
     <main className="min-h-screen">
       {/* Navigation */}
@@ -86,63 +158,58 @@ export default function PricingPage() {
           >
             Start Gratis Scan
           </Link>
-          <div className="md:hidden">
-            <Link
-              href="/scan"
-              className="bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-medium"
-            >
-              Start Scan
-            </Link>
-          </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-brand-50 to-white">
+      {/* Hero */}
+      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-brand-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-brand-100 text-brand-700 px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-            <Zap className="h-4 w-4" />
-            Geen abonnement · Eenmalige betaling
+            <Sparkles className="h-4 w-4" />
+            Kies het plan dat bij je past
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight">
             Transparante{" "}
             <span className="text-brand-600">prijzen</span>
           </h1>
           <p className="mt-6 text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
-            Iedereen begint met een gratis scan. Na uw scan kiest u het pakket dat past. 
-            Geen verrassingen, geen verborgen kosten.
+            Start met een gratis scan en kies daarna het abonnement dat past bij jouw organisatie.
+            Bespaar tot €299 met een jaarabonnement.
           </p>
-          <div className="mt-10">
-            <Link
-              href="/scan"
-              className="inline-flex items-center gap-2 bg-brand-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-brand-700 transition shadow-lg shadow-brand-600/25"
+
+          {/* Billing toggle */}
+          <div className="mt-10 flex items-center justify-center gap-4">
+            <span className={`text-sm font-medium ${!isYearly ? "text-gray-900" : "text-gray-500"}`}>
+              Maandelijks
+            </span>
+            <button
+              onClick={() => setIsYearly(!isYearly)}
+              className={`relative inline-flex h-7 w-14 items-center rounded-full transition-colors ${
+                isYearly ? "bg-brand-600" : "bg-gray-300"
+              }`}
+              aria-label="Toggle jaarlijks/maandelijks"
             >
-              Start met gratis scan
-              <ArrowRight className="h-5 w-5" />
-            </Link>
-          </div>
-          <div className="mt-12 flex flex-wrap justify-center gap-8 text-sm text-gray-500">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-500" />
-              Gratis eerste risico-overzicht
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-500" />
-              Klaar in 5 minuten
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-500" />
-              Professioneel PDF-rapport
-            </div>
+              <span
+                className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform shadow-sm ${
+                  isYearly ? "translate-x-8" : "translate-x-1"
+                }`}
+              />
+            </button>
+            <span className={`text-sm font-medium ${isYearly ? "text-gray-900" : "text-gray-500"}`}>
+              Jaarlijks
+            </span>
+            {isYearly && (
+              <span className="bg-green-100 text-green-700 text-xs font-semibold px-2.5 py-1 rounded-full">
+                Bespaar tot €299
+              </span>
+            )}
           </div>
 
-          {/* Social Proof */}
-          <div className="mt-10 flex flex-col items-center gap-4">
+          {/* Social proof */}
+          <div className="mt-8 flex flex-col items-center gap-3">
             <div className="flex items-center gap-2 text-sm text-gray-500">
-              <div className="flex items-center gap-0.5">
-                <Users className="h-4 w-4 text-brand-600 mr-1" />
-                <span className="font-semibold text-gray-900">127+</span>
-              </div>
+              <Users className="h-4 w-4 text-brand-600" />
+              <span className="font-semibold text-gray-900">127+</span>
               <span>RI&E scans deze maand</span>
               <span className="mx-2 text-gray-300">·</span>
               <div className="flex items-center gap-0.5">
@@ -152,167 +219,319 @@ export default function PricingPage() {
               </div>
               <span className="font-medium text-gray-700">4.8/5</span>
             </div>
-            <div className="max-w-lg bg-white/70 backdrop-blur-sm rounded-xl border border-gray-200/60 px-6 py-4">
-              <p className="text-sm text-gray-700 italic leading-relaxed">
-                &ldquo;Binnen 10 minuten had ik een complete RI&E. Scheelt mij €1.500 en weken wachten op een adviseur.&rdquo;
-              </p>
-              <div className="mt-2 flex items-center gap-2">
-                <div className="w-7 h-7 rounded-full bg-brand-100 flex items-center justify-center text-xs font-bold text-brand-700">
-                  JV
+          </div>
+        </div>
+      </section>
+
+      {/* Subscription Plans */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-3 gap-8">
+            {subscriptionPlans.map((plan) => {
+              const Icon = plan.icon;
+              const price = isYearly ? plan.yearlyMonthly : plan.monthlyPrice;
+              const totalYearly = plan.yearlyPrice;
+
+              return (
+                <div
+                  key={plan.tier}
+                  className={`rounded-2xl p-8 flex flex-col relative ${
+                    plan.highlighted
+                      ? "bg-brand-600 text-white ring-4 ring-brand-600/20 lg:scale-105 shadow-2xl"
+                      : "bg-white border border-gray-200 shadow-sm hover:shadow-md transition"
+                  }`}
+                >
+                  {plan.highlighted && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand-800 text-white text-xs font-semibold px-4 py-1 rounded-full">
+                      Meest gekozen
+                    </div>
+                  )}
+
+                  {isYearly && (
+                    <div
+                      className={`absolute top-4 right-4 text-xs font-semibold px-2.5 py-1 rounded-full ${
+                        plan.highlighted
+                          ? "bg-green-400/20 text-green-100"
+                          : "bg-green-100 text-green-700"
+                      }`}
+                    >
+                      Bespaar €{plan.yearlySavings}
+                    </div>
+                  )}
+
+                  <div className="flex items-center gap-3 mb-4">
+                    <div
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                        plan.highlighted ? "bg-white/20" : "bg-brand-100"
+                      }`}
+                    >
+                      <Icon className={`h-5 w-5 ${plan.highlighted ? "text-white" : "text-brand-600"}`} />
+                    </div>
+                    <h3
+                      className={`text-2xl font-semibold ${
+                        plan.highlighted ? "text-white" : "text-gray-900"
+                      }`}
+                    >
+                      {plan.name}
+                    </h3>
+                  </div>
+
+                  <div className="mb-2">
+                    <span
+                      className={`text-5xl font-extrabold ${
+                        plan.highlighted ? "text-white" : "text-gray-900"
+                      }`}
+                    >
+                      €{price}
+                    </span>
+                    <span
+                      className={`text-sm ml-2 ${
+                        plan.highlighted ? "text-brand-200" : "text-gray-500"
+                      }`}
+                    >
+                      /maand
+                    </span>
+                  </div>
+
+                  {isYearly && (
+                    <p
+                      className={`text-sm mb-4 ${
+                        plan.highlighted ? "text-brand-200" : "text-gray-500"
+                      }`}
+                    >
+                      €{totalYearly} per jaar gefactureerd
+                    </p>
+                  )}
+
+                  <p
+                    className={`text-base mb-6 ${
+                      plan.highlighted ? "text-brand-100" : "text-gray-600"
+                    }`}
+                  >
+                    {plan.description}
+                  </p>
+
+                  <ul className="space-y-3 mb-8 flex-1">
+                    {plan.features.map((f) => (
+                      <li key={f} className="flex items-start gap-3">
+                        <CheckCircle2
+                          className={`h-5 w-5 mt-0.5 flex-shrink-0 ${
+                            plan.highlighted ? "text-brand-200" : "text-green-500"
+                          }`}
+                        />
+                        <span className={plan.highlighted ? "text-brand-100" : "text-gray-600"}>
+                          {f}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button
+                    onClick={() => handleCheckout(plan.tier)}
+                    className={`block w-full text-center py-4 px-6 rounded-xl font-semibold transition cursor-pointer ${
+                      plan.highlighted
+                        ? "bg-white text-brand-600 hover:bg-brand-50 shadow-lg"
+                        : "bg-brand-600 text-white hover:bg-brand-700"
+                    }`}
+                  >
+                    Aan de slag
+                    <ArrowRight className="inline-block ml-2 h-4 w-4" />
+                  </button>
                 </div>
-                <div className="text-xs text-gray-500">
-                  <span className="font-medium text-gray-700">J. de Vries</span> — Aannemer, 12 medewerkers
-                </div>
-              </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Comparison Table */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+            Vergelijk alle functies
+          </h2>
+          <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-gray-200 bg-gray-50">
+                    <th className="text-left py-4 px-6 text-sm font-medium text-gray-500">
+                      Functie
+                    </th>
+                    <th className="text-center py-4 px-6 text-sm font-semibold text-gray-900">
+                      Starter
+                    </th>
+                    <th className="text-center py-4 px-6 text-sm font-semibold text-brand-600 bg-brand-50">
+                      Professional
+                    </th>
+                    <th className="text-center py-4 px-6 text-sm font-semibold text-gray-900">
+                      Enterprise
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {comparisonFeatures.map((feature, i) => (
+                    <tr
+                      key={feature.name}
+                      className={i < comparisonFeatures.length - 1 ? "border-b border-gray-100" : ""}
+                    >
+                      <td className="py-4 px-6 text-sm text-gray-700">
+                        {feature.name}
+                      </td>
+                      <td className="text-center py-4 px-6 text-sm text-gray-600">
+                        {feature.starter}
+                      </td>
+                      <td className="text-center py-4 px-6 text-sm text-gray-900 font-medium bg-brand-50/50">
+                        {feature.professional}
+                      </td>
+                      <td className="text-center py-4 px-6 text-sm text-gray-600">
+                        {feature.enterprise}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Pricing Cards */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-8">
-            {pricingTiers.map((tier) => (
+      {/* One-time purchase section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Liever een eenmalig rapport?
+            </h2>
+            <p className="text-gray-600 text-lg">
+              Geen abonnement nodig? Koop een enkel RI&E rapport tegen een vaste prijs.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {oneTimePrices.map((item) => (
               <div
-                key={tier.name}
-                className={`rounded-2xl p-8 flex flex-col ${
-                  tier.highlighted
-                    ? "bg-brand-600 text-white ring-4 ring-brand-600/20 scale-105 shadow-2xl"
-                    : "bg-white border border-gray-200 shadow-sm hover:shadow-md transition"
-                }`}
+                key={item.tier}
+                className="bg-white rounded-xl border border-gray-200 p-6 text-center hover:shadow-md transition"
               >
-                {tier.highlighted && (
-                  <div className="text-xs font-semibold uppercase tracking-wider text-brand-200 mb-2">
-                    Meest gekozen
-                  </div>
-                )}
-                <h3 className={`text-2xl font-semibold ${tier.highlighted ? "text-white" : "text-gray-900"}`}>
-                  {tier.name}
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  {item.name}
                 </h3>
-                <div className="mt-4 mb-4">
-                  <span className={`text-5xl font-extrabold ${tier.highlighted ? "text-white" : "text-gray-900"}`}>
-                    {tier.price}
-                  </span>
-                  <span className={`text-sm ml-2 ${tier.highlighted ? "text-brand-200" : "text-gray-500"}`}>
-                    eenmalig
-                  </span>
-                </div>
-                <p className={`text-lg mb-8 ${tier.highlighted ? "text-brand-100" : "text-gray-600"}`}>
-                  {tier.description}
+                <p className="text-4xl font-extrabold text-gray-900 mb-1">
+                  €{item.price}
                 </p>
-                <ul className="space-y-4 mb-10 flex-1">
-                  {tier.features.map((f) => (
-                    <li key={f} className="flex items-start gap-3">
-                      <CheckCircle2
-                        className={`h-5 w-5 mt-0.5 flex-shrink-0 ${
-                          tier.highlighted ? "text-brand-200" : "text-green-500"
-                        }`}
-                      />
-                      <span className={tier.highlighted ? "text-brand-100" : "text-gray-600"}>{f}</span>
-                    </li>
-                  ))}
-                </ul>
+                <p className="text-sm text-gray-500 mb-6">eenmalig</p>
                 <Link
-                  href={tier.href}
-                  className={`block text-center py-4 px-6 rounded-xl font-semibold transition ${
-                    tier.highlighted
-                      ? "bg-white text-brand-600 hover:bg-brand-50 shadow-lg"
-                      : "bg-brand-600 text-white hover:bg-brand-700"
-                  }`}
+                  href="/scan"
+                  className="block w-full py-3 px-6 rounded-lg font-medium border border-gray-300 text-gray-700 hover:bg-gray-50 transition"
                 >
-                  {tier.cta}
+                  Start met scan
                 </Link>
               </div>
             ))}
           </div>
+          <p className="text-center text-sm text-gray-400 mt-4">
+            Na je gratis scan kies je welk rapport je wilt kopen.
+          </p>
+        </div>
+      </section>
 
-          {/* Value Proposition */}
-          <div className="mt-16 bg-gray-50 rounded-2xl p-8 text-center">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">
-              Waarom SnelRIE goedkoper én beter is
-            </h3>
-            <div className="grid md:grid-cols-3 gap-8 mt-8">
-              <div className="text-center">
-                <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mb-4 mx-auto">
-                  <Building2 className="h-6 w-6 text-red-600" />
-                </div>
-                <h4 className="font-semibold text-gray-900 mb-2">Traditionele RI&E</h4>
-                <p className="text-sm text-gray-600">€500 - €5.000+</p>
-                <p className="text-sm text-gray-600">2-6 weken wachttijd</p>
-                <p className="text-sm text-gray-600">Afspraak nodig</p>
+      {/* Value Proposition */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div className="max-w-5xl mx-auto">
+          <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">
+            Waarom SnelRIE goedkoper én beter is
+          </h3>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center bg-white rounded-xl p-6 border border-gray-200">
+              <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mb-4 mx-auto">
+                <Building2 className="h-6 w-6 text-red-600" />
               </div>
-              <div className="text-center">
-                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4 mx-auto">
-                  <Zap className="h-6 w-6 text-green-600" />
-                </div>
-                <h4 className="font-semibold text-gray-900 mb-2">SnelRIE</h4>
-                <p className="text-sm text-gray-600">€99 - €499</p>
-                <p className="text-sm text-gray-600">5 minuten</p>
-                <p className="text-sm text-gray-600">Direct beschikbaar</p>
+              <h4 className="font-semibold text-gray-900 mb-2">Traditionele RI&E</h4>
+              <p className="text-sm text-gray-600">€500 – €5.000+</p>
+              <p className="text-sm text-gray-600">2–6 weken wachttijd</p>
+              <p className="text-sm text-gray-600">Afspraak nodig</p>
+            </div>
+            <div className="text-center bg-white rounded-xl p-6 border-2 border-brand-200">
+              <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4 mx-auto">
+                <Zap className="h-6 w-6 text-green-600" />
               </div>
-              <div className="text-center">
-                <div className="w-12 h-12 bg-brand-100 rounded-xl flex items-center justify-center mb-4 mx-auto">
-                  <CheckCircle2 className="h-6 w-6 text-brand-600" />
-                </div>
-                <h4 className="font-semibold text-gray-900 mb-2">Uw voordeel</h4>
-                <p className="text-sm text-gray-600">Bespaar €400-4.500</p>
-                <p className="text-sm text-gray-600">Geen wachttijd</p>
-                <p className="text-sm text-gray-600">24/7 beschikbaar</p>
+              <h4 className="font-semibold text-gray-900 mb-2">SnelRIE</h4>
+              <p className="text-sm text-gray-600">Vanaf €19/maand</p>
+              <p className="text-sm text-gray-600">5 minuten</p>
+              <p className="text-sm text-gray-600">Direct beschikbaar</p>
+            </div>
+            <div className="text-center bg-white rounded-xl p-6 border border-gray-200">
+              <div className="w-12 h-12 bg-brand-100 rounded-xl flex items-center justify-center mb-4 mx-auto">
+                <CheckCircle2 className="h-6 w-6 text-brand-600" />
               </div>
+              <h4 className="font-semibold text-gray-900 mb-2">Uw voordeel</h4>
+              <p className="text-sm text-gray-600">Bespaar €400–4.500</p>
+              <p className="text-sm text-gray-600">Geen wachttijd</p>
+              <p className="text-sm text-gray-600">24/7 beschikbaar</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
+      {/* FAQ */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Veelgestelde vragen over prijzen</h2>
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+            Veelgestelde vragen over prijzen
+          </h2>
           <div className="space-y-4">
             {[
               {
-                q: "Waarom is dit zo veel goedkoper dan een traditionele RI&E?",
-                a: "Wij gebruiken AI om in minuten te genereren wat een adviseur weken kost. Geen reiskosten, geen uurtarieven, geen lange doorlooptijden. U krijgt hetzelfde resultaat voor een fractie van de prijs."
+                q: "Kan ik ook zonder abonnement een rapport kopen?",
+                a: "Ja! Je kunt altijd een eenmalig rapport kopen zonder abonnement. Start een gratis scan en kies daarna het eenmalige pakket dat bij je past.",
               },
               {
-                q: "Zijn er verborgen kosten?",
-                a: "Nee. De prijs die u ziet is wat u betaalt. Geen abonnementen, geen extra kosten, geen verrassingen. Eenmalige betaling en u heeft uw RI&E."
+                q: "Kan ik op elk moment opzeggen?",
+                a: "Ja, je kunt je abonnement op elk moment opzeggen. Je houdt toegang tot het einde van je lopende periode. Geen opzegtermijn, geen verborgen kosten.",
               },
               {
-                q: "Kan ik upgraden na mijn gratis scan?",
-                a: "Ja. U begint altijd gratis en ziet direct een preview van uw RI&E. Daarna kiest u welk pakket u wilt. U betaalt alleen voor wat u nodig heeft."
-              },
-              {
-                q: "Is deze RI&E rechtsgeldig voor dezelfde prijs?",
-                a: "Ja. De RI&E voldoet aan alle wettelijke eisen van de Arbowet. Voor bedrijven met meer dan 25 medewerkers moet de RI&E nog getoetst worden door een arbodeskundige, maar dat geldt voor elke RI&E."
+                q: "Wat gebeurt er als ik upgrade of downgrade?",
+                a: "Bij een upgrade krijg je direct toegang tot alle functies van je nieuwe plan. Het verschil wordt pro rata verrekend. Bij een downgrade wijzigt je plan aan het einde van de lopende periode.",
               },
               {
                 q: "Hoe kan ik betalen?",
-                a: "U kunt veilig betalen via iDEAL, creditcard of bankoverschrijving. Alle betalingen worden verwerkt via Stripe, de meest vertrouwde betalingsprovider ter wereld."
-              }
+                a: "Je kunt betalen via iDEAL of creditcard (Visa, Mastercard, American Express). Alle betalingen worden veilig verwerkt via Stripe.",
+              },
+              {
+                q: "Is er een proefperiode?",
+                a: "Nieuwe accounts starten met een gratis scan. Hiermee krijg je direct inzicht in de mogelijkheden van SnelRIE voordat je een abonnement kiest.",
+              },
+              {
+                q: "Wat als ik meer dan 25 medewerkers heb?",
+                a: "De RI&E voldoet aan de Arbowet. Bij meer dan 25 medewerkers moet de RI&E worden getoetst door een arbodeskundige. Dit geldt voor elke RI&E, ongeacht de aanbieder.",
+              },
             ].map((faq) => (
-              <details key={faq.q} className="group bg-white rounded-xl border border-gray-200 overflow-hidden">
+              <details
+                key={faq.q}
+                className="group bg-white rounded-xl border border-gray-200 overflow-hidden"
+              >
                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
                   <span className="font-medium text-gray-900">{faq.q}</span>
-                  <ArrowRight className="h-5 w-5 text-gray-400 group-open:rotate-90 transition-transform" />
+                  <ArrowRight className="h-5 w-5 text-gray-400 group-open:rotate-90 transition-transform flex-shrink-0 ml-4" />
                 </summary>
-                <div className="px-6 pb-6 text-gray-600 text-sm leading-relaxed">{faq.a}</div>
+                <div className="px-6 pb-6 text-gray-600 text-sm leading-relaxed">
+                  {faq.a}
+                </div>
               </details>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-brand-600">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             Klaar om te beginnen?
           </h2>
           <p className="text-brand-100 text-lg mb-8">
-            Start met een gratis scan en zie direct uw grootste risico's. 
-            Upgrade daarna naar het pakket dat bij u past.
+            Start met een gratis scan en zie direct uw grootste risico&apos;s.
+            Kies daarna het plan dat bij u past.
           </p>
           <Link
             href="/scan"
