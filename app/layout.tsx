@@ -6,7 +6,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "SnelRIE — Je RI&E in minuten, niet weken",
   description:
-    "AI-gestuurde Risico-Inventarisatie & Evaluatie voor elk bedrijf in Nederland. Wettelijk verplicht, nu eenvoudig en betaalbaar. Vanaf €99.",
+    "AI-gestuurde Risico-Inventarisatie & Evaluatie voor elk bedrijf in Nederland. Wettelijk verplicht, nu eenvoudig en betaalbaar. Vanaf €19/mnd.",
   keywords: [
     "RI&E",
     "risico-inventarisatie",
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "SnelRIE — Je RI&E in minuten, niet weken",
-    description: "AI-gestuurde RI&E voor elk bedrijf. Vanaf €99.",
+    description: "AI-gestuurde RI&E voor elk bedrijf. Vanaf €19/mnd.",
     url: "https://snelrie.nl",
     siteName: "SnelRIE",
     locale: "nl_NL",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "SnelRIE — Je RI&E in minuten, niet weken",
-    description: "AI-gestuurde RI&E voor elk bedrijf. Vanaf €99.",
+    description: "AI-gestuurde RI&E voor elk bedrijf. Vanaf €19/mnd.",
     images: ["https://snelrie.nl/og"],
   },
 };
