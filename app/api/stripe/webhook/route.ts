@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getStripe } from "@/lib/stripe";
 import { prisma } from "@/lib/db";
 import { generateRie } from "@/lib/ai/pipeline";
+import { enforceCommitmentOnUpdate } from "@/lib/stripe-commitment";
 
 export async function POST(req: NextRequest) {
   const body = await req.text();
@@ -235,6 +236,21 @@ async function handleInvoicePaymentFailed(invoice: any) {
 }
 
 async function handleSubscriptionUpdated(subscription: any) {
+  // ═══════════════════════════════════════════════════════
+  // 12-MONTH COMMITMENT ENFORCEMENT
+  // If someone cancels via Stripe Dashboard/API (bypassing our endpoint),
+  // revert the cancellation if within the commitment period.
+  // ═══════════════════════════════════════════════════════
+  const commitmentResult = await enforceCommitmentOnUpdate(subscription);
+  if (commitmentResult.enforced) {
+    console.log(`[webhook] Commitment enforced: ${commitmentResult.action}`);
+    // If we reverted the cancel, re-fetch the subscription to get updated state
+    if (commitmentResult.action === "cancel_reverted") {
+      const stripe = getStripe();
+      subscription = await stripe.subscriptions.retrieve(subscription.id);
+    }
+  }
+
   const sub = await prisma.subscription.findUnique({
     where: { stripeSubscriptionId: subscription.id },
   });
