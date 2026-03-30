@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
     }
 
     const pricing = PRICING[tier as keyof typeof PRICING];
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://www.snelrie.nl";
 
     const session = await getStripe().checkout.sessions.create({
       payment_method_types: ["card", "ideal"],
