@@ -2,6 +2,8 @@ import { NextRequest } from "next/server";
 import { prisma } from "@/lib/db";
 import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMITS } from "@/lib/rate-limit";
 import { chatSchema, validationErrorResponse, stripHtml } from "@/lib/validate";
+import { requireAiChat } from "@/lib/gate";
+import { getEffectiveTier } from "@/lib/stripe-client";
 
 export async function POST(req: NextRequest) {
   // Rate limiting (per IP)
@@ -30,15 +32,39 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    if (report.tier !== "ENTERPRISE") {
+    // Check AI chat access via subscription tier (PROFESSIONAL+)
+    // Fall back to report-level tier for legacy one-time purchases
+    if (report.userId) {
+      const chatGate = await requireAiChat(report.userId);
+      if (chatGate) {
+        // Fallback: also allow if report itself was purchased as ENTERPRISE
+        if (report.tier !== "ENTERPRISE") {
+          return new Response(
+            JSON.stringify({
+              error: "AI Chat is beschikbaar vanaf het Professional abonnement.",
+              upgradeUrl: "/pricing",
+              gated: true,
+            }),
+            { status: 403, headers: { "Content-Type": "application/json" } }
+          );
+        }
+      }
+    } else if (report.tier !== "ENTERPRISE") {
       return new Response(
-        JSON.stringify({ error: "AI Chat is alleen beschikbaar voor Enterprise klanten" }),
+        JSON.stringify({
+          error: "AI Chat is beschikbaar vanaf het Professional abonnement.",
+          upgradeUrl: "/pricing",
+          gated: true,
+        }),
         { status: 403, headers: { "Content-Type": "application/json" } }
       );
     }
 
     const hasPaid = report.payments.some((p) => p.status === "PAID");
-    if (!hasPaid) {
+    // For subscription users, skip payment check (they pay via subscription)
+    const userTier = report.userId ? await getEffectiveTier(report.userId) : null;
+    const hasSubscription = userTier && userTier !== "STARTER";
+    if (!hasPaid && !hasSubscription) {
       return new Response(
         JSON.stringify({ error: "Betaling niet gevonden" }),
         { status: 403, headers: { "Content-Type": "application/json" } }

@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMITS } from "@/lib/rate-limit";
 import { generateRieSchema, validationErrorResponse } from "@/lib/validate";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { requireReportQuota } from "@/lib/gate";
 
 export async function POST(req: NextRequest) {
   // Rate limiting
@@ -34,6 +37,17 @@ export async function POST(req: NextRequest) {
       user = await prisma.user.create({
         data: { email: userEmail, naam: naam || null },
       });
+    }
+
+    // Check if authenticated user has remaining report quota
+    const session = await getServerSession(authOptions);
+    if (session?.user?.id) {
+      const quotaGate = await requireReportQuota(session.user.id);
+      if (quotaGate) return quotaGate;
+    } else if (user) {
+      // For non-session users (e.g. scan flow), check quota by user id
+      const quotaGate = await requireReportQuota(user.id);
+      if (quotaGate) return quotaGate;
     }
 
     // Create report record (fast DB operation only)

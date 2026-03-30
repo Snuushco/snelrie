@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { requireBranding } from "@/lib/gate";
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,6 +14,10 @@ export async function POST(req: NextRequest) {
     if (!user) {
       return NextResponse.json({ error: "Gebruiker niet gevonden" }, { status: 404 });
     }
+
+    // Check branding access (PROFESSIONAL+)
+    const brandingGate = await requireBranding(user.id);
+    if (brandingGate) return brandingGate;
 
     const branding = await prisma.brandingConfig.upsert({
       where: { userId: user.id },

@@ -4,6 +4,7 @@ import { checkRateLimit, getClientIp, rateLimitResponse, RATE_LIMITS } from "@/l
 import { renderToBuffer } from "@react-pdf/renderer";
 import React from "react";
 import { RieDocument, getBranding } from "@/lib/pdf/rie-document";
+import { getEffectiveTier, getFeatureAccess } from "@/lib/stripe-client";
 
 export async function GET(
   req: NextRequest,
@@ -42,9 +43,36 @@ export async function GET(
     year: "numeric",
   });
 
+  // Determine effective tier from subscription (overrides report-level tier)
+  let effectiveTier: string = report.tier;
+  if (report.userId) {
+    const subscriptionTier = await getEffectiveTier(report.userId);
+    const access = getFeatureAccess(subscriptionTier);
+    // Use subscription tier if it grants more access than report tier
+    const tierHierarchy = ["GRATIS", "BASIS", "STARTER", "PROFESSIONAL", "ENTERPRISE"];
+    if (tierHierarchy.indexOf(subscriptionTier) > tierHierarchy.indexOf(report.tier)) {
+      effectiveTier = subscriptionTier;
+    }
+
+    // Check if STARTER is trying to access Plan van Aanpak content
+    const url2 = new URL(req.url);
+    const requestPva = url2.searchParams.get("includePva") === "true";
+    if (requestPva && !access.planVanAanpak) {
+      console.log(`[Gate] PvA PDF denied for user ${report.userId} (tier: ${subscriptionTier})`);
+      return NextResponse.json(
+        {
+          error: "Het Plan van Aanpak is beschikbaar vanaf het Professional abonnement.",
+          upgradeUrl: "/pricing",
+          gated: true,
+        },
+        { status: 403 }
+      );
+    }
+  }
+
   // Build branding based on tier + optional query params (Enterprise white-label)
   const url = new URL(req.url);
-  const branding = getBranding(report.tier, {
+  const branding = getBranding(effectiveTier, {
     logoUrl: url.searchParams.get("logoUrl") || undefined,
     primaryColor: url.searchParams.get("primaryColor") || undefined,
     companyName: url.searchParams.get("companyName") || undefined,

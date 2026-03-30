@@ -51,6 +51,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Gebruiker niet gevonden" }, { status: 404 });
     }
 
+    // Check branding access (PROFESSIONAL+)
+    const { requireBranding } = await import("@/lib/gate");
+    const brandingGate = await requireBranding(user.id);
+    if (brandingGate) return brandingGate;
+
     // Upsert branding config
     const branding = await prisma.brandingConfig.upsert({
       where: { userId: user.id },

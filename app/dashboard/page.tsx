@@ -2,14 +2,15 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import Link from "next/link";
-import { FileText, Plus, CreditCard, User, ArrowRight } from "lucide-react";
+import { FileText, Plus, CreditCard, User, ArrowRight, Lock, Sparkles, MessageSquare, Palette, ClipboardList } from "lucide-react";
 import { redirect } from "next/navigation";
+import { getEffectiveTier, getFeatureAccess, getRemainingReports } from "@/lib/stripe-client";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) redirect("/login");
 
-  const [reportCount, subscription, recentReports] = await Promise.all([
+  const [reportCount, subscription, recentReports, tier, remainingReports] = await Promise.all([
     prisma.rieReport.count({ where: { userId: session.user.id } }),
     prisma.subscription.findUnique({ where: { userId: session.user.id } }),
     prisma.rieReport.findMany({
@@ -24,9 +25,17 @@ export default async function DashboardPage() {
         createdAt: true,
       },
     }),
+    getEffectiveTier(session.user.id),
+    getRemainingReports(session.user.id),
   ]);
 
-  const tierLabel = subscription?.tier || "STARTER";
+  const features = getFeatureAccess(tier);
+  const tierLabel = tier;
+  const tierColors: Record<string, string> = {
+    STARTER: "bg-gray-100 text-gray-700",
+    PROFESSIONAL: "bg-blue-100 text-blue-700",
+    ENTERPRISE: "bg-purple-100 text-purple-700",
+  };
 
   return (
     <div>
@@ -47,9 +56,21 @@ export default async function DashboardPage() {
             <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
               <FileText className="w-5 h-5 text-blue-600" />
             </div>
-            <span className="text-sm font-medium text-gray-500">Rapporten</span>
+            <span className="text-sm font-medium text-gray-500">Rapporten deze maand</span>
           </div>
-          <p className="text-3xl font-bold text-gray-900">{reportCount}</p>
+          <p className="text-3xl font-bold text-gray-900">
+            {remainingReports.unlimited
+              ? "Onbeperkt"
+              : `${remainingReports.remaining}/${remainingReports.limit}`}
+          </p>
+          {!remainingReports.unlimited && remainingReports.remaining === 0 && (
+            <Link
+              href="/pricing"
+              className="text-sm text-blue-600 hover:text-blue-700 font-medium mt-1 inline-block"
+            >
+              Upgrade voor meer →
+            </Link>
+          )}
         </div>
 
         <div className="bg-white rounded-xl border border-gray-200 p-6">
@@ -59,7 +80,19 @@ export default async function DashboardPage() {
             </div>
             <span className="text-sm font-medium text-gray-500">Abonnement</span>
           </div>
-          <p className="text-3xl font-bold text-gray-900">{tierLabel}</p>
+          <div className="flex items-center gap-2">
+            <span className={`text-sm font-semibold px-3 py-1 rounded-full ${tierColors[tierLabel] || tierColors.STARTER}`}>
+              {tierLabel}
+            </span>
+          </div>
+          {tierLabel === "STARTER" && (
+            <Link
+              href="/pricing"
+              className="text-sm text-blue-600 hover:text-blue-700 font-medium mt-2 inline-block"
+            >
+              Upgrade →
+            </Link>
+          )}
         </div>
 
         <div className="bg-white rounded-xl border border-gray-200 p-6">
@@ -74,6 +107,46 @@ export default async function DashboardPage() {
           </p>
         </div>
       </div>
+
+      {/* Feature access overview (show locked features for STARTER) */}
+      {tierLabel === "STARTER" && (
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-100 p-6 mb-8">
+          <div className="flex items-center gap-2 mb-4">
+            <Sparkles className="w-5 h-5 text-blue-600" />
+            <h2 className="text-lg font-semibold text-gray-900">Ontgrendel meer functies</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {[
+              { icon: MessageSquare, label: "AI Chat Assistent", available: features.aiChat },
+              { icon: Palette, label: "Branding & Huisstijl", available: features.branding },
+              { icon: ClipboardList, label: "Plan van Aanpak", available: features.planVanAanpak },
+            ].map(({ icon: Icon, label, available }) => (
+              <div
+                key={label}
+                className={`flex items-center gap-3 p-3 rounded-lg ${
+                  available ? "bg-green-50 border border-green-200" : "bg-white border border-gray-200"
+                }`}
+              >
+                {available ? (
+                  <Icon className="w-5 h-5 text-green-600 flex-shrink-0" />
+                ) : (
+                  <Lock className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                )}
+                <span className={`text-sm font-medium ${available ? "text-green-700" : "text-gray-500"}`}>
+                  {label}
+                </span>
+              </div>
+            ))}
+          </div>
+          <Link
+            href="/pricing"
+            className="inline-flex items-center gap-2 mt-4 bg-blue-600 text-white rounded-lg px-5 py-2.5 text-sm font-medium hover:bg-blue-700 transition"
+          >
+            <Sparkles className="w-4 h-4" />
+            Bekijk abonnementen
+          </Link>
+        </div>
+      )}
 
       {/* Quick actions */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
