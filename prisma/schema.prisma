@@ -169,13 +169,32 @@ model RieReport {
   tokensUsed      Int?
   generationTimeMs Int?
 
+  // Signatures (digital signing)
+  signatures      Json?        // Array of {role, name, functie, signatureImage, signedAt}
+
   // Payment
   payments        Payment[]
+  signLinks       SignLink[]
 
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
 
   @@index([userId])
+}
+
+model SignLink {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  reportId  String
+  report    RieReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  role      String   // werkgever, preventiemedewerker, arbodeskundige
+  email     String?
+  usedAt    DateTime?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([token])
+  @@index([reportId])
 }
 
 model Payment {

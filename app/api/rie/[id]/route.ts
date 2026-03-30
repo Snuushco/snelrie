@@ -69,6 +69,14 @@ export async function GET(
     hasPaid
   );
 
+  // Parse signatures for response
+  const signatures = ((report as any).signatures as any[]) || [];
+  const signatureSummary = signatures.map((s: any) => ({
+    role: s.role,
+    name: s.name,
+    signedAt: s.signedAt,
+  }));
+
   return NextResponse.json({
     id: report.id,
     bedrijfsnaam: report.bedrijfsnaam,
@@ -78,5 +86,6 @@ export async function GET(
     generatedContent: filteredContent,
     samenvatting: report.samenvatting,
     hasPaid,
+    signatures: signatureSummary,
   });
 }

@@ -377,6 +377,28 @@ function createStyles(b: BrandingConfig) {
       borderRadius: 6, padding: 12, marginTop: 14,
     },
     voortgangText: { fontSize: 8, color: GRAY[700], lineHeight: 1.55 },
+
+    // Gratis tier disclaimer banner
+    gratisDisclaimer: {
+      backgroundColor: "#fef3c7", borderWidth: 2, borderColor: "#f59e0b",
+      borderRadius: 8, padding: 16, marginBottom: 20,
+    },
+    gratisDisclaimerTitle: {
+      fontSize: 11, fontFamily: "Helvetica-Bold", color: "#92400e",
+      marginBottom: 6, textTransform: "uppercase" as const, letterSpacing: 1,
+    },
+    gratisDisclaimerText: {
+      fontSize: 9, color: "#78350f", lineHeight: 1.6,
+    },
+
+    // Basis tier note
+    basisNote: {
+      backgroundColor: "#eff6ff", borderLeftWidth: 3, borderLeftColor: "#3b82f6",
+      borderRadius: 6, padding: 12, marginBottom: 16,
+    },
+    basisNoteText: {
+      fontSize: 8.5, color: "#1e40af", lineHeight: 1.6,
+    },
   });
 }
 
@@ -471,6 +493,13 @@ export type RieData = {
   };
   datum: string;
   whiteLabel?: { logoUrl?: string; primaryColor?: string; companyName?: string };
+  signatures?: Array<{
+    role: "werkgever" | "preventiemedewerker" | "arbodeskundige";
+    name: string;
+    functie: string;
+    signatureImage: string; // base64 data URI
+    signedAt: string;
+  }>;
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -569,9 +598,11 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
 
   // Tier logic
   const tierUpper = (data.tier || "BASIS").toUpperCase();
+  const isGratis = tierUpper === "GRATIS";
   const isBasis = tierUpper === "BASIS";
   const isProfessional = tierUpper === "PROFESSIONAL" || tierUpper === "ENTERPRISE";
   const isEnterprise = tierUpper === "ENTERPRISE";
+  const isPaidTier = !isGratis; // BASIS, PROFESSIONAL, ENTERPRISE
   const tierLabel = tierUpper === "PROFESSIONAL" ? "PROFESSIONAL" : tierUpper === "ENTERPRISE" ? "ENTERPRISE" : tierUpper === "BASIS" ? "BASIS" : null;
   const tierBadgeColors = isEnterprise
     ? { bg: brand.primaryDark, border: brand.primaryColor, text: "#ffffff" }
@@ -651,7 +682,11 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
             </View>
             <View style={s.coverMetaRow}>
               <Text style={s.coverMetaLabel}>Status</Text>
-              <Text style={s.coverMetaValue}>Concept — dient te worden ondertekend en (indien &gt;25 mdw) getoetst</Text>
+              <Text style={s.coverMetaValue}>
+                {isGratis
+                  ? "Indicatieve risicoscan — geen volledige RI&E"
+                  : "Concept — dient te worden ondertekend en (indien >25 mdw) getoetst"}
+              </Text>
             </View>
           </View>
           <View style={s.coverFooter}>
@@ -672,16 +707,16 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
           {[
             "Samenvatting",
             "Bedrijfsbeschrijving",
-            ...(!isBasis && arbo ? ["Arbobeleid & Organisatie"] : []),
+            ...(!isGratis && !isBasis && arbo ? ["Arbobeleid & Organisatie"] : []),
             "Risico-inventarisatie — Overzicht",
             "Risico-inventarisatie — Detail",
             ...(pva.length > 0 ? ["Plan van Aanpak"] : []),
             ...(wettelijk.length > 0 ? ["Wettelijke Verplichtingen"] : []),
-            ...(!isBasis && aanbevelingen ? ["Aanbevelingen & Conclusie"] : []),
+            ...(!isGratis && !isBasis && aanbevelingen ? ["Aanbevelingen & Conclusie"] : []),
             "Disclaimer",
-            "Ondertekening en Goedkeuring",
-            "Toetsingsverklaring",
-            "Bijlagen",
+            ...(isPaidTier ? ["Ondertekening en Goedkeuring"] : []),
+            ...(isPaidTier ? ["Toetsingsverklaring"] : []),
+            ...(isPaidTier ? ["Bijlagen"] : []),
           ].map((title, i) => (
             <View key={i} style={s.tocRow}>
               <Text style={s.tocText}>{i + 1}. {title}</Text>
@@ -694,6 +729,18 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
       <Page size="A4" style={s.page}>
         <Header data={data} brand={brand} s={s} />
         <Footer brand={brand} s={s} />
+
+        {/* GRATIS tier: Indicatieve scan disclaimer */}
+        {isGratis && (
+          <View style={s.gratisDisclaimer}>
+            <Text style={s.gratisDisclaimerTitle}>Indicatieve Risicoscan</Text>
+            <Text style={s.gratisDisclaimerText}>
+              Dit rapport is een indicatieve risicoscan en geen volledige RI&E conform Arbowet art. 5.{"\n"}
+              Deze scan geeft een eerste indruk van de belangrijkste arbeidsrisico{"'"}s binnen uw organisatie.{"\n"}
+              Voor een complete RI&E met Plan van Aanpak kunt u upgraden naar SnelRIE Basis of Professional.
+            </Text>
+          </View>
+        )}
 
         <Text style={s.sectionTitle}>{nextSection()}. Samenvatting</Text>
         <View style={s.infoBox}>
@@ -815,8 +862,8 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
         )}
       </Page>
 
-      {/* ═══ ARBOBELEID & ORGANISATIE ═══ */}
-      {!isBasis && arbo && (
+      {/* ═══ ARBOBELEID & ORGANISATIE (Professional+ only) ═══ */}
+      {isProfessional && arbo && (
         <Page size="A4" style={s.page}>
           <Header data={data} brand={brand} s={s} />
           <Footer brand={brand} s={s} />
@@ -1007,6 +1054,16 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
             Conform Arbowet art. 5 lid 3 is het PvA een verplicht onderdeel van de RI&E.
           </Text>
 
+          {/* BASIS tier: erkend instrument note */}
+          {isBasis && (
+            <View style={s.basisNote}>
+              <Text style={s.basisNoteText}>
+                Deze RI&E is opgesteld met een digitaal RI&E-instrument. Voor bedrijven met minder dan 25 medewerkers
+                is toetsing door een arbodeskundige niet verplicht maar wel aanbevolen (Arbowet art. 14 lid 12).
+              </Text>
+            </View>
+          )}
+
           {/* Enterprise: Budget overview */}
           {isEnterprise && (
             <View style={s.budgetBox} wrap={false}>
@@ -1165,8 +1222,8 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
         </Page>
       )}
 
-      {/* ═══ AANBEVELINGEN & CONCLUSIE ═══ */}
-      {!isBasis && aanbevelingen && (
+      {/* ═══ AANBEVELINGEN & CONCLUSIE (Professional+ only) ═══ */}
+      {isProfessional && aanbevelingen && (
         <Page size="A4" style={s.page}>
           <Header data={data} brand={brand} s={s} />
           <Footer brand={brand} s={s} />
@@ -1303,7 +1360,8 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
         </View>
       </Page>
 
-      {/* ═══ ONDERTEKENING EN GOEDKEURING ═══ */}
+      {/* ═══ ONDERTEKENING EN GOEDKEURING (only paid tiers) ═══ */}
+      {isPaidTier && (
       <Page size="A4" style={s.page}>
         <Header data={data} brand={brand} s={s} />
         <Footer brand={brand} s={s} />
@@ -1314,64 +1372,142 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
         </Text>
 
         {/* Werkgever */}
-        <View style={s.signatureBlock}>
-          <Text style={[s.signatureLabel, { fontSize: 10, marginBottom: 8 }]}>Werkgever</Text>
-          <View style={s.signatureFieldRow}>
-            <Text style={s.signatureFieldLabel}>Naam:</Text>
-            <View style={s.signatureFieldLine} />
-          </View>
-          <View style={s.signatureFieldRow}>
-            <Text style={s.signatureFieldLabel}>Functie:</Text>
-            <View style={s.signatureFieldLine} />
-          </View>
-          <View style={s.signatureFieldRow}>
-            <Text style={s.signatureFieldLabel}>Datum:</Text>
-            <View style={s.signatureFieldLine} />
-          </View>
-          <View style={s.signatureDottedLine} />
-          <Text style={s.signatureHint}>Handtekening</Text>
-        </View>
+        {(() => {
+          const sig = data.signatures?.find(s => s.role === "werkgever");
+          return (
+            <View style={s.signatureBlock}>
+              <Text style={[s.signatureLabel, { fontSize: 10, marginBottom: 8 }]}>Werkgever</Text>
+              {sig ? (
+                <View>
+                  <View style={s.signatureFieldRow}>
+                    <Text style={s.signatureFieldLabel}>Naam:</Text>
+                    <Text style={[s.profileValue, { flex: 1 }]}>{sig.name}</Text>
+                  </View>
+                  <View style={s.signatureFieldRow}>
+                    <Text style={s.signatureFieldLabel}>Functie:</Text>
+                    <Text style={[s.profileValue, { flex: 1 }]}>{sig.functie}</Text>
+                  </View>
+                  <View style={s.signatureFieldRow}>
+                    <Text style={s.signatureFieldLabel}>Datum:</Text>
+                    <Text style={[s.profileValue, { flex: 1 }]}>{sig.signedAt}</Text>
+                  </View>
+                  <Image src={sig.signatureImage} style={{ height: 48, maxWidth: 200, marginTop: 8, marginBottom: 4 }} />
+                  <Text style={[s.signatureHint, { color: "#16a34a" }]}>Digitaal ondertekend op {sig.signedAt} via SnelRIE</Text>
+                </View>
+              ) : (
+                <View>
+                  <View style={s.signatureFieldRow}>
+                    <Text style={s.signatureFieldLabel}>Naam:</Text>
+                    <View style={s.signatureFieldLine} />
+                  </View>
+                  <View style={s.signatureFieldRow}>
+                    <Text style={s.signatureFieldLabel}>Functie:</Text>
+                    <View style={s.signatureFieldLine} />
+                  </View>
+                  <View style={s.signatureFieldRow}>
+                    <Text style={s.signatureFieldLabel}>Datum:</Text>
+                    <View style={s.signatureFieldLine} />
+                  </View>
+                  <View style={s.signatureDottedLine} />
+                  <Text style={s.signatureHint}>Handtekening</Text>
+                </View>
+              )}
+            </View>
+          );
+        })()}
 
         {/* Preventiemedewerker */}
-        <View style={s.signatureBlock}>
-          <Text style={[s.signatureLabel, { fontSize: 10, marginBottom: 8 }]}>Preventiemedewerker</Text>
-          <View style={s.signatureFieldRow}>
-            <Text style={s.signatureFieldLabel}>Naam:</Text>
-            <View style={s.signatureFieldLine} />
-          </View>
-          <View style={s.signatureFieldRow}>
-            <Text style={s.signatureFieldLabel}>Functie:</Text>
-            <View style={s.signatureFieldLine} />
-          </View>
-          <View style={s.signatureFieldRow}>
-            <Text style={s.signatureFieldLabel}>Datum:</Text>
-            <View style={s.signatureFieldLine} />
-          </View>
-          <View style={s.signatureDottedLine} />
-          <Text style={s.signatureHint}>Handtekening</Text>
-        </View>
+        {(() => {
+          const sig = data.signatures?.find(s => s.role === "preventiemedewerker");
+          return (
+            <View style={s.signatureBlock}>
+              <Text style={[s.signatureLabel, { fontSize: 10, marginBottom: 8 }]}>Preventiemedewerker</Text>
+              {sig ? (
+                <View>
+                  <View style={s.signatureFieldRow}>
+                    <Text style={s.signatureFieldLabel}>Naam:</Text>
+                    <Text style={[s.profileValue, { flex: 1 }]}>{sig.name}</Text>
+                  </View>
+                  <View style={s.signatureFieldRow}>
+                    <Text style={s.signatureFieldLabel}>Functie:</Text>
+                    <Text style={[s.profileValue, { flex: 1 }]}>{sig.functie}</Text>
+                  </View>
+                  <View style={s.signatureFieldRow}>
+                    <Text style={s.signatureFieldLabel}>Datum:</Text>
+                    <Text style={[s.profileValue, { flex: 1 }]}>{sig.signedAt}</Text>
+                  </View>
+                  <Image src={sig.signatureImage} style={{ height: 48, maxWidth: 200, marginTop: 8, marginBottom: 4 }} />
+                  <Text style={[s.signatureHint, { color: "#16a34a" }]}>Digitaal ondertekend op {sig.signedAt} via SnelRIE</Text>
+                </View>
+              ) : (
+                <View>
+                  <View style={s.signatureFieldRow}>
+                    <Text style={s.signatureFieldLabel}>Naam:</Text>
+                    <View style={s.signatureFieldLine} />
+                  </View>
+                  <View style={s.signatureFieldRow}>
+                    <Text style={s.signatureFieldLabel}>Functie:</Text>
+                    <View style={s.signatureFieldLine} />
+                  </View>
+                  <View style={s.signatureFieldRow}>
+                    <Text style={s.signatureFieldLabel}>Datum:</Text>
+                    <View style={s.signatureFieldLine} />
+                  </View>
+                  <View style={s.signatureDottedLine} />
+                  <Text style={s.signatureHint}>Handtekening</Text>
+                </View>
+              )}
+            </View>
+          );
+        })()}
 
         {/* Arbodeskundige/toetser */}
-        <View style={s.signatureBlock}>
-          <Text style={[s.signatureLabel, { fontSize: 10, marginBottom: 4 }]}>Arbodeskundige / Toetser</Text>
-          <Text style={[s.complianceNote, { marginTop: 0, marginBottom: 8 }]}>
-            Indien van toepassing (&gt;25 medewerkers)
-          </Text>
-          <View style={s.signatureFieldRow}>
-            <Text style={s.signatureFieldLabel}>Naam:</Text>
-            <View style={s.signatureFieldLine} />
-          </View>
-          <View style={s.signatureFieldRow}>
-            <Text style={s.signatureFieldLabel}>Registratienummer:</Text>
-            <View style={s.signatureFieldLine} />
-          </View>
-          <View style={s.signatureFieldRow}>
-            <Text style={s.signatureFieldLabel}>Datum:</Text>
-            <View style={s.signatureFieldLine} />
-          </View>
-          <View style={s.signatureDottedLine} />
-          <Text style={s.signatureHint}>Handtekening</Text>
-        </View>
+        {(() => {
+          const sig = data.signatures?.find(s => s.role === "arbodeskundige");
+          return (
+            <View style={s.signatureBlock}>
+              <Text style={[s.signatureLabel, { fontSize: 10, marginBottom: 4 }]}>Arbodeskundige / Toetser</Text>
+              <Text style={[s.complianceNote, { marginTop: 0, marginBottom: 8 }]}>
+                Indien van toepassing (&gt;25 medewerkers)
+              </Text>
+              {sig ? (
+                <View>
+                  <View style={s.signatureFieldRow}>
+                    <Text style={s.signatureFieldLabel}>Naam:</Text>
+                    <Text style={[s.profileValue, { flex: 1 }]}>{sig.name}</Text>
+                  </View>
+                  <View style={s.signatureFieldRow}>
+                    <Text style={s.signatureFieldLabel}>Registratienummer:</Text>
+                    <Text style={[s.profileValue, { flex: 1 }]}>{sig.functie}</Text>
+                  </View>
+                  <View style={s.signatureFieldRow}>
+                    <Text style={s.signatureFieldLabel}>Datum:</Text>
+                    <Text style={[s.profileValue, { flex: 1 }]}>{sig.signedAt}</Text>
+                  </View>
+                  <Image src={sig.signatureImage} style={{ height: 48, maxWidth: 200, marginTop: 8, marginBottom: 4 }} />
+                  <Text style={[s.signatureHint, { color: "#16a34a" }]}>Digitaal ondertekend op {sig.signedAt} via SnelRIE</Text>
+                </View>
+              ) : (
+                <View>
+                  <View style={s.signatureFieldRow}>
+                    <Text style={s.signatureFieldLabel}>Naam:</Text>
+                    <View style={s.signatureFieldLine} />
+                  </View>
+                  <View style={s.signatureFieldRow}>
+                    <Text style={s.signatureFieldLabel}>Registratienummer:</Text>
+                    <View style={s.signatureFieldLine} />
+                  </View>
+                  <View style={s.signatureFieldRow}>
+                    <Text style={s.signatureFieldLabel}>Datum:</Text>
+                    <View style={s.signatureFieldLine} />
+                  </View>
+                  <View style={s.signatureDottedLine} />
+                  <Text style={s.signatureHint}>Handtekening</Text>
+                </View>
+              )}
+            </View>
+          );
+        })()}
 
         {/* OR/PVT Instemmingsregistratie */}
         <View style={[s.signatureBlock, { marginTop: 8 }]}>
@@ -1400,8 +1536,10 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
           </Text>
         </View>
       </Page>
+      )}
 
-      {/* ═══ TOETSINGSVERKLARING ═══ */}
+      {/* ═══ TOETSINGSVERKLARING (only paid tiers) ═══ */}
+      {isPaidTier && (
       <Page size="A4" style={s.page}>
         <Header data={data} brand={brand} s={s} />
         <Footer brand={brand} s={s} />
@@ -1478,8 +1616,10 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
           </Text>
         </View>
       </Page>
+      )}
 
-      {/* ═══ BIJLAGEN ═══ */}
+      {/* ═══ BIJLAGEN (only paid tiers) ═══ */}
+      {isPaidTier && (
       <Page size="A4" style={s.page}>
         <Header data={data} brand={brand} s={s} />
         <Footer brand={brand} s={s} />
@@ -1509,6 +1649,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
           <Text style={s.bijlageHint}>(door werkgever toe te voegen)</Text>
         </View>
       </Page>
+      )}
     </Document>
   );
 }

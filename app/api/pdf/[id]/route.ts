@@ -28,7 +28,7 @@ export async function GET(
     return NextResponse.json({ error: "Niet gevonden" }, { status: 404 });
   }
 
-  if (report.payments.length === 0) {
+  if (report.tier !== "GRATIS" && report.payments.length === 0) {
     return NextResponse.json({ error: "Betaling vereist" }, { status: 403 });
   }
 
@@ -87,6 +87,8 @@ export async function GET(
         aantalLocaties: report.aantalLocaties,
         generatedContent: content,
         datum,
+        tier: effectiveTier,
+        signatures: (report as any).signatures || undefined,
       },
       branding,
     });
