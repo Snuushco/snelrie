@@ -12,15 +12,19 @@ import {
   Menu,
   X,
   Palette,
+  Shield,
+  Key,
 } from "lucide-react";
 import { useState } from "react";
 
 const navItems = [
   { href: "/dashboard", label: "Overzicht", icon: LayoutDashboard },
   { href: "/dashboard/rapporten", label: "Rapporten", icon: FileText },
+  { href: "/dashboard/compliance", label: "Compliance", icon: Shield },
   { href: "/dashboard/account", label: "Account", icon: User },
   { href: "/dashboard/abonnement", label: "Abonnement", icon: CreditCard },
   { href: "/dashboard/branding", label: "Branding", icon: Palette },
+  { href: "/dashboard/instellingen/api", label: "API-sleutels", icon: Key },
 ];
 
 export default function DashboardLayout({

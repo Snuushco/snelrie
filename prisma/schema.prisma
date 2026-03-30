@@ -71,6 +71,7 @@ model User {
   reports      RieReport[]
   branding     BrandingConfig?
   subscription Subscription?
+  apiKeys      ApiKey[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -175,9 +176,13 @@ model RieReport {
   // Verification watermark
   verificationCode String?      @unique
 
+  // Plan van Aanpak status per item
+  pvaStatuses     Json?        // Array of {index, status: "niet_gestart"|"in_behandeling"|"afgerond"}
+
   // Payment
   payments        Payment[]
   signLinks       SignLink[]
+  complianceChecks ComplianceCheck[]
 
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
@@ -286,4 +291,38 @@ model EmailDripStep {
   @@unique([dripId, step])
   @@index([scheduledAt])
   @@index([status])
+}
+
+// ── API Keys for Partner API ──────────────────────────────────────────
+
+model ApiKey {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String    // Friendly name, e.g. "Arbodienst X integratie"
+  key         String    @unique // sk_live_... hashed
+  keyPrefix   String    // First 8 chars for display: sk_live_Ab12...
+  lastUsedAt  DateTime?
+  requestCount Int      @default(0)
+  revokedAt   DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([key])
+  @@index([userId])
+}
+
+// ── Compliance Checklist Items ────────────────────────────────────────
+
+model ComplianceCheck {
+  id        String   @id @default(cuid())
+  reportId  String
+  report    RieReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  item      String   // e.g. "or_pvt_geinformeerd", "medewerkers_geinformeerd", "bhv_plan_actueel"
+  checked   Boolean  @default(false)
+  checkedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([reportId, item])
+  @@index([reportId])
 }

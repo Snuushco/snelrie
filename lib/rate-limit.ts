@@ -111,4 +111,5 @@ export const RATE_LIMITS = {
   chat: { name: "chat", maxRequests: 30, windowSeconds: 3600 } as RateLimitConfig,
   checkout: { name: "checkout", maxRequests: 10, windowSeconds: 3600 } as RateLimitConfig,
   pdf: { name: "pdf", maxRequests: 20, windowSeconds: 3600 } as RateLimitConfig,
+  apiV1: { name: "api-v1", maxRequests: 100, windowSeconds: 3600 } as RateLimitConfig,
 } as const;
