@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import SessionProvider from "@/components/SessionProvider";
+import ExitIntentPopup from "@/components/ExitIntentPopup";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -53,6 +54,7 @@ export default function RootLayout({
         <SessionProvider>
           <GoogleAnalytics />
           {children}
+          <ExitIntentPopup />
         </SessionProvider>
       </body>
     </html>

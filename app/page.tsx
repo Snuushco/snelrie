@@ -18,6 +18,9 @@ import { ABProvider } from "@/components/ABProvider";
 import { ABContent, ABUSPs, ABUSPsTitle, ABBottomCTA, ABMidCTA } from "@/components/ABContent";
 import { MobileNav } from "@/components/MobileNav";
 import { StickyMobileCTA } from "@/components/StickyMobileCTA";
+import { ScanCounter } from "@/components/ScanCounter";
+import { Testimonials } from "@/components/Testimonials";
+import { TrustBadges } from "@/components/TrustBadges";
 
 type SectorKey = "bouw" | "transport" | "horeca" | "retail" | "zorg";
 
@@ -473,6 +476,13 @@ export default async function HomePage({
             SectorIcon={SectorIcon}
             sectorHref={sectorHref}
           />
+          {/* Dynamic scan counter in hero */}
+          {!sector && (
+            <div className="mt-8 flex justify-center">
+              <ScanCounter />
+            </div>
+          )}
+
           <div className="mt-12 flex flex-wrap justify-center gap-8 text-sm text-gray-500">
             {sector ? (
               sector.stats.map((item) => (
@@ -535,6 +545,15 @@ export default async function HomePage({
           )}
         </div>
       </section>
+
+      {/* Trust Badges */}
+      {!sector && (
+        <section className="py-6 px-4 sm:px-6 lg:px-8 bg-white border-b border-gray-100">
+          <div className="max-w-4xl mx-auto">
+            <TrustBadges />
+          </div>
+        </section>
+      )}
 
       {/* Trusted By Logo Bar */}
       {!sector && (
@@ -738,6 +757,9 @@ export default async function HomePage({
           </div>
         </div>
       </section>
+
+      {/* Testimonials */}
+      {!sector && <Testimonials />}
 
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-3xl mx-auto text-center">

@@ -516,6 +516,26 @@ export default function PricingPage() {
                 q: "Wat als ik meer dan 25 medewerkers heb?",
                 a: "De RI&E voldoet aan de Arbowet. Bij meer dan 25 medewerkers moet de RI&E worden getoetst door een arbodeskundige. Dit geldt voor elke RI&E, ongeacht de aanbieder.",
               },
+              {
+                q: "Is de RI&E wettelijk verplicht?",
+                a: "Ja, elke werkgever in Nederland is wettelijk verplicht een RI&E op te stellen (Arbowet art. 5). Dit geldt voor alle bedrijven met personeel, ook met maar 1 werknemer.",
+              },
+              {
+                q: "Kan ik tussentijds opzeggen?",
+                a: "Alle abonnementen hebben een minimale looptijd van 12 maanden. Na deze periode kunt u opzeggen met een opzegtermijn van 30 dagen.",
+              },
+              {
+                q: "Wat als ik meer rapporten nodig heb dan mijn plan toestaat?",
+                a: "U kunt eenvoudig upgraden naar Professional (5 rapporten/maand) of Enterprise (onbeperkt). De upgrade gaat direct in en het verschil wordt pro rata verrekend.",
+              },
+              {
+                q: "Is mijn data veilig?",
+                a: "Ja. Alle data wordt versleuteld opgeslagen en wij zijn volledig GDPR-compliant. Uw bedrijfsgegevens worden nooit gedeeld met derden.",
+              },
+              {
+                q: "Kan ik het eerst proberen?",
+                a: "Ja! Start met een gratis scan om direct inzicht te krijgen. Daarnaast bieden wij een 14 dagen gratis Professional proefperiode aan zodat u alle functies kunt uitproberen.",
+              },
             ].map((faq) => (
               <details
                 key={faq.q}
@@ -531,6 +551,18 @@ export default function PricingPage() {
               </details>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Urgency element */}
+      <section className="py-8 px-4 sm:px-6 lg:px-8 bg-amber-50 border-y border-amber-200">
+        <div className="max-w-3xl mx-auto text-center">
+          <p className="text-sm sm:text-base font-medium text-amber-800">
+            ⚠️ Inspectie SZW controleert steeds vaker — zorg dat uw RI&E op orde is
+          </p>
+          <p className="text-xs sm:text-sm text-amber-700 mt-1">
+            Boetes voor ontbrekende RI&E kunnen oplopen tot €4.500 of meer.
+          </p>
         </div>
       </section>
 
