@@ -500,6 +500,7 @@ export type RieData = {
     signatureImage: string; // base64 data URI
     signedAt: string;
   }>;
+  verificationCode?: string; // e.g. "AB3F-K9M2-P7WX"
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -553,7 +554,7 @@ function Header({ data, brand, s }: { data: RieData; brand: BrandingConfig; s: R
   );
 }
 
-function Footer({ brand, s }: { brand: BrandingConfig; s: ReturnType<typeof createStyles> }) {
+function Footer({ brand, s, verificationCode }: { brand: BrandingConfig; s: ReturnType<typeof createStyles>; verificationCode?: string }) {
   return (
     <View style={s.footer} fixed>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -561,6 +562,11 @@ function Footer({ brand, s }: { brand: BrandingConfig; s: ReturnType<typeof crea
           <Text style={[s.footerText, { fontFamily: "Helvetica-Bold", color: GRAY[600], marginRight: 6, fontSize: 7 }]}>{brand.companyName}</Text>
         )}
         <Text style={s.footerText}>{brand.footerText}</Text>
+        {verificationCode && (
+          <Text style={[s.footerText, { marginLeft: 12, color: GRAY[500], fontSize: 6 }]}>
+            Geverifieerd document — {verificationCode}
+          </Text>
+        )}
       </View>
       <Text style={s.pageNum} render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`} />
     </View>
@@ -701,7 +707,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
       {/* ═══ INHOUDSOPGAVE ═══ */}
       <Page size="A4" style={s.page}>
         <Header data={data} brand={brand} s={s} />
-        <Footer brand={brand} s={s} />
+        <Footer brand={brand} s={s} verificationCode={data.verificationCode} />
         <Text style={s.pageTitle}>Inhoudsopgave</Text>
         <View style={{ marginTop: 16 }}>
           {[
@@ -728,7 +734,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
       {/* ═══ SAMENVATTING + BEDRIJFSPROFIEL ═══ */}
       <Page size="A4" style={s.page}>
         <Header data={data} brand={brand} s={s} />
-        <Footer brand={brand} s={s} />
+        <Footer brand={brand} s={s} verificationCode={data.verificationCode} />
 
         {/* GRATIS tier: Indicatieve scan disclaimer */}
         {isGratis && (
@@ -803,7 +809,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
       {/* ═══ BEDRIJFSBESCHRIJVING ═══ */}
       <Page size="A4" style={s.page}>
         <Header data={data} brand={brand} s={s} />
-        <Footer brand={brand} s={s} />
+        <Footer brand={brand} s={s} verificationCode={data.verificationCode} />
 
         <Text style={s.sectionTitle}>{nextSection()}. Bedrijfsbeschrijving</Text>
         <View style={s.profileCard}>
@@ -866,7 +872,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
       {isProfessional && arbo && (
         <Page size="A4" style={s.page}>
           <Header data={data} brand={brand} s={s} />
-          <Footer brand={brand} s={s} />
+          <Footer brand={brand} s={s} verificationCode={data.verificationCode} />
 
           <Text style={s.sectionTitle}>{nextSection()}. Arbobeleid & Organisatie</Text>
 
@@ -933,7 +939,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
       {/* ═══ RISICO-INVENTARISATIE OVERZICHT ═══ */}
       <Page size="A4" style={s.page}>
         <Header data={data} brand={brand} s={s} />
-        <Footer brand={brand} s={s} />
+        <Footer brand={brand} s={s} verificationCode={data.verificationCode} />
 
         <Text style={s.sectionTitle}>{nextSection()}. Risico-inventarisatie — Overzicht</Text>
 
@@ -973,7 +979,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
       {/* ═══ RISICO-INVENTARISATIE DETAIL ═══ */}
       <Page size="A4" style={s.page}>
         <Header data={data} brand={brand} s={s} />
-        <Footer brand={brand} s={s} />
+        <Footer brand={brand} s={s} verificationCode={data.verificationCode} />
 
         <Text style={s.sectionTitle}>{nextSection()}. Risico-inventarisatie — Detail</Text>
 
@@ -1046,7 +1052,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
       {pva.length > 0 && (
         <Page size="A4" style={s.page}>
           <Header data={data} brand={brand} s={s} />
-          <Footer brand={brand} s={s} />
+          <Footer brand={brand} s={s} verificationCode={data.verificationCode} />
 
           <Text style={s.sectionTitle}>{nextSection()}. Plan van Aanpak</Text>
           <Text style={[s.infoText, { marginBottom: 10 }]}>
@@ -1193,7 +1199,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
       {wettelijk.length > 0 && (
         <Page size="A4" style={s.page}>
           <Header data={data} brand={brand} s={s} />
-          <Footer brand={brand} s={s} />
+          <Footer brand={brand} s={s} verificationCode={data.verificationCode} />
 
           <Text style={s.sectionTitle}>{nextSection()}. Wettelijke Verplichtingen</Text>
 
@@ -1226,7 +1232,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
       {isProfessional && aanbevelingen && (
         <Page size="A4" style={s.page}>
           <Header data={data} brand={brand} s={s} />
-          <Footer brand={brand} s={s} />
+          <Footer brand={brand} s={s} verificationCode={data.verificationCode} />
 
           <Text style={s.sectionTitle}>{nextSection()}. Aanbevelingen & Conclusie</Text>
 
@@ -1291,7 +1297,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
       {/* ═══ DISCLAIMER ═══ */}
       <Page size="A4" style={s.page}>
         <Header data={data} brand={brand} s={s} />
-        <Footer brand={brand} s={s} />
+        <Footer brand={brand} s={s} verificationCode={data.verificationCode} />
 
         <Text style={s.sectionTitle}>{nextSection()}. Disclaimer</Text>
 
@@ -1364,7 +1370,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
       {isPaidTier && (
       <Page size="A4" style={s.page}>
         <Header data={data} brand={brand} s={s} />
-        <Footer brand={brand} s={s} />
+        <Footer brand={brand} s={s} verificationCode={data.verificationCode} />
 
         <Text style={s.sectionTitle}>{nextSection()}. Ondertekening en Goedkeuring</Text>
         <Text style={[s.infoText, { marginBottom: 16 }]}>
@@ -1535,6 +1541,62 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
             Conform Arbowet art. 12 lid 1 sub d
           </Text>
         </View>
+
+        {/* Digitaal Waarmerk */}
+        {data.verificationCode && (
+          <View style={{
+            marginTop: 20,
+            borderWidth: 2,
+            borderColor: GRAY[300],
+            borderRadius: 8,
+            padding: 16,
+            backgroundColor: GRAY[50],
+            alignItems: "center" as const,
+          }} wrap={false}>
+            <Text style={{
+              fontSize: 11,
+              fontFamily: "Helvetica-Bold",
+              color: GRAY[800],
+              letterSpacing: 2,
+              textTransform: "uppercase" as const,
+              marginBottom: 8,
+            }}>
+              Digitaal Waarmerk
+            </Text>
+            <View style={{
+              width: "100%",
+              borderTopWidth: 1,
+              borderTopColor: GRAY[300],
+              borderBottomWidth: 1,
+              borderBottomColor: GRAY[300],
+              paddingVertical: 10,
+              marginBottom: 6,
+              alignItems: "center" as const,
+            }}>
+              <Text style={{
+                fontSize: 8,
+                color: GRAY[500],
+                marginBottom: 4,
+              }}>
+                Verificatiecode
+              </Text>
+              <Text style={{
+                fontSize: 16,
+                fontFamily: "Helvetica-Bold",
+                color: GRAY[900],
+                letterSpacing: 3,
+              }}>
+                {data.verificationCode}
+              </Text>
+            </View>
+            <Text style={{ fontSize: 7.5, color: GRAY[600], marginBottom: 2 }}>
+              Ondertekend: {data.signatures?.find(s => s.role === "werkgever")?.signedAt || data.datum}
+            </Text>
+            <Text style={{ fontSize: 7.5, color: brand.primaryColor }}>
+              snelrie.nl/verificatie/{data.verificationCode}
+            </Text>
+          </View>
+        )}
       </Page>
       )}
 
@@ -1542,7 +1604,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
       {isPaidTier && (
       <Page size="A4" style={s.page}>
         <Header data={data} brand={brand} s={s} />
-        <Footer brand={brand} s={s} />
+        <Footer brand={brand} s={s} verificationCode={data.verificationCode} />
 
         <Text style={s.sectionTitle}>{nextSection()}. Toetsingsverklaring</Text>
         <Text style={[s.infoText, { marginBottom: 16, fontStyle: "italic" }]}>
@@ -1622,7 +1684,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
       {isPaidTier && (
       <Page size="A4" style={s.page}>
         <Header data={data} brand={brand} s={s} />
-        <Footer brand={brand} s={s} />
+        <Footer brand={brand} s={s} verificationCode={data.verificationCode} />
 
         <Text style={s.sectionTitle}>{nextSection()}. Bijlagen</Text>
         <Text style={[s.infoText, { marginBottom: 16 }]}>

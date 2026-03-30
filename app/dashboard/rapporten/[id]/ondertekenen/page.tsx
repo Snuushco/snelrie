@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
-  CheckCircle, AlertCircle, Pen, Trash2, Loader2,
+  CheckCircle, AlertCircle, Pen, Loader2,
   Send, Copy, ArrowLeft, Shield,
 } from "lucide-react";
+import SignatureInput from "@/components/SignatureInput";
 
 type SignatureInfo = {
   role: string;
@@ -18,6 +19,7 @@ type ReportInfo = {
   bedrijfsnaam: string;
   tier: string;
   signatures: SignatureInfo[];
+  verificationCode: string | null;
 };
 
 export default function OndertekeningDashboardPage() {
@@ -34,9 +36,7 @@ export default function OndertekeningDashboardPage() {
   const [functie, setFunctie] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [signSuccess, setSignSuccess] = useState(false);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isDrawing, setIsDrawing] = useState(false);
-  const [hasDrawn, setHasDrawn] = useState(false);
+  const [signatureDataUrl, setSignatureDataUrl] = useState<string | null>(null);
 
   // Sign link state
   const [sendingLink, setSendingLink] = useState<string | null>(null);
@@ -54,13 +54,13 @@ export default function OndertekeningDashboardPage() {
       const data = await res.json();
       if (data.error) throw new Error(data.error);
 
-      // Get signatures from the report
       const sigs = data.generatedContent?.signatures || [];
       setReport({
         id: data.id,
         bedrijfsnaam: data.bedrijfsnaam,
         tier: data.tier,
         signatures: sigs,
+        verificationCode: data.verificationCode || null,
       });
     } catch (err: any) {
       setError(err.message);
@@ -69,92 +69,25 @@ export default function OndertekeningDashboardPage() {
     }
   }
 
-  // Fetch actual signatures from report
-  useEffect(() => {
-    if (!report) return;
-    // Re-fetch to get updated signatures
-    fetch(`/api/rie/${id}`)
-      .then((r) => r.json())
-      .then((data) => {
-        // Signatures are stored at report level, not in generatedContent
-        // We need a separate endpoint or check the full report
-      })
-      .catch(() => {});
-  }, [signSuccess]);
-
-  // Canvas setup
-  useEffect(() => {
-    if (!canvasRef.current || !signingAs) return;
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width * 2;
-    canvas.height = rect.height * 2;
-    ctx.scale(2, 2);
-    ctx.strokeStyle = "#1e3a8a";
-    ctx.lineWidth = 2;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-  }, [signingAs]);
-
-  function getPos(e: React.MouseEvent | React.TouchEvent) {
-    const canvas = canvasRef.current!;
-    const rect = canvas.getBoundingClientRect();
-    if ("touches" in e) {
-      return { x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top };
-    }
-    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
-  }
-
-  function startDrawing(e: React.MouseEvent | React.TouchEvent) {
-    e.preventDefault();
-    const ctx = canvasRef.current?.getContext("2d");
-    if (!ctx) return;
-    setIsDrawing(true);
-    setHasDrawn(true);
-    const pos = getPos(e);
-    ctx.beginPath();
-    ctx.moveTo(pos.x, pos.y);
-  }
-
-  function draw(e: React.MouseEvent | React.TouchEvent) {
-    e.preventDefault();
-    if (!isDrawing) return;
-    const ctx = canvasRef.current?.getContext("2d");
-    if (!ctx) return;
-    const pos = getPos(e);
-    ctx.lineTo(pos.x, pos.y);
-    ctx.stroke();
-  }
-
-  function stopDrawing() { setIsDrawing(false); }
-
-  function clearCanvas() {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    setHasDrawn(false);
-  }
-
   async function handleSign() {
-    if (!signingAs || !name.trim() || !functie.trim() || !hasDrawn) return;
+    if (!signingAs || !name.trim() || !functie.trim() || !signatureDataUrl) return;
     setSubmitting(true);
     try {
-      const canvas = canvasRef.current!;
-      const signatureImage = canvas.toDataURL("image/png");
       const res = await fetch(`/api/rie/${id}/sign`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ signatureImage, name: name.trim(), functie: functie.trim(), role: signingAs }),
+        body: JSON.stringify({
+          signatureImage: signatureDataUrl,
+          name: name.trim(),
+          functie: functie.trim(),
+          role: signingAs,
+        }),
       });
       const data = await res.json();
       if (data.success) {
         setSignSuccess(true);
         setSigningAs(null);
-        // Reload report to get updated signatures
+        setSignatureDataUrl(null);
         loadReport();
       } else {
         setError(data.error);
@@ -251,6 +184,22 @@ export default function OndertekeningDashboardPage() {
         </div>
       )}
 
+      {/* Verification code display */}
+      {report.verificationCode && (
+        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6 flex items-center gap-3">
+          <Shield className="w-5 h-5 text-blue-600" />
+          <div>
+            <p className="text-sm font-medium text-blue-900">Digitaal Waarmerk</p>
+            <p className="font-mono text-sm font-bold text-blue-700 tracking-wider">
+              {report.verificationCode}
+            </p>
+            <p className="text-xs text-blue-500">
+              snelrie.nl/verificatie/{report.verificationCode}
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Signature status cards */}
       <div className="space-y-4 mb-8">
         {ROLE_CONFIG.map(({ role, label, icon }) => {
@@ -285,7 +234,7 @@ export default function OndertekeningDashboardPage() {
                         setSigningAs(role);
                         setName("");
                         setFunctie("");
-                        setHasDrawn(false);
+                        setSignatureDataUrl(null);
                       }}
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-blue-700 bg-blue-50 rounded-lg hover:bg-blue-100 transition"
                     >
@@ -353,7 +302,7 @@ export default function OndertekeningDashboardPage() {
         })}
       </div>
 
-      {/* Signing modal / inline form */}
+      {/* Signing form */}
       {signingAs && (
         <div className="bg-white rounded-2xl border border-blue-200 shadow-lg p-6 mb-8">
           <div className="flex items-center justify-between mb-6">
@@ -363,7 +312,10 @@ export default function OndertekeningDashboardPage() {
               {ROLE_CONFIG.find((r) => r.role === signingAs)?.label}
             </h2>
             <button
-              onClick={() => setSigningAs(null)}
+              onClick={() => {
+                setSigningAs(null);
+                setSignatureDataUrl(null);
+              }}
               className="text-gray-400 hover:text-gray-600"
             >
               ✕
@@ -400,42 +352,16 @@ export default function OndertekeningDashboardPage() {
                 className="w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-gray-50 text-gray-600"
               />
             </div>
-            <div>
-              <div className="flex items-center justify-between mb-1">
-                <label className="text-sm font-semibold text-gray-700 flex items-center gap-1.5">
-                  <Pen className="w-4 h-4" />
-                  Handtekening
-                </label>
-                {hasDrawn && (
-                  <button onClick={clearCanvas} className="text-sm text-gray-500 hover:text-red-600 flex items-center gap-1">
-                    <Trash2 className="w-3.5 h-3.5" />
-                    Wissen
-                  </button>
-                )}
-              </div>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg overflow-hidden bg-white">
-                <canvas
-                  ref={canvasRef}
-                  className="w-full touch-none cursor-crosshair"
-                  style={{ height: 140 }}
-                  onMouseDown={startDrawing}
-                  onMouseMove={draw}
-                  onMouseUp={stopDrawing}
-                  onMouseLeave={stopDrawing}
-                  onTouchStart={startDrawing}
-                  onTouchMove={draw}
-                  onTouchEnd={stopDrawing}
-                />
-              </div>
-              {!hasDrawn && (
-                <p className="text-xs text-gray-400 mt-1 text-center">
-                  Teken uw handtekening in het vak hierboven
-                </p>
-              )}
-            </div>
+
+            {/* Multi-method signature input */}
+            <SignatureInput
+              onSignatureChange={setSignatureDataUrl}
+              hasSignature={!!signatureDataUrl}
+            />
+
             <button
               onClick={handleSign}
-              disabled={submitting || !name.trim() || !functie.trim() || !hasDrawn}
+              disabled={submitting || !name.trim() || !functie.trim() || !signatureDataUrl}
               className="w-full bg-blue-600 text-white rounded-lg py-3 font-semibold hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {submitting ? (

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { generateVerificationCode, isFullySigned } from "@/lib/verification";
 
 export async function POST(
   req: NextRequest,
@@ -107,14 +108,32 @@ export async function POST(
     newSignature,
   ];
 
+  // Check if report is now fully signed → generate verification code
+  let verificationCode = report.verificationCode;
+  if (!verificationCode && isFullySigned(updatedSignatures)) {
+    verificationCode = generateVerificationCode({
+      reportId: id,
+      signatures: updatedSignatures.map((s: any) => ({
+        role: s.role,
+        name: s.name,
+        signedAt: s.signedAt,
+      })),
+      timestamp: new Date().toISOString(),
+    });
+  }
+
   await prisma.rieReport.update({
     where: { id },
-    data: { signatures: updatedSignatures },
+    data: {
+      signatures: updatedSignatures,
+      ...(verificationCode ? { verificationCode } : {}),
+    },
   });
 
   return NextResponse.json({
     success: true,
     message: `Rapport succesvol ondertekend als ${role}`,
+    verificationCode: verificationCode || null,
     signatures: updatedSignatures.map((s: any) => ({
       role: s.role,
       name: s.name,

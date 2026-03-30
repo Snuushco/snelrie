@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { CheckCircle, AlertCircle, Pen, Trash2, Loader2 } from "lucide-react";
+import { CheckCircle, AlertCircle, Pen, Loader2 } from "lucide-react";
+import SignatureInput from "@/components/SignatureInput";
 
 type SignLinkInfo = {
   reportId: string;
@@ -21,13 +22,12 @@ export default function OndertekeningPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [verificationCode, setVerificationCode] = useState<string | null>(null);
 
   // Form state
   const [name, setName] = useState("");
   const [functie, setFunctie] = useState("");
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isDrawing, setIsDrawing] = useState(false);
-  const [hasDrawn, setHasDrawn] = useState(false);
+  const [signatureDataUrl, setSignatureDataUrl] = useState<string | null>(null);
 
   // Load sign link info
   useEffect(() => {
@@ -44,84 +44,16 @@ export default function OndertekeningPage() {
       .finally(() => setLoading(false));
   }, [token]);
 
-  // Canvas drawing
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    // Set canvas size
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width * 2;
-    canvas.height = rect.height * 2;
-    ctx.scale(2, 2);
-    ctx.strokeStyle = "#1e3a8a";
-    ctx.lineWidth = 2;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-  }, [info]);
-
-  function getPos(e: React.MouseEvent | React.TouchEvent) {
-    const canvas = canvasRef.current!;
-    const rect = canvas.getBoundingClientRect();
-    if ("touches" in e) {
-      return {
-        x: e.touches[0].clientX - rect.left,
-        y: e.touches[0].clientY - rect.top,
-      };
-    }
-    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
-  }
-
-  function startDrawing(e: React.MouseEvent | React.TouchEvent) {
-    e.preventDefault();
-    const ctx = canvasRef.current?.getContext("2d");
-    if (!ctx) return;
-    setIsDrawing(true);
-    setHasDrawn(true);
-    const pos = getPos(e);
-    ctx.beginPath();
-    ctx.moveTo(pos.x, pos.y);
-  }
-
-  function draw(e: React.MouseEvent | React.TouchEvent) {
-    e.preventDefault();
-    if (!isDrawing) return;
-    const ctx = canvasRef.current?.getContext("2d");
-    if (!ctx) return;
-    const pos = getPos(e);
-    ctx.lineTo(pos.x, pos.y);
-    ctx.stroke();
-  }
-
-  function stopDrawing() {
-    setIsDrawing(false);
-  }
-
-  function clearCanvas() {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    setHasDrawn(false);
-  }
-
   async function handleSubmit() {
-    if (!info || !name.trim() || !functie.trim() || !hasDrawn) return;
+    if (!info || !name.trim() || !functie.trim() || !signatureDataUrl) return;
 
     setSubmitting(true);
     try {
-      const canvas = canvasRef.current!;
-      const signatureImage = canvas.toDataURL("image/png");
-
       const res = await fetch(`/api/rie/${info.reportId}/sign`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          signatureImage,
+          signatureImage: signatureDataUrl,
           name: name.trim(),
           functie: functie.trim(),
           role: info.role,
@@ -132,6 +64,9 @@ export default function OndertekeningPage() {
       const data = await res.json();
       if (data.success) {
         setSuccess(true);
+        if (data.verificationCode) {
+          setVerificationCode(data.verificationCode);
+        }
       } else {
         setError(data.error || "Er ging iets mis bij het ondertekenen");
       }
@@ -206,6 +141,17 @@ export default function OndertekeningPage() {
             De RI&E van <strong>{info.bedrijfsnaam}</strong> is ondertekend als {info.roleLabel}.
             De werkgever ontvangt hiervan een bevestiging.
           </p>
+          {verificationCode && (
+            <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-3">
+              <p className="text-xs text-blue-600 mb-1">Digitaal Waarmerk</p>
+              <p className="font-mono font-bold text-blue-900 tracking-wider">
+                {verificationCode}
+              </p>
+              <p className="text-xs text-blue-500 mt-1">
+                Verificatie: snelrie.nl/verificatie/{verificationCode}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -280,48 +226,16 @@ export default function OndertekeningPage() {
             />
           </div>
 
-          {/* Signature pad */}
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <label className="text-sm font-semibold text-gray-700 flex items-center gap-1.5">
-                <Pen className="w-4 h-4" />
-                Handtekening
-              </label>
-              {hasDrawn && (
-                <button
-                  onClick={clearCanvas}
-                  className="text-sm text-gray-500 hover:text-red-600 flex items-center gap-1"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                  Wissen
-                </button>
-              )}
-            </div>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg overflow-hidden bg-white">
-              <canvas
-                ref={canvasRef}
-                className="w-full touch-none cursor-crosshair"
-                style={{ height: 160 }}
-                onMouseDown={startDrawing}
-                onMouseMove={draw}
-                onMouseUp={stopDrawing}
-                onMouseLeave={stopDrawing}
-                onTouchStart={startDrawing}
-                onTouchMove={draw}
-                onTouchEnd={stopDrawing}
-              />
-            </div>
-            {!hasDrawn && (
-              <p className="text-xs text-gray-400 mt-1.5 text-center">
-                Teken uw handtekening in het vak hierboven
-              </p>
-            )}
-          </div>
+          {/* Signature input (multi-method) */}
+          <SignatureInput
+            onSignatureChange={setSignatureDataUrl}
+            hasSignature={!!signatureDataUrl}
+          />
 
           {/* Submit */}
           <button
             onClick={handleSubmit}
-            disabled={submitting || !name.trim() || !functie.trim() || !hasDrawn}
+            disabled={submitting || !name.trim() || !functie.trim() || !signatureDataUrl}
             className="w-full bg-blue-600 text-white rounded-lg py-3 font-semibold hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {submitting ? (

@@ -89,6 +89,7 @@ export async function GET(
         datum,
         tier: effectiveTier,
         signatures: (report as any).signatures || undefined,
+        verificationCode: report.verificationCode || undefined,
       },
       branding,
     });

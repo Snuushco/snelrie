@@ -172,6 +172,9 @@ model RieReport {
   // Signatures (digital signing)
   signatures      Json?        // Array of {role, name, functie, signatureImage, signedAt}
 
+  // Verification watermark
+  verificationCode String?      @unique
+
   // Payment
   payments        Payment[]
   signLinks       SignLink[]

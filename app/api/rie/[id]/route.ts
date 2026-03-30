@@ -87,5 +87,6 @@ export async function GET(
     samenvatting: report.samenvatting,
     hasPaid,
     signatures: signatureSummary,
+    verificationCode: report.verificationCode || null,
   });
 }
