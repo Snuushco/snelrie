@@ -29,6 +29,10 @@ export type FunnelEvent =
   | 'scan_result_view'
   | 'upgrade_click'
   | 'checkout_start'
+  | 'checkout_success'
+  | 'purchase'
+  | 'free_scan_completed'
+  | 'trial_started'
   | 'cta_click'
   | 'hero_cta_click'
   | 'ab_variant_assigned'
@@ -147,6 +151,50 @@ export function trackPdfDownload(reportId: string, tier: string) {
 export function trackChatOpened(reportId: string) {
   trackEvent('chat_opened', {
     report_id: reportId,
+  });
+}
+
+// ─── Google Ads Conversion tracking ─────────────────────────────────
+
+/**
+ * Track successful checkout (subscription purchase).
+ * Maps to Google Ads conversion action for ROAS tracking.
+ */
+export function trackCheckoutSuccess(tier: string, billingCycle: string, value: number) {
+  trackEvent('checkout_success', {
+    tier,
+    billing_cycle: billingCycle,
+    currency: 'EUR',
+    value,
+    transaction_id: `sub_${Date.now()}`,
+  });
+
+  // Also fire as GA4 purchase event for Google Ads conversion import
+  trackEvent('purchase', {
+    currency: 'EUR',
+    value,
+    items: JSON.stringify([{ item_name: `SnelRIE ${tier}`, price: value }]),
+  });
+}
+
+/**
+ * Track free scan completion — key conversion for lead generation campaigns.
+ */
+export function trackFreeScanCompleted(branche: string, reportId: string) {
+  trackEvent('free_scan_completed', {
+    branche,
+    report_id: reportId,
+    conversion_type: 'lead',
+  });
+}
+
+/**
+ * Track trial started — secondary conversion for campaign optimization.
+ */
+export function trackTrialStarted() {
+  trackEvent('trial_started', {
+    conversion_type: 'trial',
+    trial_duration_days: 14,
   });
 }
 

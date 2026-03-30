@@ -55,20 +55,39 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Nieuwe user aanmaken
+    // Nieuwe user aanmaken met 14-dagen Professional proefperiode
     const hashedPassword = await bcrypt.hash(password, 12);
+    const trialEndsAt = new Date();
+    trialEndsAt.setDate(trialEndsAt.getDate() + 14);
+
     const newUser = await prisma.user.create({
       data: {
         email: normalizedEmail,
         password: hashedPassword,
         naam: naam || null,
         emailVerified: new Date(),
+        trialEndsAt,
+      },
+    });
+
+    // Create a PROFESSIONAL subscription record for the trial period
+    await prisma.subscription.create({
+      data: {
+        userId: newUser.id,
+        tier: "PROFESSIONAL",
+        status: "TRIALING",
+        billingCycle: "MONTHLY",
       },
     });
 
     // Trigger Account Created drip sequence (non-blocking)
     triggerDripSequence("ACCOUNT_CREATED", newUser.id, normalizedEmail, { naam: naam || undefined }).catch((err) =>
       console.error("[register] Failed to trigger drip:", err)
+    );
+
+    // Trigger Trial Started drip sequence (day 3, 7, 12 reminders)
+    triggerDripSequence("TRIAL_STARTED", newUser.id, normalizedEmail, { naam: naam || undefined }).catch((err) =>
+      console.error("[register] Failed to trigger trial drip:", err)
     );
 
     return NextResponse.json({

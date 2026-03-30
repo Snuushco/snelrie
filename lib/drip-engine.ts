@@ -20,6 +20,9 @@ import {
   subscriptionDay0,
   subscriptionDay7,
   subscriptionDay30,
+  trialDay3,
+  trialDay7,
+  trialDay12,
 } from "@/lib/email-templates";
 
 // ─── Sequence Definitions ────────────────────────────────────────────
@@ -89,6 +92,23 @@ const SEQUENCES: Record<DripSequenceType, SequenceStep[]> = {
       dayOffset: 30,
       subject: "Uw eerste maand — heeft u al uw rapport geüpdatet?",
       getEmail: (meta) => subscriptionDay30(meta as { reportsCount?: number }),
+    },
+  ],
+  TRIAL_STARTED: [
+    {
+      dayOffset: 3,
+      subject: "Ontdek wat u kunt met Professional — 3 tips",
+      getEmail: (meta) => trialDay3(meta as { naam?: string }),
+    },
+    {
+      dayOffset: 7,
+      subject: "Uw proefperiode is halverwege — nog 7 dagen",
+      getEmail: (meta) => trialDay7(meta as { naam?: string }),
+    },
+    {
+      dayOffset: 12,
+      subject: "Nog 2 dagen — uw Professional toegang verloopt binnenkort",
+      getEmail: (meta) => trialDay12(meta as { naam?: string }),
     },
   ],
 };

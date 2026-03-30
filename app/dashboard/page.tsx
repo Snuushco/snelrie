@@ -2,15 +2,15 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import Link from "next/link";
-import { FileText, Plus, CreditCard, User, ArrowRight, Lock, Sparkles, MessageSquare, Palette, ClipboardList } from "lucide-react";
+import { FileText, Plus, CreditCard, User, ArrowRight, Lock, Sparkles, MessageSquare, Palette, ClipboardList, Clock } from "lucide-react";
 import { redirect } from "next/navigation";
-import { getEffectiveTier, getFeatureAccess, getRemainingReports } from "@/lib/stripe-client";
+import { getEffectiveTier, getFeatureAccess, getRemainingReports, getTrialInfo } from "@/lib/stripe-client";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) redirect("/login");
 
-  const [reportCount, subscription, recentReports, tier, remainingReports] = await Promise.all([
+  const [reportCount, subscription, recentReports, tier, remainingReports, trialInfo] = await Promise.all([
     prisma.rieReport.count({ where: { userId: session.user.id } }),
     prisma.subscription.findUnique({ where: { userId: session.user.id } }),
     prisma.rieReport.findMany({
@@ -27,6 +27,7 @@ export default async function DashboardPage() {
     }),
     getEffectiveTier(session.user.id),
     getRemainingReports(session.user.id),
+    getTrialInfo(session.user.id),
   ]);
 
   const features = getFeatureAccess(tier);
@@ -48,6 +49,32 @@ export default async function DashboardPage() {
           Hier vind je een overzicht van je RI&E rapporten en account.
         </p>
       </div>
+
+      {/* Trial banner */}
+      {trialInfo.isOnTrial && (
+        <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border border-amber-200 p-5 mb-6">
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
+              <Clock className="w-5 h-5 text-amber-600" />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-semibold text-gray-900">
+                U heeft nog {trialInfo.daysRemaining} {trialInfo.daysRemaining === 1 ? 'dag' : 'dagen'} toegang tot Professional functies
+              </h3>
+              <p className="text-sm text-gray-600 mt-1">
+                Upgrade nu voor onbeperkte rapporten, AI chat, branding en Plan van Aanpak.
+              </p>
+            </div>
+            <Link
+              href="/pricing"
+              className="inline-flex items-center gap-2 bg-amber-500 text-white rounded-lg px-5 py-2.5 text-sm font-medium hover:bg-amber-600 transition flex-shrink-0"
+            >
+              <Sparkles className="w-4 h-4" />
+              Upgrade nu
+            </Link>
+          </div>
+        </div>
+      )}
 
       {/* Stats cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">

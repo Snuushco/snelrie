@@ -520,3 +520,113 @@ Checklist:
 Is er iets veranderd? Update uw rapport: https://www.snelrie.nl/dashboard`
   };
 }
+
+// ─── Sequence D: Trial Started ───────────────────────────────────────
+
+/** Day 3: Reminder to explore Professional features */
+export function trialDay3(meta: { naam?: string }): { subject: string; html: string; text: string } {
+  return {
+    subject: "Ontdek wat u kunt met Professional — 3 tips",
+    html: wrapEmail(`
+    <h1 style="font-size:22px;margin:24px 0 12px;">3 dingen die u moet proberen</h1>
+
+    <p>Beste${meta.naam ? ` ${meta.naam}` : ""},</p>
+
+    <p>U heeft nu 3 dagen toegang tot het <strong>Professional</strong> abonnement. Heeft u deze functies al uitgeprobeerd?</p>
+
+    <div style="margin:20px 0;">
+      <div style="padding:16px;background:#eff6ff;border-radius:8px;margin-bottom:12px;">
+        <p style="margin:0;font-weight:600;">🤖 AI Chat Assistent</p>
+        <p style="margin:4px 0 0;font-size:14px;color:#4b5563;">Stel vragen over uw RI&E en krijg direct antwoorden op basis van uw rapport.</p>
+      </div>
+      <div style="padding:16px;background:#eff6ff;border-radius:8px;margin-bottom:12px;">
+        <p style="margin:0;font-weight:600;">📋 Plan van Aanpak</p>
+        <p style="margin:4px 0 0;font-size:14px;color:#4b5563;">Genereer automatisch een Plan van Aanpak op basis van de gevonden risico's.</p>
+      </div>
+      <div style="padding:16px;background:#eff6ff;border-radius:8px;">
+        <p style="margin:0;font-weight:600;">🎨 Branding & Huisstijl</p>
+        <p style="margin:4px 0 0;font-size:14px;color:#4b5563;">Upload uw logo en kleuren voor professionele rapporten in uw huisstijl.</p>
+      </div>
+    </div>
+
+    ${ctaButton("Ga naar uw dashboard →", "https://www.snelrie.nl/dashboard?utm_source=drip&utm_medium=email&utm_campaign=trial_d3")}
+    `),
+    text: `Beste${meta.naam ? ` ${meta.naam}` : ""},
+
+U heeft nu 3 dagen toegang tot het Professional abonnement. Heeft u deze functies al uitgeprobeerd?
+
+1. AI Chat Assistent — Stel vragen over uw RI&E
+2. Plan van Aanpak — Automatisch gegenereerd
+3. Branding & Huisstijl — Uw logo op rapporten
+
+Ga naar uw dashboard: https://www.snelrie.nl/dashboard`
+  };
+}
+
+/** Day 7: Halfway reminder */
+export function trialDay7(meta: { naam?: string }): { subject: string; html: string; text: string } {
+  return {
+    subject: "Uw proefperiode is halverwege — nog 7 dagen",
+    html: wrapEmail(`
+    <h1 style="font-size:22px;margin:24px 0 12px;">Nog 7 dagen in uw proefperiode</h1>
+
+    <p>Beste${meta.naam ? ` ${meta.naam}` : ""},</p>
+
+    <p>Uw gratis 14-dagen proefperiode is halverwege. Na afloop gaat uw account terug naar het Starter abonnement.</p>
+
+    <div style="background:#fef3c7;border:1px solid #fcd34d;border-radius:10px;padding:20px;margin:20px 0;">
+      <p style="margin:0;font-weight:600;color:#92400e;">Na de proefperiode verliest u toegang tot:</p>
+      <ul style="margin:12px 0 0;padding-left:20px;color:#92400e;">
+        <li>5 rapporten per maand (wordt 1)</li>
+        <li>AI Chat Assistent</li>
+        <li>Plan van Aanpak</li>
+        <li>Branding</li>
+      </ul>
+    </div>
+
+    <p>Upgrade nu en behoud al uw Professional functies — zonder onderbreking.</p>
+
+    ${ctaButton("Bekijk abonnementen →", "https://www.snelrie.nl/pricing?utm_source=drip&utm_medium=email&utm_campaign=trial_d7")}
+
+    <p style="color:#6b7280;font-size:14px;">Vanaf slechts €49/maand. Jaarabonnement: €39/maand (bespaar €119).</p>
+    `),
+    text: `Beste${meta.naam ? ` ${meta.naam}` : ""},
+
+Uw gratis proefperiode is halverwege. Nog 7 dagen tot uw account teruggaat naar Starter.
+
+Na de proefperiode verliest u:
+- 5 rapporten per maand (wordt 1)
+- AI Chat Assistent
+- Plan van Aanpak
+- Branding
+
+Upgrade nu: https://www.snelrie.nl/pricing
+
+Vanaf slechts €49/maand.`
+  };
+}
+
+/** Day 12: Urgency — 2 days left */
+export function trialDay12(meta: { naam?: string }): { subject: string; html: string; text: string } {
+  return {
+    subject: "Nog 2 dagen — uw Professional toegang verloopt binnenkort",
+    html: wrapEmail(`
+    <h1 style="font-size:22px;margin:24px 0 12px;">Nog 2 dagen tot uw proefperiode afloopt</h1>
+
+    <p>Beste${meta.naam ? ` ${meta.naam}` : ""},</p>
+
+    <p>Over <strong>2 dagen</strong> verloopt uw gratis Professional proefperiode. Daarna wordt uw account automatisch teruggezet naar Starter.</p>
+
+    <p>Upgrade vandaag nog en voorkom een onderbreking in uw workflow:</p>
+
+    ${ctaButton("Nu upgraden → vanaf €49/mnd", "https://www.snelrie.nl/pricing?utm_source=drip&utm_medium=email&utm_campaign=trial_d12")}
+
+    <p style="color:#6b7280;font-size:14px;">Alle rapporten die u tijdens de proefperiode heeft aangemaakt, blijven bewaard — ook als u later upgradet.</p>
+    `),
+    text: `Beste${meta.naam ? ` ${meta.naam}` : ""},
+
+Over 2 dagen verloopt uw gratis Professional proefperiode. Upgrade vandaag nog: https://www.snelrie.nl/pricing
+
+Alle rapporten die u heeft aangemaakt blijven bewaard.`
+  };
+}

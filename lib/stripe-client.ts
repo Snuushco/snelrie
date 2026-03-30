@@ -61,20 +61,38 @@ export function getFeatureAccess(
 }
 
 /**
- * Get the effective tier for a user (considering subscription status)
+ * Get the effective tier for a user (considering subscription status + trial)
  */
 export async function getEffectiveTier(
   userId: string
 ): Promise<SubscriptionTierKey> {
   const subscription = await getUserSubscription(userId);
 
-  if (!subscription) return "STARTER";
+  // Check active trial even without subscription record
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { trialEndsAt: true },
+  });
+
+  if (!subscription) {
+    // No subscription but active trial → PROFESSIONAL
+    if (user?.trialEndsAt && new Date(user.trialEndsAt) > new Date()) {
+      return "PROFESSIONAL";
+    }
+    return "STARTER";
+  }
 
   // Active or trialing subscriptions grant their tier
   if (
     subscription.status === "ACTIVE" ||
     subscription.status === "TRIALING"
   ) {
+    // For TRIALING: verify the trial hasn't expired
+    if (subscription.status === "TRIALING" && user?.trialEndsAt) {
+      if (new Date(user.trialEndsAt) <= new Date()) {
+        return "STARTER"; // Trial expired
+      }
+    }
     return subscription.tier as SubscriptionTierKey;
   }
 
@@ -93,6 +111,41 @@ export async function getEffectiveTier(
   }
 
   return "STARTER";
+}
+
+/**
+ * Get trial info for a user (for dashboard banner)
+ */
+export async function getTrialInfo(userId: string): Promise<{
+  isOnTrial: boolean;
+  daysRemaining: number;
+  trialEndsAt: Date | null;
+}> {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { trialEndsAt: true },
+  });
+
+  if (!user?.trialEndsAt) {
+    return { isOnTrial: false, daysRemaining: 0, trialEndsAt: null };
+  }
+
+  const now = new Date();
+  const endsAt = new Date(user.trialEndsAt);
+  const msRemaining = endsAt.getTime() - now.getTime();
+  const daysRemaining = Math.max(0, Math.ceil(msRemaining / (1000 * 60 * 60 * 24)));
+
+  // Check if they have a paid subscription (not just trial)
+  const subscription = await getUserSubscription(userId);
+  const hasPaidSubscription =
+    subscription?.stripeSubscriptionId &&
+    subscription.status === "ACTIVE";
+
+  return {
+    isOnTrial: daysRemaining > 0 && !hasPaidSubscription,
+    daysRemaining,
+    trialEndsAt: endsAt,
+  };
 }
 
 /**

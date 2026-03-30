@@ -21,6 +21,7 @@ import {
   trackCheckoutStart,
   trackPdfDownload,
   trackChatOpened,
+  trackFreeScanCompleted,
 } from "@/lib/analytics";
 
 type Report = {
@@ -64,6 +65,10 @@ export default function ResultaatPage() {
         report.tier,
         risicos.length
       );
+      // Track as free scan completion for Google Ads conversion
+      if (report.tier === "GRATIS") {
+        trackFreeScanCompleted(report.branche, report.id);
+      }
     }
   }, [report]);
 
