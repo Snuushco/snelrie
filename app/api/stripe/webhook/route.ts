@@ -3,6 +3,7 @@ import { getStripe } from "@/lib/stripe";
 import { prisma } from "@/lib/db";
 import { generateRie } from "@/lib/ai/pipeline";
 import { enforceCommitmentOnUpdate } from "@/lib/stripe-commitment";
+import { triggerDripSequence, cancelDripSequence } from "@/lib/drip-engine";
 
 export async function POST(req: NextRequest) {
   const body = await req.text();
@@ -152,6 +153,19 @@ async function handleSubscriptionCheckout(session: any) {
   });
 
   console.log(`[webhook] Subscription activated: ${tier} ${billingCycle} for user ${userId}`);
+
+  // Trigger Subscription Active drip + cancel conversion drips
+  const subUser = await prisma.user.findUnique({ where: { id: userId } });
+  if (subUser) {
+    // Cancel free scan and account created drips — they subscribed!
+    cancelDripSequence(userId, "FREE_SCAN_COMPLETED").catch(() => {});
+    cancelDripSequence(userId, "ACCOUNT_CREATED").catch(() => {});
+    // Start onboarding drip
+    triggerDripSequence("SUBSCRIPTION_ACTIVE", userId, subUser.email, {
+      naam: subUser.naam || undefined,
+      tier,
+    }).catch((err) => console.error("[webhook] Failed to trigger sub drip:", err));
+  }
 }
 
 async function handleOneTimePayment(session: any) {

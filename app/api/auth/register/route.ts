@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/db";
+import { triggerDripSequence } from "@/lib/drip-engine";
 
 export async function POST(req: NextRequest) {
   try {
@@ -56,7 +57,7 @@ export async function POST(req: NextRequest) {
 
     // Nieuwe user aanmaken
     const hashedPassword = await bcrypt.hash(password, 12);
-    await prisma.user.create({
+    const newUser = await prisma.user.create({
       data: {
         email: normalizedEmail,
         password: hashedPassword,
@@ -64,6 +65,11 @@ export async function POST(req: NextRequest) {
         emailVerified: new Date(),
       },
     });
+
+    // Trigger Account Created drip sequence (non-blocking)
+    triggerDripSequence("ACCOUNT_CREATED", newUser.id, normalizedEmail, { naam: naam || undefined }).catch((err) =>
+      console.error("[register] Failed to trigger drip:", err)
+    );
 
     return NextResponse.json({
       success: true,

@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { generateRie } from "@/lib/ai/pipeline";
 import { prisma } from "@/lib/db";
+import { triggerDripSequence } from "@/lib/drip-engine";
 
 // Pro plan allows up to 120s proxy timeout
 export const maxDuration = 120;
@@ -53,6 +54,20 @@ export async function POST(req: NextRequest) {
           await generateRie(reportId);
           clearInterval(heartbeat);
           controller.enqueue(encoder.encode(`data: {"status":"COMPLETED","reportId":"${reportId}"}\n\n`));
+
+          // Trigger Free Scan drip if report is GRATIS tier (non-blocking)
+          const completedReport = await prisma.rieReport.findUnique({
+            where: { id: reportId },
+            include: { user: true },
+          });
+          if (completedReport && completedReport.tier === "GRATIS" && completedReport.user) {
+            triggerDripSequence("FREE_SCAN_COMPLETED", completedReport.userId, completedReport.user.email, {
+              reportUrl: `https://www.snelrie.nl/rapport/${reportId}`,
+              risksFound: Array.isArray((completedReport.generatedContent as any)?.risicos) ? (completedReport.generatedContent as any).risicos.length : 8,
+              bedrijfsnaam: completedReport.bedrijfsnaam,
+              branche: completedReport.branche,
+            }).catch((err: unknown) => console.error("[rie/process] Failed to trigger drip:", err));
+          }
         } catch (error) {
           clearInterval(heartbeat);
           controller.enqueue(encoder.encode(`data: {"status":"FAILED","error":"${String(error).replace(/"/g, '\\"')}"}\n\n`));

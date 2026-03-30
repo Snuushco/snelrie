@@ -210,3 +210,54 @@ model EmailEvent {
   @@index([messageId])
   @@index([createdAt])
 }
+
+// ── Email Drip Sequences ──────────────────────────────────────────────
+
+enum DripSequenceType {
+  FREE_SCAN_COMPLETED
+  ACCOUNT_CREATED
+  SUBSCRIPTION_ACTIVE
+}
+
+enum DripStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+  UNSUBSCRIBED
+}
+
+model EmailDrip {
+  id           String           @id @default(cuid())
+  userId       String
+  email        String
+  sequence     DripSequenceType
+  status       DripStatus       @default(ACTIVE)
+  currentStep  Int              @default(0)
+  metadata     Json?            // e.g. reportId, branche, risksFound
+  startedAt    DateTime         @default(now())
+  completedAt  DateTime?
+  cancelledAt  DateTime?
+
+  steps EmailDripStep[]
+
+  @@unique([userId, sequence])
+  @@index([status])
+  @@index([sequence])
+  @@index([email])
+}
+
+model EmailDripStep {
+  id          String    @id @default(cuid())
+  dripId      String
+  drip        EmailDrip @relation(fields: [dripId], references: [id], onDelete: Cascade)
+  step        Int
+  subject     String
+  scheduledAt DateTime
+  sentAt      DateTime?
+  messageId   String?   // Resend message ID
+  status      String    @default("scheduled") // scheduled, sent, failed, skipped
+
+  @@unique([dripId, step])
+  @@index([scheduledAt])
+  @@index([status])
+}
