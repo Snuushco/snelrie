@@ -1,6 +1,28 @@
 import { MetadataRoute } from "next";
 import { getAllPosts } from "@/lib/blog";
 
+const SECTOR_SLUGS = [
+  "bouw",
+  "transport",
+  "horeca",
+  "detailhandel",
+  "zorg",
+  "beveiliging",
+  "kinderopvang",
+  "schoonmaak",
+  "kantoor",
+  "onderwijs",
+  "landbouw",
+  "industrie",
+  "automotive",
+  "installatietechniek",
+  "kappers-beauty",
+  "vastgoed",
+  "financieel",
+  "recreatie",
+  "overheid",
+];
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const posts = getAllPosts();
 
@@ -9,6 +31,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(post.date),
     changeFrequency: "monthly" as const,
     priority: 0.7,
+  }));
+
+  const sectorEntries = SECTOR_SLUGS.map((slug) => ({
+    url: `https://snelrie.nl/sector/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
   }));
 
   return [
@@ -30,6 +59,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.8,
     },
+    ...sectorEntries,
     ...blogEntries,
     {
       url: "https://snelrie.nl/voorwaarden",

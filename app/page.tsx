@@ -578,7 +578,7 @@ export default async function HomePage({
                 return (
                   <Link
                     key={key}
-                    href={`/?sector=${key}`}
+                    href={`/sector/${key}`}
                     className="rounded-2xl border border-gray-200 bg-gray-50 hover:bg-white hover:shadow-md transition p-5 text-left"
                   >
                     <div className="w-11 h-11 rounded-xl bg-brand-100 flex items-center justify-center mb-4">
