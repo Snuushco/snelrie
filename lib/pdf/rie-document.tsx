@@ -339,6 +339,44 @@ function createStyles(b: BrandingConfig) {
     },
     budgetTotalLabel: { fontSize: 9, fontFamily: "Helvetica-Bold", color: b.primaryDark },
     budgetTotalValue: { fontSize: 9, fontFamily: "Helvetica-Bold", color: b.primaryDark },
+
+    // Signature / compliance sections
+    signatureBlock: {
+      borderWidth: 1, borderColor: GRAY[300], borderRadius: 6,
+      padding: 12, marginBottom: 12,
+    },
+    signatureLabel: { fontSize: 8.5, fontFamily: "Helvetica-Bold", color: GRAY[700], marginBottom: 2 },
+    signatureFieldRow: { flexDirection: "row" as const, marginBottom: 8 },
+    signatureFieldLabel: { width: 120, fontSize: 8, color: GRAY[500] },
+    signatureFieldLine: {
+      flex: 1, borderBottomWidth: 1, borderBottomColor: GRAY[300],
+      borderBottomStyle: "dotted" as const, marginBottom: 2,
+    },
+    signatureDottedLine: {
+      borderBottomWidth: 1, borderBottomColor: GRAY[400],
+      borderBottomStyle: "dotted" as const, marginTop: 24, marginBottom: 4,
+    },
+    signatureHint: { fontSize: 7, color: GRAY[400], textAlign: "center" as const },
+    checkboxRow: {
+      flexDirection: "row" as const, alignItems: "flex-start" as const, marginBottom: 6,
+    },
+    checkboxText: { fontSize: 8.5, color: GRAY[700], flex: 1 },
+    complianceNote: {
+      fontSize: 7.5, color: GRAY[500], fontStyle: "italic" as const,
+      marginTop: 8, lineHeight: 1.5,
+    },
+    bijlageBox: {
+      borderWidth: 1, borderColor: GRAY[200], borderRadius: 6,
+      padding: 14, marginBottom: 10, minHeight: 60,
+      backgroundColor: GRAY[50],
+    },
+    bijlageTitle: { fontSize: 9, fontFamily: "Helvetica-Bold", color: GRAY[800], marginBottom: 4 },
+    bijlageHint: { fontSize: 8, color: GRAY[400], fontStyle: "italic" as const },
+    voortgangNote: {
+      backgroundColor: "#fffbeb", borderLeftWidth: 3, borderLeftColor: "#f59e0b",
+      borderRadius: 6, padding: 12, marginTop: 14,
+    },
+    voortgangText: { fontSize: 8, color: GRAY[700], lineHeight: 1.55 },
   });
 }
 
@@ -607,6 +645,14 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
               <Text style={s.coverMetaLabel}>Aantal risico{"'"}s</Text>
               <Text style={s.coverMetaValue}>{risicos.length} geïdentificeerd</Text>
             </View>
+            <View style={s.coverMetaRow}>
+              <Text style={s.coverMetaLabel}>Methode</Text>
+              <Text style={s.coverMetaValue}>AI-gestuurde risico-inventarisatie ({brand.companyName})</Text>
+            </View>
+            <View style={s.coverMetaRow}>
+              <Text style={s.coverMetaLabel}>Status</Text>
+              <Text style={s.coverMetaValue}>Concept — dient te worden ondertekend en (indien &gt;25 mdw) getoetst</Text>
+            </View>
           </View>
           <View style={s.coverFooter}>
             <Text style={s.coverFooterText}>{brand.footerText}</Text>
@@ -633,6 +679,9 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
             ...(wettelijk.length > 0 ? ["Wettelijke Verplichtingen"] : []),
             ...(!isBasis && aanbevelingen ? ["Aanbevelingen & Conclusie"] : []),
             "Disclaimer",
+            "Ondertekening en Goedkeuring",
+            "Toetsingsverklaring",
+            "Bijlagen",
           ].map((title, i) => (
             <View key={i} style={s.tocRow}>
               <Text style={s.tocText}>{i + 1}. {title}</Text>
@@ -1071,6 +1120,15 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
               ))}
             </View>
           )}
+
+          {/* Voortgangsregistratie */}
+          <View style={s.voortgangNote} wrap={false}>
+            <Text style={[s.signatureLabel, { color: "#92400e", marginBottom: 4 }]}>Voortgangsregistratie</Text>
+            <Text style={s.voortgangText}>
+              De werkgever is verplicht de voortgang van het Plan van Aanpak periodiek te evalueren.{"\n"}
+              Aanbevolen: minimaal elk kwartaal de status bijwerken en bespreken met de preventiemedewerker.
+            </Text>
+          </View>
         </Page>
       )}
 
@@ -1215,6 +1273,240 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
             <Text style={s.profileLabel}>Versie</Text>
             <Text style={s.profileValue}>1.0</Text>
           </View>
+        </View>
+
+        {/* Versiegeschiedenis */}
+        <View style={{ marginTop: 16 }}>
+          <Text style={s.subsectionTitle}>Versiegeschiedenis</Text>
+          <View style={s.table}>
+            <View style={s.tableHeader}>
+              <Text style={[s.th, { width: 45 }]}>Versie</Text>
+              <Text style={[s.th, { width: 80 }]}>Datum</Text>
+              <Text style={[s.th, { flex: 1 }]}>Wijziging</Text>
+              <Text style={[s.th, { width: 90 }]}>Auteur</Text>
+            </View>
+            <View style={s.tableRow}>
+              <Text style={[s.td, { width: 45 }]}>1.0</Text>
+              <Text style={[s.td, { width: 80 }]}>{data.datum}</Text>
+              <Text style={[s.td, { flex: 1 }]}>Eerste versie</Text>
+              <Text style={[s.td, { width: 90 }]}>{brand.companyName}</Text>
+            </View>
+            {[1, 2, 3].map((row) => (
+              <View key={row} style={[s.tableRow, row % 2 === 1 ? s.tableRowAlt : {}]}>
+                <Text style={[s.td, { width: 45, color: GRAY[300] }]}>—</Text>
+                <Text style={[s.td, { width: 80, color: GRAY[300] }]}>—</Text>
+                <Text style={[s.td, { flex: 1, color: GRAY[300] }]}>—</Text>
+                <Text style={[s.td, { width: 90, color: GRAY[300] }]}>—</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+      </Page>
+
+      {/* ═══ ONDERTEKENING EN GOEDKEURING ═══ */}
+      <Page size="A4" style={s.page}>
+        <Header data={data} brand={brand} s={s} />
+        <Footer brand={brand} s={s} />
+
+        <Text style={s.sectionTitle}>{nextSection()}. Ondertekening en Goedkeuring</Text>
+        <Text style={[s.infoText, { marginBottom: 16 }]}>
+          Dit rapport dient door onderstaande personen te worden ondertekend.
+        </Text>
+
+        {/* Werkgever */}
+        <View style={s.signatureBlock}>
+          <Text style={[s.signatureLabel, { fontSize: 10, marginBottom: 8 }]}>Werkgever</Text>
+          <View style={s.signatureFieldRow}>
+            <Text style={s.signatureFieldLabel}>Naam:</Text>
+            <View style={s.signatureFieldLine} />
+          </View>
+          <View style={s.signatureFieldRow}>
+            <Text style={s.signatureFieldLabel}>Functie:</Text>
+            <View style={s.signatureFieldLine} />
+          </View>
+          <View style={s.signatureFieldRow}>
+            <Text style={s.signatureFieldLabel}>Datum:</Text>
+            <View style={s.signatureFieldLine} />
+          </View>
+          <View style={s.signatureDottedLine} />
+          <Text style={s.signatureHint}>Handtekening</Text>
+        </View>
+
+        {/* Preventiemedewerker */}
+        <View style={s.signatureBlock}>
+          <Text style={[s.signatureLabel, { fontSize: 10, marginBottom: 8 }]}>Preventiemedewerker</Text>
+          <View style={s.signatureFieldRow}>
+            <Text style={s.signatureFieldLabel}>Naam:</Text>
+            <View style={s.signatureFieldLine} />
+          </View>
+          <View style={s.signatureFieldRow}>
+            <Text style={s.signatureFieldLabel}>Functie:</Text>
+            <View style={s.signatureFieldLine} />
+          </View>
+          <View style={s.signatureFieldRow}>
+            <Text style={s.signatureFieldLabel}>Datum:</Text>
+            <View style={s.signatureFieldLine} />
+          </View>
+          <View style={s.signatureDottedLine} />
+          <Text style={s.signatureHint}>Handtekening</Text>
+        </View>
+
+        {/* Arbodeskundige/toetser */}
+        <View style={s.signatureBlock}>
+          <Text style={[s.signatureLabel, { fontSize: 10, marginBottom: 4 }]}>Arbodeskundige / Toetser</Text>
+          <Text style={[s.complianceNote, { marginTop: 0, marginBottom: 8 }]}>
+            Indien van toepassing (&gt;25 medewerkers)
+          </Text>
+          <View style={s.signatureFieldRow}>
+            <Text style={s.signatureFieldLabel}>Naam:</Text>
+            <View style={s.signatureFieldLine} />
+          </View>
+          <View style={s.signatureFieldRow}>
+            <Text style={s.signatureFieldLabel}>Registratienummer:</Text>
+            <View style={s.signatureFieldLine} />
+          </View>
+          <View style={s.signatureFieldRow}>
+            <Text style={s.signatureFieldLabel}>Datum:</Text>
+            <View style={s.signatureFieldLine} />
+          </View>
+          <View style={s.signatureDottedLine} />
+          <Text style={s.signatureHint}>Handtekening</Text>
+        </View>
+
+        {/* OR/PVT Instemmingsregistratie */}
+        <View style={[s.signatureBlock, { marginTop: 8 }]}>
+          <Text style={[s.signatureLabel, { fontSize: 10, marginBottom: 8 }]}>
+            Instemming Ondernemingsraad / Personeelsvertegenwoordiging
+          </Text>
+
+          <View style={s.checkboxRow}>
+            <Text style={s.checkboxText}>
+              ☐{"  "}De OR/PVT heeft ingestemd met deze RI&E
+            </Text>
+          </View>
+          <View style={[s.signatureFieldRow, { paddingLeft: 20 }]}>
+            <Text style={s.signatureFieldLabel}>Datum instemming:</Text>
+            <View style={s.signatureFieldLine} />
+          </View>
+
+          <View style={s.checkboxRow}>
+            <Text style={s.checkboxText}>
+              ☐{"  "}Dit bedrijf heeft geen OR/PVT (minder dan 50/10 medewerkers)
+            </Text>
+          </View>
+
+          <Text style={s.complianceNote}>
+            Conform Arbowet art. 12 lid 1 sub d
+          </Text>
+        </View>
+      </Page>
+
+      {/* ═══ TOETSINGSVERKLARING ═══ */}
+      <Page size="A4" style={s.page}>
+        <Header data={data} brand={brand} s={s} />
+        <Footer brand={brand} s={s} />
+
+        <Text style={s.sectionTitle}>{nextSection()}. Toetsingsverklaring</Text>
+        <Text style={[s.infoText, { marginBottom: 16, fontStyle: "italic" }]}>
+          In te vullen door gecertificeerde arbodeskundige
+        </Text>
+
+        <View style={s.signatureBlock}>
+          <View style={s.signatureFieldRow}>
+            <Text style={s.signatureFieldLabel}>Naam toetser:</Text>
+            <View style={s.signatureFieldLine} />
+          </View>
+          <View style={s.signatureFieldRow}>
+            <Text style={s.signatureFieldLabel}>Registratienummer:</Text>
+            <View style={s.signatureFieldLine} />
+          </View>
+          <View style={s.signatureFieldRow}>
+            <Text style={s.signatureFieldLabel}>Organisatie:</Text>
+            <View style={s.signatureFieldLine} />
+          </View>
+          <View style={s.signatureFieldRow}>
+            <Text style={s.signatureFieldLabel}>Datum toetsing:</Text>
+            <View style={s.signatureFieldLine} />
+          </View>
+        </View>
+
+        <View style={[s.signatureBlock, { marginTop: 4 }]}>
+          <Text style={[s.signatureLabel, { marginBottom: 10 }]}>De RI&E is getoetst op:</Text>
+          <View style={s.checkboxRow}>
+            <Text style={s.checkboxText}>☐{"  "}Volledigheid</Text>
+          </View>
+          <View style={s.checkboxRow}>
+            <Text style={s.checkboxText}>☐{"  "}Betrouwbaarheid</Text>
+          </View>
+          <View style={s.checkboxRow}>
+            <Text style={s.checkboxText}>☐{"  "}Actualiteit</Text>
+          </View>
+        </View>
+
+        <View style={[s.signatureBlock, { marginTop: 4 }]}>
+          <Text style={[s.signatureLabel, { marginBottom: 10 }]}>Oordeel:</Text>
+          <View style={s.checkboxRow}>
+            <Text style={s.checkboxText}>☐{"  "}Voldoet</Text>
+          </View>
+          <View style={s.checkboxRow}>
+            <Text style={s.checkboxText}>☐{"  "}Voldoet met aanbevelingen</Text>
+          </View>
+          <View style={s.checkboxRow}>
+            <Text style={s.checkboxText}>☐{"  "}Voldoet niet</Text>
+          </View>
+        </View>
+
+        <View style={[s.signatureBlock, { marginTop: 4 }]}>
+          <Text style={[s.signatureLabel, { marginBottom: 8 }]}>Toelichting / aanbevelingen toetser:</Text>
+          <View style={{ borderBottomWidth: 1, borderBottomColor: GRAY[300], marginBottom: 10 }} />
+          <View style={{ borderBottomWidth: 1, borderBottomColor: GRAY[300], marginBottom: 10 }} />
+          <View style={{ borderBottomWidth: 1, borderBottomColor: GRAY[300], marginBottom: 10 }} />
+          <View style={{ borderBottomWidth: 1, borderBottomColor: GRAY[300], marginBottom: 10 }} />
+        </View>
+
+        <View style={[s.signatureBlock, { marginTop: 4 }]}>
+          <View style={s.signatureDottedLine} />
+          <Text style={s.signatureHint}>Handtekening toetser</Text>
+        </View>
+
+        <View style={[s.disclaimerBox, { marginTop: 12 }]}>
+          <Text style={s.disclaimerText}>
+            Verplicht voor bedrijven met meer dan 25 medewerkers (Arbowet art. 14).
+          </Text>
+          <Text style={[s.disclaimerText, { marginTop: 4 }]}>
+            Bedrijven met minder dan 25 medewerkers mogen gebruik maken van een erkend RI&E-instrument zonder verplichte toetsing.
+          </Text>
+        </View>
+      </Page>
+
+      {/* ═══ BIJLAGEN ═══ */}
+      <Page size="A4" style={s.page}>
+        <Header data={data} brand={brand} s={s} />
+        <Footer brand={brand} s={s} />
+
+        <Text style={s.sectionTitle}>{nextSection()}. Bijlagen</Text>
+        <Text style={[s.infoText, { marginBottom: 16 }]}>
+          Onderstaande bijlagen dienen door de werkgever te worden toegevoegd ter completering van het RI&E-dossier.
+        </Text>
+
+        <View style={s.bijlageBox}>
+          <Text style={s.bijlageTitle}>Bijlage A: Plattegrond werklocatie(s)</Text>
+          <Text style={s.bijlageHint}>(door werkgever toe te voegen)</Text>
+        </View>
+
+        <View style={s.bijlageBox}>
+          <Text style={s.bijlageTitle}>Bijlage B: Foto{"'"}s werkplekken</Text>
+          <Text style={s.bijlageHint}>(door werkgever toe te voegen)</Text>
+        </View>
+
+        <View style={s.bijlageBox}>
+          <Text style={s.bijlageTitle}>Bijlage C: Meetrapporten / certificaten</Text>
+          <Text style={s.bijlageHint}>(door werkgever toe te voegen)</Text>
+        </View>
+
+        <View style={s.bijlageBox}>
+          <Text style={s.bijlageTitle}>Bijlage D: Vorige RI&E (indien beschikbaar)</Text>
+          <Text style={s.bijlageHint}>(door werkgever toe te voegen)</Text>
         </View>
       </Page>
     </Document>
