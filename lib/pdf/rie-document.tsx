@@ -8,9 +8,9 @@ import {
   StyleSheet,
 } from "@react-pdf/renderer";
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════
 // Branding
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════
 
 export type BrandingConfig = {
   primaryColor: string;
@@ -53,7 +53,7 @@ function getScoreColor(score: number) {
 const SNELRIE_BRANDING: BrandingConfig = {
   primaryColor: BRAND[600], primaryDark: BRAND[900],
   primaryLight: BRAND[100], primaryBg: BRAND[50],
-  companyName: "SnelRIE", footerText: "Gegenereerd door SnelRIE â€” snelrie.nl",
+  companyName: "SnelRIE", footerText: "Gegenereerd door SnelRIE — snelrie.nl",
   showSnelRIE: true,
 };
 
@@ -66,7 +66,7 @@ export function getBranding(tier?: string, opts?: {
       primaryColor: p, primaryDark: darken(p, 0.35),
       primaryLight: lighten(p, 0.85), primaryBg: lighten(p, 0.93),
       companyName: opts.companyName, logoUrl: opts.logoUrl,
-      footerText: `Â© ${new Date().getFullYear()} ${opts.companyName}`,
+      footerText: `© ${new Date().getFullYear()} ${opts.companyName}`,
       showSnelRIE: false,
     };
   }
@@ -90,9 +90,9 @@ function rgbToHex(r: number, g: number, b: number): string {
   return `#${c(r)}${c(g)}${c(b)}`;
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════
 // Priority config
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════
 
 const prioriteitConfig: Record<string, { bg: string; color: string; border: string; label: string }> = {
   hoog:   { bg: "#fef2f2", color: "#b91c1c", border: "#fecaca", label: "HOOG" },
@@ -101,14 +101,14 @@ const prioriteitConfig: Record<string, { bg: string; color: string; border: stri
 };
 
 const statusConfig: Record<string, { symbol: string; color: string; label: string }> = {
-  voldoet:        { symbol: "âœ“", color: "#16a34a", label: "Voldoet" },
+  voldoet:        { symbol: "✓", color: "#16a34a", label: "Voldoet" },
   aandachtspunt:  { symbol: "!", color: "#ea580c", label: "Aandachtspunt" },
-  niet_in_orde:   { symbol: "âœ—", color: "#dc2626", label: "Niet in orde" },
+  niet_in_orde:   { symbol: "✗", color: "#dc2626", label: "Niet in orde" },
 };
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════
 // Styles
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════
 
 function createStyles(b: BrandingConfig) {
   return StyleSheet.create({
@@ -228,7 +228,7 @@ function createStyles(b: BrandingConfig) {
     dangerBullet: { fontSize: 8.5, color: "#dc2626", marginRight: 5, width: 8 },
     measureText: { fontSize: 8, color: GRAY[700], flex: 1, lineHeight: 1.45 },
 
-    // Tables â€” fixed column widths prevent overflow
+    // Tables — fixed column widths prevent overflow
     table: { marginBottom: 14 },
     tableHeader: {
       flexDirection: "row", backgroundColor: GRAY[100],
@@ -402,9 +402,9 @@ function createStyles(b: BrandingConfig) {
   });
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════
 // Types
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════
 
 export type RieData = {
   bedrijfsnaam: string;
@@ -503,18 +503,18 @@ export type RieData = {
   verificationCode?: string; // e.g. "AB3F-K9M2-P7WX"
 };
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════
 // Helper: truncate text to prevent overflow
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════
 function truncate(text: string | undefined | null, maxLen: number): string {
   if (!text) return "";
   if (text.length <= maxLen) return text;
   return text.slice(0, maxLen - 3) + "...";
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════
 // Components
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════
 
 function Badge({ prioriteit, s }: { prioriteit: string; s: ReturnType<typeof createStyles> }) {
   const config = prioriteitConfig[prioriteit?.toLowerCase()] || prioriteitConfig.laag;
@@ -564,7 +564,7 @@ function Footer({ brand, s, verificationCode }: { brand: BrandingConfig; s: Retu
         <Text style={s.footerText}>{brand.footerText}</Text>
         {verificationCode && (
           <Text style={[s.footerText, { marginLeft: 12, color: GRAY[500], fontSize: 6 }]}>
-            Geverifieerd document â€” {verificationCode}
+            Geverifieerd document — {verificationCode}
           </Text>
         )}
       </View>
@@ -573,9 +573,9 @@ function Footer({ brand, s, verificationCode }: { brand: BrandingConfig; s: Retu
   );
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════
 // Main Document
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════
 
 export function RieDocument({ data, branding }: { data: RieData; branding?: BrandingConfig }) {
   const brand = branding || (
@@ -622,9 +622,9 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
   // Budget helper for Enterprise
   function parseCostRange(kosten: string | undefined): [number, number] {
     if (!kosten) return [0, 0];
-    const matches = kosten.match(/â‚¬?\s*([\d.,]+)/g);
+    const matches = kosten.match(/€?\s*([\d.,]+)/g);
     if (!matches) return [0, 0];
-    const nums = matches.map(m => parseInt(m.replace(/[â‚¬.\s]/g, "").replace(",", ""), 10) || 0);
+    const nums = matches.map(m => parseInt(m.replace(/[€.\s]/g, "").replace(",", ""), 10) || 0);
     return nums.length >= 2 ? [nums[0], nums[1]] : [nums[0], nums[0]];
   }
   const budgetItems = pva.map(item => {
@@ -639,12 +639,12 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
 
   return (
     <Document
-      title={`RI&E â€” ${data.bedrijfsnaam}`}
+      title={`RI&E — ${data.bedrijfsnaam}`}
       author={docAuthor}
       subject="Risico-Inventarisatie & Evaluatie"
-      creator={brand.showSnelRIE ? "SnelRIE â€” snelrie.nl" : brand.companyName}
+      creator={brand.showSnelRIE ? "SnelRIE — snelrie.nl" : brand.companyName}
     >
-      {/* â•â•â• VOORBLAD â•â•â• */}
+      {/* ═══ VOORBLAD ═══ */}
       <Page size="A4" style={s.coverPage}>
         <View style={s.coverTop}>
           {brand.logoUrl ? (
@@ -658,7 +658,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
           <View style={s.coverDivider} />
           <Text style={s.coverCompany}>{data.bedrijfsnaam}</Text>
           <Text style={[s.coverSubtitle, { marginTop: 8 }]}>{data.branche}</Text>
-          {/* Tier badge removed â€” clean cover page */}
+          {/* Tier badge removed — clean cover page */}
         </View>
         <View style={s.coverBody}>
           <View style={s.coverMeta}>
@@ -680,7 +680,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
             </View>
             <View style={s.coverMetaRow}>
               <Text style={s.coverMetaLabel}>Aantal risico{"'"}s</Text>
-              <Text style={s.coverMetaValue}>{risicos.length} geÃ¯dentificeerd</Text>
+              <Text style={s.coverMetaValue}>{risicos.length} geïdentificeerd</Text>
             </View>
             <View style={s.coverMetaRow}>
               <Text style={s.coverMetaLabel}>Methode</Text>
@@ -690,21 +690,21 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
               <Text style={s.coverMetaLabel}>Status</Text>
               <Text style={s.coverMetaValue}>
                 {isGratis
-                  ? "Indicatieve risicoscan â€” geen volledige RI&E"
-                  : "Concept â€” dient te worden ondertekend en (indien >25 mdw) getoetst"}
+                  ? "Indicatieve risicoscan — geen volledige RI&E"
+                  : "Concept — dient te worden ondertekend en (indien >25 mdw) getoetst"}
               </Text>
             </View>
           </View>
           <View style={s.coverFooter}>
             <Text style={s.coverFooterText}>{brand.footerText}</Text>
             <Text style={[s.coverFooterText, { marginTop: 4 }]}>
-              Versie 1.0 â€” Aanbevolen jaarlijks te actualiseren
+              Versie 1.0 — Aanbevolen jaarlijks te actualiseren
             </Text>
           </View>
         </View>
       </Page>
 
-      {/* â•â•â• INHOUDSOPGAVE â•â•â• */}
+      {/* ═══ INHOUDSOPGAVE ═══ */}
       <Page size="A4" style={s.page}>
         <Header data={data} brand={brand} s={s} />
         <Footer brand={brand} s={s} verificationCode={data.verificationCode} />
@@ -714,8 +714,8 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
             "Samenvatting",
             "Bedrijfsbeschrijving",
             ...(!isGratis && !isBasis && arbo ? ["Arbobeleid & Organisatie"] : []),
-            "Risico-inventarisatie â€” Overzicht",
-            "Risico-inventarisatie â€” Detail",
+            "Risico-inventarisatie — Overzicht",
+            "Risico-inventarisatie — Detail",
             ...(pva.length > 0 ? ["Plan van Aanpak"] : []),
             ...(wettelijk.length > 0 ? ["Wettelijke Verplichtingen"] : []),
             ...(!isGratis && !isBasis && aanbevelingen ? ["Aanbevelingen & Conclusie"] : []),
@@ -731,7 +731,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
         </View>
       </Page>
 
-      {/* â•â•â• SAMENVATTING + BEDRIJFSPROFIEL â•â•â• */}
+      {/* ═══ SAMENVATTING + BEDRIJFSPROFIEL ═══ */}
       <Page size="A4" style={s.page}>
         <Header data={data} brand={brand} s={s} />
         <Footer brand={brand} s={s} verificationCode={data.verificationCode} />
@@ -754,7 +754,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
         </View>
 
         <Text style={[s.infoText, { marginBottom: 12, color: GRAY[500] }]}>
-          Er zijn {risicos.length} risico{"'"}s geÃ¯dentificeerd: {hoogCount} hoog, {middenCount} midden, {laagCount} laag prioriteit.
+          Er zijn {risicos.length} risico{"'"}s geïdentificeerd: {hoogCount} hoog, {middenCount} midden, {laagCount} laag prioriteit.
         </Text>
 
         {/* Management Dashboard (Professional+) */}
@@ -790,13 +790,13 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
               </View>
               {isEnterprise && (
                 <View style={[s.dashboardMetric, { backgroundColor: brand.primaryBg }]}>
-                  <Text style={[s.dashboardMetricValue, { fontSize: 14 }]}>â‚¬{totalBudgetLo.toLocaleString("nl-NL")}â€“{totalBudgetHi.toLocaleString("nl-NL")}</Text>
+                  <Text style={[s.dashboardMetricValue, { fontSize: 14 }]}>€{totalBudgetLo.toLocaleString("nl-NL")}–{totalBudgetHi.toLocaleString("nl-NL")}</Text>
                   <Text style={s.dashboardMetricLabel}>Geschat budget</Text>
                 </View>
               )}
               {!isEnterprise && (
                 <View style={[s.dashboardMetric, { backgroundColor: GRAY[50] }]}>
-                  <Text style={s.dashboardMetricValue}>{wettelijk.length || "â€”"}</Text>
+                  <Text style={s.dashboardMetricValue}>{wettelijk.length || "—"}</Text>
                   <Text style={s.dashboardMetricLabel}>Wettelijke checks</Text>
                 </View>
               )}
@@ -806,7 +806,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
 
       </Page>
 
-      {/* â•â•â• BEDRIJFSBESCHRIJVING â•â•â• */}
+      {/* ═══ BEDRIJFSBESCHRIJVING ═══ */}
       <Page size="A4" style={s.page}>
         <Header data={data} brand={brand} s={s} />
         <Footer brand={brand} s={s} verificationCode={data.verificationCode} />
@@ -848,7 +848,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
             <Text style={s.subsectionTitle}>Type werkzaamheden</Text>
             {content.bedrijfsprofiel.typeWerkzaamheden.map((w, i) => (
               <View key={i} style={{ flexDirection: "row", marginBottom: 2, paddingLeft: 4 }}>
-                <Text style={{ fontSize: 8, color: BRAND[600], marginRight: 5 }}>â€¢</Text>
+                <Text style={{ fontSize: 8, color: BRAND[600], marginRight: 5 }}>•</Text>
                 <Text style={{ fontSize: 8, color: GRAY[700] }}>{w}</Text>
               </View>
             ))}
@@ -868,7 +868,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
         )}
       </Page>
 
-      {/* â•â•â• ARBOBELEID & ORGANISATIE (Professional+ only) â•â•â• */}
+      {/* ═══ ARBOBELEID & ORGANISATIE (Professional+ only) ═══ */}
       {isProfessional && arbo && (
         <Page size="A4" style={s.page}>
           <Header data={data} brand={brand} s={s} />
@@ -880,7 +880,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
             <View style={s.arboCard} wrap={false}>
               <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}>
                 <Text style={[s.arboStatus, { color: arbo.preventiemedewerker.aanwezig ? "#16a34a" : "#dc2626" }]}>
-                  {arbo.preventiemedewerker.aanwezig ? "âœ“" : "âœ—"}
+                  {arbo.preventiemedewerker.aanwezig ? "✓" : "✗"}
                 </Text>
                 <Text style={s.arboLabel}>Preventiemedewerker</Text>
               </View>
@@ -892,7 +892,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
             <View style={s.arboCard} wrap={false}>
               <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}>
                 <Text style={[s.arboStatus, { color: arbo.bhvOrganisatie.aanwezig ? "#16a34a" : "#dc2626" }]}>
-                  {arbo.bhvOrganisatie.aanwezig ? "âœ“" : "âœ—"}
+                  {arbo.bhvOrganisatie.aanwezig ? "✓" : "✗"}
                 </Text>
                 <Text style={s.arboLabel}>BHV-organisatie ({arbo.bhvOrganisatie.aantalBhvers || 0} BHV{"'"}ers)</Text>
               </View>
@@ -912,7 +912,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
             <View style={s.arboCard} wrap={false}>
               <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}>
                 <Text style={[s.arboStatus, { color: arbo.eerderRie.uitgevoerd ? "#16a34a" : "#ea580c" }]}>
-                  {arbo.eerderRie.uitgevoerd ? "âœ“" : "!"}
+                  {arbo.eerderRie.uitgevoerd ? "✓" : "!"}
                 </Text>
                 <Text style={s.arboLabel}>Eerdere RI&E</Text>
               </View>
@@ -936,16 +936,16 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
         </Page>
       )}
 
-      {/* â•â•â• RISICO-INVENTARISATIE OVERZICHT â•â•â• */}
+      {/* ═══ RISICO-INVENTARISATIE OVERZICHT ═══ */}
       <Page size="A4" style={s.page}>
         <Header data={data} brand={brand} s={s} />
         <Footer brand={brand} s={s} verificationCode={data.verificationCode} />
 
-        <Text style={s.sectionTitle}>{nextSection()}. Risico-inventarisatie â€” Overzicht</Text>
+        <Text style={s.sectionTitle}>{nextSection()}. Risico-inventarisatie — Overzicht</Text>
 
         <Text style={[s.infoText, { marginBottom: 12 }]}>
           Totaal {risicos.length} risico{"'"}s: {hoogCount} hoog prioriteit, {middenCount} midden, {laagCount} laag.
-          Risicoscore = kans Ã— effect (schaal 1-25).
+          Risicoscore = kans × effect (schaal 1-25).
         </Text>
 
         <View style={s.table}>
@@ -964,24 +964,24 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
                 {r.risicoScore ? (
                   <ScoreBadge score={r.risicoScore} s={s} />
                 ) : (
-                  <Text style={[s.td, { textAlign: "center" }]}>â€”</Text>
+                  <Text style={[s.td, { textAlign: "center" }]}>—</Text>
                 )}
               </View>
               <View style={{ width: 55, alignItems: "center", justifyContent: "center" }}>
                 <Badge prioriteit={r.prioriteit} s={s} />
               </View>
-              <Text style={[s.td, { flex: 1, color: GRAY[500] }]}>{r.huidigeBeheersing || "â€”"}</Text>
+              <Text style={[s.td, { flex: 1, color: GRAY[500] }]}>{r.huidigeBeheersing || "—"}</Text>
             </View>
           ))}
         </View>
       </Page>
 
-      {/* â•â•â• RISICO-INVENTARISATIE DETAIL â•â•â• */}
+      {/* ═══ RISICO-INVENTARISATIE DETAIL ═══ */}
       <Page size="A4" style={s.page}>
         <Header data={data} brand={brand} s={s} />
         <Footer brand={brand} s={s} verificationCode={data.verificationCode} />
 
-        <Text style={s.sectionTitle}>{nextSection()}. Risico-inventarisatie â€” Detail</Text>
+        <Text style={s.sectionTitle}>{nextSection()}. Risico-inventarisatie — Detail</Text>
 
         {risicos.map((r, i) => (
           <View key={i} style={s.riskCard} wrap={false}>
@@ -1016,7 +1016,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
                 <Text style={s.measureLabel}>Gevaren</Text>
                 {r.gevaren.map((g, gi) => (
                   <View key={gi} style={s.measureRow}>
-                    <Text style={s.dangerBullet}>â€¢</Text>
+                    <Text style={s.dangerBullet}>•</Text>
                     <Text style={s.measureText}>{g}</Text>
                   </View>
                 ))}
@@ -1028,7 +1028,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
                 <Text style={s.measureLabel}>Maatregelen</Text>
                 {r.maatregelen.map((m, mi) => (
                   <View key={mi} style={[s.measureRow, { marginBottom: 4 }]}>
-                    <Text style={s.measureBullet}>âœ“</Text>
+                    <Text style={s.measureBullet}>✓</Text>
                     <View style={{ flex: 1 }}>
                       <Text style={[s.measureText, { lineHeight: 1.5 }]}>{m.maatregel}</Text>
                       <Text style={{ fontSize: 7, color: GRAY[400], marginTop: 4, lineHeight: 1.5 }}>
@@ -1037,7 +1037,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
                           (m.verantwoordelijke) && `Verantw: ${m.verantwoordelijke}`,
                           (m.deadline || m.termijn) && `Deadline: ${m.deadline || m.termijn}`,
                           (m.kostenindicatie || m.kosten) && `Kosten: ${m.kostenindicatie || m.kosten}`,
-                        ].filter(Boolean).join(" Â· ")}
+                        ].filter(Boolean).join(" · ")}
                       </Text>
                     </View>
                   </View>
@@ -1048,7 +1048,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
         ))}
       </Page>
 
-      {/* â•â•â• PLAN VAN AANPAK â•â•â• */}
+      {/* ═══ PLAN VAN AANPAK ═══ */}
       {pva.length > 0 && (
         <Page size="A4" style={s.page}>
           <Header data={data} brand={brand} s={s} />
@@ -1076,19 +1076,19 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
               <Text style={s.budgetTitle}>Budgetoverzicht</Text>
               <View style={s.budgetRow}>
                 <Text style={s.budgetLabel}>Hoge prioriteit ({pva.filter(p => p.prioriteit === "hoog").length} items)</Text>
-                <Text style={s.budgetValue}>â‚¬{hoogBudgetHi.toLocaleString("nl-NL")}</Text>
+                <Text style={s.budgetValue}>€{hoogBudgetHi.toLocaleString("nl-NL")}</Text>
               </View>
               <View style={s.budgetRow}>
                 <Text style={s.budgetLabel}>Midden prioriteit ({pva.filter(p => p.prioriteit === "midden").length} items)</Text>
-                <Text style={s.budgetValue}>â‚¬{middenBudgetHi.toLocaleString("nl-NL")}</Text>
+                <Text style={s.budgetValue}>€{middenBudgetHi.toLocaleString("nl-NL")}</Text>
               </View>
               <View style={s.budgetRow}>
                 <Text style={s.budgetLabel}>Lage prioriteit ({pva.filter(p => p.prioriteit === "laag").length} items)</Text>
-                <Text style={s.budgetValue}>â‚¬{laagBudgetHi.toLocaleString("nl-NL")}</Text>
+                <Text style={s.budgetValue}>€{laagBudgetHi.toLocaleString("nl-NL")}</Text>
               </View>
               <View style={s.budgetTotal}>
                 <Text style={s.budgetTotalLabel}>Totaal geschat budget</Text>
-                <Text style={s.budgetTotalValue}>â‚¬{totalBudgetLo.toLocaleString("nl-NL")} â€“ â‚¬{totalBudgetHi.toLocaleString("nl-NL")}</Text>
+                <Text style={s.budgetTotalValue}>€{totalBudgetLo.toLocaleString("nl-NL")} – €{totalBudgetHi.toLocaleString("nl-NL")}</Text>
               </View>
             </View>
           )}
@@ -1111,9 +1111,9 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
                   <View style={{ width: 38, alignItems: "center", justifyContent: "center" }}>
                     <Badge prioriteit={item.prioriteit} s={s} />
                   </View>
-                  <Text style={[s.td, { width: 55 }]}>{item.verantwoordelijke || "â€”"}</Text>
-                  <Text style={[s.td, { width: 55, color: GRAY[500] }]}>{item.deadline || item.termijn || "â€”"}</Text>
-                  <Text style={[s.td, { width: 50, color: GRAY[500] }]}>{item.kostenindicatie || item.kosten || "â€”"}</Text>
+                  <Text style={[s.td, { width: 55 }]}>{item.verantwoordelijke || "—"}</Text>
+                  <Text style={[s.td, { width: 55, color: GRAY[500] }]}>{item.deadline || item.termijn || "—"}</Text>
+                  <Text style={[s.td, { width: 50, color: GRAY[500] }]}>{item.kostenindicatie || item.kosten || "—"}</Text>
                 </View>
               ))}
             </View>
@@ -1137,9 +1137,9 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
                   <View style={{ width: 42, alignItems: "center", justifyContent: "center" }}>
                     <Badge prioriteit={item.prioriteit} s={s} />
                   </View>
-                  <Text style={[s.td, { width: 65 }]}>{item.verantwoordelijke || "â€”"}</Text>
-                  <Text style={[s.td, { width: 65, color: GRAY[500] }]}>{item.deadline || item.termijn || "â€”"}</Text>
-                  <Text style={[s.td, { width: 55, fontSize: 6.5, color: GRAY[400] }]}>{item.status || "â€”"}</Text>
+                  <Text style={[s.td, { width: 65 }]}>{item.verantwoordelijke || "—"}</Text>
+                  <Text style={[s.td, { width: 65, color: GRAY[500] }]}>{item.deadline || item.termijn || "—"}</Text>
+                  <Text style={[s.td, { width: 55, fontSize: 6.5, color: GRAY[400] }]}>{item.status || "—"}</Text>
                 </View>
               ))}
             </View>
@@ -1195,7 +1195,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
         </Page>
       )}
 
-      {/* â•â•â• WETTELIJKE VERPLICHTINGEN â•â•â• */}
+      {/* ═══ WETTELIJKE VERPLICHTINGEN ═══ */}
       {wettelijk.length > 0 && (
         <Page size="A4" style={s.page}>
           <Header data={data} brand={brand} s={s} />
@@ -1220,7 +1220,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
                     <Text style={{ fontSize: 9, color: st.color, marginRight: 3 }}>{st.symbol}</Text>
                     <Text style={[s.td, { fontSize: 7, color: st.color }]}>{st.label}</Text>
                   </View>
-                  <Text style={[s.td, { flex: 1.5 }]}>{w.toelichting || "â€”"}</Text>
+                  <Text style={[s.td, { flex: 1.5 }]}>{w.toelichting || "—"}</Text>
                 </View>
               );
             })}
@@ -1228,7 +1228,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
         </Page>
       )}
 
-      {/* â•â•â• AANBEVELINGEN & CONCLUSIE (Professional+ only) â•â•â• */}
+      {/* ═══ AANBEVELINGEN & CONCLUSIE (Professional+ only) ═══ */}
       {isProfessional && aanbevelingen && (
         <Page size="A4" style={s.page}>
           <Header data={data} brand={brand} s={s} />
@@ -1283,7 +1283,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
                   {fase.doel && <Text style={[s.arboValue, { marginBottom: 4, fontStyle: "italic" }]}>Doel: {fase.doel}</Text>}
                   {fase.acties.map((a, ai) => (
                     <View key={ai} style={{ flexDirection: "row", marginBottom: 2, paddingLeft: 4 }}>
-                      <Text style={{ fontSize: 7.5, color: BRAND[600], marginRight: 5 }}>â€¢</Text>
+                      <Text style={{ fontSize: 7.5, color: BRAND[600], marginRight: 5 }}>•</Text>
                       <Text style={{ fontSize: 7.5, color: GRAY[700] }}>{a}</Text>
                     </View>
                   ))}
@@ -1294,7 +1294,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
         </Page>
       )}
 
-      {/* â•â•â• DISCLAIMER â•â•â• */}
+      {/* ═══ DISCLAIMER ═══ */}
       <Page size="A4" style={s.page}>
         <Header data={data} brand={brand} s={s} />
         <Footer brand={brand} s={s} verificationCode={data.verificationCode} />
@@ -1330,7 +1330,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
           </View>
           <View style={s.profileRow}>
             <Text style={s.profileLabel}>Tool</Text>
-            <Text style={s.profileValue}>{brand.showSnelRIE ? "SnelRIE â€” snelrie.nl" : brand.companyName}</Text>
+            <Text style={s.profileValue}>{brand.showSnelRIE ? "SnelRIE — snelrie.nl" : brand.companyName}</Text>
           </View>
           <View style={s.profileRow}>
             <Text style={s.profileLabel}>Versie</Text>
@@ -1356,17 +1356,17 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
             </View>
             {[1, 2, 3].map((row) => (
               <View key={row} style={[s.tableRow, row % 2 === 1 ? s.tableRowAlt : {}]}>
-                <Text style={[s.td, { width: 45, color: GRAY[300] }]}>â€”</Text>
-                <Text style={[s.td, { width: 80, color: GRAY[300] }]}>â€”</Text>
-                <Text style={[s.td, { flex: 1, color: GRAY[300] }]}>â€”</Text>
-                <Text style={[s.td, { width: 90, color: GRAY[300] }]}>â€”</Text>
+                <Text style={[s.td, { width: 45, color: GRAY[300] }]}>—</Text>
+                <Text style={[s.td, { width: 80, color: GRAY[300] }]}>—</Text>
+                <Text style={[s.td, { flex: 1, color: GRAY[300] }]}>—</Text>
+                <Text style={[s.td, { width: 90, color: GRAY[300] }]}>—</Text>
               </View>
             ))}
           </View>
         </View>
       </Page>
 
-      {/* â•â•â• ONDERTEKENING EN GOEDKEURING (only paid tiers) â•â•â• */}
+      {/* ═══ ONDERTEKENING EN GOEDKEURING (only paid tiers) ═══ */}
       {isPaidTier && (
       <Page size="A4" style={s.page}>
         <Header data={data} brand={brand} s={s} />
@@ -1523,7 +1523,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
 
           <View style={s.checkboxRow}>
             <Text style={s.checkboxText}>
-              â˜{"  "}De OR/PVT heeft ingestemd met deze RI&E
+              ☐{"  "}De OR/PVT heeft ingestemd met deze RI&E
             </Text>
           </View>
           <View style={[s.signatureFieldRow, { paddingLeft: 20 }]}>
@@ -1533,7 +1533,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
 
           <View style={s.checkboxRow}>
             <Text style={s.checkboxText}>
-              â˜{"  "}Dit bedrijf heeft geen OR/PVT (minder dan 50/10 medewerkers)
+              ☐{"  "}Dit bedrijf heeft geen OR/PVT (minder dan 50/10 medewerkers)
             </Text>
           </View>
 
@@ -1600,7 +1600,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
       </Page>
       )}
 
-      {/* â•â•â• TOETSINGSVERKLARING (only paid tiers) â•â•â• */}
+      {/* ═══ TOETSINGSVERKLARING (only paid tiers) ═══ */}
       {isPaidTier && (
       <Page size="A4" style={s.page}>
         <Header data={data} brand={brand} s={s} />
@@ -1633,26 +1633,26 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
         <View style={[s.signatureBlock, { marginTop: 4 }]}>
           <Text style={[s.signatureLabel, { marginBottom: 10 }]}>De RI&E is getoetst op:</Text>
           <View style={s.checkboxRow}>
-            <Text style={s.checkboxText}>â˜{"  "}Volledigheid</Text>
+            <Text style={s.checkboxText}>☐{"  "}Volledigheid</Text>
           </View>
           <View style={s.checkboxRow}>
-            <Text style={s.checkboxText}>â˜{"  "}Betrouwbaarheid</Text>
+            <Text style={s.checkboxText}>☐{"  "}Betrouwbaarheid</Text>
           </View>
           <View style={s.checkboxRow}>
-            <Text style={s.checkboxText}>â˜{"  "}Actualiteit</Text>
+            <Text style={s.checkboxText}>☐{"  "}Actualiteit</Text>
           </View>
         </View>
 
         <View style={[s.signatureBlock, { marginTop: 4 }]}>
           <Text style={[s.signatureLabel, { marginBottom: 10 }]}>Oordeel:</Text>
           <View style={s.checkboxRow}>
-            <Text style={s.checkboxText}>â˜{"  "}Voldoet</Text>
+            <Text style={s.checkboxText}>☐{"  "}Voldoet</Text>
           </View>
           <View style={s.checkboxRow}>
-            <Text style={s.checkboxText}>â˜{"  "}Voldoet met aanbevelingen</Text>
+            <Text style={s.checkboxText}>☐{"  "}Voldoet met aanbevelingen</Text>
           </View>
           <View style={s.checkboxRow}>
-            <Text style={s.checkboxText}>â˜{"  "}Voldoet niet</Text>
+            <Text style={s.checkboxText}>☐{"  "}Voldoet niet</Text>
           </View>
         </View>
 
@@ -1680,7 +1680,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
       </Page>
       )}
 
-      {/* â•â•â• BIJLAGEN (only paid tiers) â•â•â• */}
+      {/* ═══ BIJLAGEN (only paid tiers) ═══ */}
       {isPaidTier && (
       <Page size="A4" style={s.page}>
         <Header data={data} brand={brand} s={s} />
