@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Shield, ArrowLeft, ArrowRight, Loader2, Clock } from "lucide-react";
 import Link from "next/link";
 import { trackFormStart, trackFormStep, trackFormSubmit } from "@/lib/analytics";
+import { trackConversion } from "@/components/GoogleAdsConversion";
 
 const BRANCHES = [
   { value: "beveiliging", label: "Beveiliging" },
@@ -283,6 +284,9 @@ export default function ScanForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ reportId }),
       }).catch(() => {});
+
+      // Track Google Ads conversion (free scan completed)
+      trackConversion(process.env.NEXT_PUBLIC_GADS_CONV_SCAN || '', 5.00);
 
       router.push(`/scan/resultaat/${reportId}`);
     } catch (e: any) {

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Mail, Lock, User, Loader2, ArrowRight, CheckCircle } from "lucide-react";
+import { trackConversion } from "@/components/GoogleAdsConversion";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -48,6 +49,9 @@ export default function RegisterPage() {
         setLoading(false);
         return;
       }
+
+      // Track Google Ads conversion (sign-up)
+      trackConversion(process.env.NEXT_PUBLIC_GADS_CONV_SIGNUP || '', 19.00);
 
       // Redirect to login with success message
       router.push("/login?registered=true");

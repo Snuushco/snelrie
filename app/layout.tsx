@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
+import { GoogleAdsConversion } from "@/components/GoogleAdsConversion";
 import SessionProvider from "@/components/SessionProvider";
 import ExitIntentPopup from "@/components/ExitIntentPopup";
 import "./globals.css";
@@ -53,6 +54,7 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col">
         <SessionProvider>
           <GoogleAnalytics />
+          <GoogleAdsConversion />
           {children}
           <ExitIntentPopup />
         </SessionProvider>
