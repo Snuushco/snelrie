@@ -223,10 +223,10 @@ function createStyles(b: BrandingConfig) {
     // Measures
     measureSection: { marginTop: 4 },
     measureLabel: { fontSize: 8.5, fontFamily: "Helvetica-Bold", color: GRAY[800], marginBottom: 3 },
-    measureRow: { flexDirection: "row", marginBottom: 3, paddingLeft: 4 },
+    measureRow: { flexDirection: "row", marginBottom: 6, paddingLeft: 4 },
     measureBullet: { fontSize: 8.5, color: b.primaryColor, marginRight: 5, fontFamily: "Helvetica-Bold", width: 8 },
     dangerBullet: { fontSize: 8.5, color: "#dc2626", marginRight: 5, width: 8 },
-    measureText: { fontSize: 8, color: GRAY[700], flex: 1, lineHeight: 1.45 },
+    measureText: { fontSize: 8, color: GRAY[700], flex: 1, lineHeight: 1.6 },
 
     // Tables — fixed column widths prevent overflow
     table: { marginBottom: 14 },
@@ -296,12 +296,12 @@ function createStyles(b: BrandingConfig) {
     },
     dashboardRow: { flexDirection: "row" as const, justifyContent: "space-between" as const, marginBottom: 8 },
     dashboardMetric: {
-      flex: 1, alignItems: "center" as const, paddingVertical: 12, paddingHorizontal: 6,
+      flex: 1, alignItems: "center" as const, paddingVertical: 16, paddingHorizontal: 6,
       backgroundColor: "#ffffff",  borderWidth: 1,
-      borderColor: GRAY[200], marginHorizontal: 4,
+      borderColor: GRAY[200], marginHorizontal: 4, minHeight: 60,
     },
-    dashboardMetricValue: { fontSize: 24, fontFamily: "Helvetica-Bold", color: b.primaryColor },
-    dashboardMetricLabel: { fontSize: 6.5, color: GRAY[500], marginTop: 4, textTransform: "uppercase" as const, letterSpacing: 0.3 },
+    dashboardMetricValue: { fontSize: 18, fontFamily: "Helvetica-Bold", color: b.primaryColor },
+    dashboardMetricLabel: { fontSize: 6.5, color: GRAY[500], marginTop: 8, textTransform: "uppercase" as const, letterSpacing: 0.3 },
 
     // PvA cards (Professional+)
     pvaCard: {
@@ -984,7 +984,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
         <Text style={s.sectionTitle}>{nextSection()}. Risico-inventarisatie — Detail</Text>
 
         {risicos.map((r, i) => (
-          <View key={i} style={s.riskCard} wrap={false}>
+          <View key={i} style={s.riskCard}>
             <View style={s.riskHeader}>
               <Text style={s.riskTitle}>{i + 1}. {r.categorie}</Text>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -1027,11 +1027,11 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
               <View style={[s.measureSection, { marginTop: 6 }]}>
                 <Text style={s.measureLabel}>Maatregelen</Text>
                 {r.maatregelen.map((m, mi) => (
-                  <View key={mi} style={[s.measureRow, { marginBottom: 4 }]}>
+                  <View key={mi} style={[s.measureRow, { marginBottom: 6 }]}>
                     <Text style={s.measureBullet}>✓</Text>
                     <View style={{ flex: 1 }}>
-                      <Text style={[s.measureText, { lineHeight: 1.5 }]}>{m.maatregel}</Text>
-                      <Text style={{ fontSize: 7, color: GRAY[400], marginTop: 4, lineHeight: 1.5 }}>
+                      <Text style={[s.measureText, { lineHeight: 1.6 }]}>{m.maatregel}</Text>
+                      <Text style={{ fontSize: 7, color: GRAY[400], marginTop: 4, marginBottom: 4, lineHeight: 1.5 }}>
                         {[
                           m.type && `Type: ${m.type}`,
                           (m.verantwoordelijke) && `Verantw: ${m.verantwoordelijke}`,
@@ -1152,7 +1152,7 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
                 <Text style={[s.subsectionTitle, { marginTop: 16, marginBottom: 10 }]}>Gedetailleerde actiepunten</Text>
               )}
               {pva.map((item, i) => (
-                <View key={i} style={[s.pvaCard, { borderLeftWidth: 3, borderLeftColor: (prioriteitConfig[item.prioriteit?.toLowerCase()] || prioriteitConfig.laag).color }]} wrap={false}>
+                <View key={i} style={[s.pvaCard, { borderLeftWidth: 3, borderLeftColor: (prioriteitConfig[item.prioriteit?.toLowerCase()] || prioriteitConfig.laag).color }]}>
                   <View style={s.pvaCardHeader}>
                     <Text style={s.pvaCardTitle}>{item.nummer || i + 1}. {item.maatregel}</Text>
                     <Badge prioriteit={item.prioriteit} s={s} />
