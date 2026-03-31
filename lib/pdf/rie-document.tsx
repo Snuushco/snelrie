@@ -202,11 +202,11 @@ function createStyles(b: BrandingConfig) {
     riskTitle: { fontSize: 10, fontFamily: "Helvetica-Bold", color: GRAY[900], flex: 1, marginRight: 8 },
     riskDesc: { fontSize: 8.5, color: GRAY[600], marginBottom: 6, lineHeight: 1.5 },
     riskMeta: {
-      flexDirection: "row", flexWrap: "wrap", marginBottom: 6, gap: 4,
+      flexDirection: "row" as const, flexWrap: "wrap" as const, marginBottom: 6,
     },
     riskMetaItem: {
       fontSize: 7.5, color: GRAY[500], backgroundColor: GRAY[50],
-      paddingHorizontal: 6, paddingVertical: 2, 
+      paddingHorizontal: 6, paddingVertical: 2, marginRight: 4, marginBottom: 2,
     },
     riskLegal: { fontSize: 7.5, color: GRAY[500], marginBottom: 6, fontStyle: "italic" },
 
@@ -1027,19 +1027,27 @@ export function RieDocument({ data, branding }: { data: RieData; branding?: Bran
               <View style={[s.measureSection, { marginTop: 6 }]}>
                 <Text style={s.measureLabel}>Maatregelen</Text>
                 {r.maatregelen.map((m, mi) => (
-                  <View key={mi} style={[s.measureRow, { marginBottom: 6 }]}>
-                    <Text style={s.measureBullet}>✓</Text>
-                    <View style={{ flex: 1 }}>
+                  <View key={mi} style={{ marginBottom: 8, paddingLeft: 4 }}>
+                    <View style={{ flexDirection: "row", marginBottom: 2 }}>
+                      <Text style={s.measureBullet}>✓</Text>
                       <Text style={[s.measureText, { lineHeight: 1.6 }]}>{m.maatregel}</Text>
-                      <Text style={{ fontSize: 7, color: GRAY[400], marginTop: 4, marginBottom: 4, lineHeight: 1.5 }}>
-                        {[
-                          m.type && `Type: ${m.type}`,
-                          (m.verantwoordelijke) && `Verantw: ${m.verantwoordelijke}`,
-                          (m.deadline || m.termijn) && `Deadline: ${m.deadline || m.termijn}`,
-                          (m.kostenindicatie || m.kosten) && `Kosten: ${m.kostenindicatie || m.kosten}`,
-                        ].filter(Boolean).join(" · ")}
-                      </Text>
                     </View>
+                    {(m.type || m.verantwoordelijke || m.deadline || m.termijn || m.kostenindicatie || m.kosten) && (
+                      <View style={{ paddingLeft: 13, marginTop: 2 }}>
+                        {m.type && (
+                          <Text style={{ fontSize: 7, color: GRAY[400], lineHeight: 1.4 }}>Type: {m.type}</Text>
+                        )}
+                        {m.verantwoordelijke && (
+                          <Text style={{ fontSize: 7, color: GRAY[400], lineHeight: 1.4 }}>Verantwoordelijke: {m.verantwoordelijke}</Text>
+                        )}
+                        {(m.deadline || m.termijn) && (
+                          <Text style={{ fontSize: 7, color: GRAY[400], lineHeight: 1.4 }}>Deadline: {m.deadline || m.termijn}</Text>
+                        )}
+                        {(m.kostenindicatie || m.kosten) && (
+                          <Text style={{ fontSize: 7, color: GRAY[400], lineHeight: 1.4 }}>Kosten: {m.kostenindicatie || m.kosten}</Text>
+                        )}
+                      </View>
+                    )}
                   </View>
                 ))}
               </View>
