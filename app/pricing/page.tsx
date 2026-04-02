@@ -337,6 +337,17 @@ export default function PricingPage() {
                     ))}
                   </ul>
 
+                  {/* Risk Reversal Badge — CRO Phase 1 */}
+                  <div
+                    className={`mb-4 text-center text-sm font-medium rounded-lg py-2 px-3 ${
+                      plan.highlighted
+                        ? "bg-white/10 text-white"
+                        : "bg-green-50 text-green-700 border border-green-200"
+                    }`}
+                  >
+                    🛡️ 14 dagen niet-goed-geld-terug garantie
+                  </div>
+
                   <button
                     onClick={() => handleCheckout(plan.tier)}
                     className={`block w-full text-center py-4 px-6 rounded-xl font-semibold transition cursor-pointer ${
@@ -480,6 +491,18 @@ export default function PricingPage() {
               <p className="text-sm text-gray-600">Geen wachttijd</p>
               <p className="text-sm text-gray-600">24/7 beschikbaar</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Assurance Copy — CRO Phase 1 */}
+      <section className="py-10 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-4 text-base sm:text-lg font-medium text-gray-700">
+            <span>✅ Geen verborgen kosten</span>
+            <span>✅ iDEAL &amp; creditcard</span>
+            <span>✅ Direct bruikbaar</span>
+            <span>✅ Resultaat in minuten</span>
           </div>
         </div>
       </section>

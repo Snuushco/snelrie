@@ -148,20 +148,20 @@ export default async function BlogPostPage({
             dangerouslySetInnerHTML={{ __html: htmlContent }}
           />
 
-          {/* CTA */}
+          {/* CTA — CRO Phase 1: Direct scan link with tracking */}
           <div className="mt-10 sm:mt-12 rounded-3xl border border-brand-100 bg-gradient-to-br from-brand-50 via-white to-brand-100/60 p-6 sm:p-8 lg:p-10 text-center shadow-sm">
             <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">
-              Klaar om je RI&E op te stellen?
+              Is jouw bedrijf compliant? Check het nu.
             </h3>
             <p className="text-sm sm:text-base text-gray-600 mb-6 max-w-2xl mx-auto leading-7">
-              Start met een gratis scan en ontdek de risico&apos;s in jouw bedrijf.
-              In 5 minuten klaar.
+              Meer dan 1.200 MKB-bedrijven gingen je voor. Start een gratis RI&amp;E scan
+              en ontdek binnen 5 minuten waar jouw grootste risico&apos;s zitten.
             </p>
             <Link
-              href="/scan"
+              href={`/scan?source=blog&article=${slug}`}
               className="inline-flex w-full sm:w-auto items-center justify-center gap-2 bg-brand-600 text-white px-6 py-3.5 rounded-xl font-semibold hover:bg-brand-700 transition"
             >
-              Start Gratis Scan
+              Start je gratis RI&amp;E scan
               <ArrowRight className="h-5 w-5" />
             </Link>
           </div>
