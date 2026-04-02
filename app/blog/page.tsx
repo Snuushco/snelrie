@@ -92,12 +92,20 @@ export default function BlogIndex() {
                 </Link>
               </h2>
               <p className="text-gray-600 mb-5 leading-7 flex-1">{post.description}</p>
-              <Link
-                href={`/blog/${post.slug}`}
-                className="inline-flex items-center gap-1 text-brand-600 font-medium text-sm hover:text-brand-700 transition"
-              >
-                Lees meer <ArrowRight className="h-4 w-4" />
-              </Link>
+              <div className="flex items-center gap-4">
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className="inline-flex items-center gap-1 text-brand-600 font-medium text-sm hover:text-brand-700 transition"
+                >
+                  Lees meer <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link
+                  href={`/scan?source=blog&article=${post.slug}`}
+                  className="inline-flex items-center gap-1 text-green-600 font-medium text-sm hover:text-green-700 transition"
+                >
+                  Start RI&amp;E scan →
+                </Link>
+              </div>
             </article>
           ))}
         </div>

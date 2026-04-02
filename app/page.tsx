@@ -476,9 +476,25 @@ export default async function HomePage({
             SectorIcon={SectorIcon}
             sectorHref={sectorHref}
           />
-          {/* Dynamic scan counter in hero */}
+          {/* Trust Bar — CRO Phase 1 */}
           {!sector && (
             <div className="mt-8 flex justify-center">
+              <div className="inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 bg-brand-50 border border-brand-100 rounded-full px-6 py-2.5 text-sm text-gray-700">
+                <span className="font-semibold text-brand-700">Vertrouwd door 1.200+ MKB-bedrijven</span>
+                <span className="text-gray-300">|</span>
+                <span className="flex items-center gap-1">
+                  <span className="text-amber-400">★★★★★</span>
+                  <span className="font-medium">4.8/5</span>
+                </span>
+                <span className="text-gray-300">|</span>
+                <span className="text-gray-500">Bouw • Zorg • Horeca • Transport • Retail</span>
+              </div>
+            </div>
+          )}
+
+          {/* Dynamic scan counter in hero */}
+          {!sector && (
+            <div className="mt-4 flex justify-center">
               <ScanCounter />
             </div>
           )}
@@ -832,6 +848,27 @@ export default async function HomePage({
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Urgency Section — CRO Phase 1: Arbeidsinspectie compliance */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-amber-50 border-y border-amber-200">
+        <div className="max-w-3xl mx-auto text-center">
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">
+            ⚠️ Wist je dat?
+          </h3>
+          <p className="text-base sm:text-lg text-amber-900 leading-relaxed mb-2">
+            De Arbeidsinspectie controleerde in 2025 meer dan <strong>14.000 bedrijven</strong>.
+          </p>
+          <p className="text-base sm:text-lg text-amber-900 leading-relaxed mb-6">
+            Boetes voor een ontbrekende RI&amp;E: tot <strong>€4.500 per overtreding</strong>.
+          </p>
+          <Link
+            href="/scan"
+            className="inline-flex items-center gap-2 bg-brand-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-brand-700 transition shadow-md"
+          >
+            Zorg dat jouw bedrijf compliant is → Start Gratis RI&amp;E Scan
+          </Link>
         </div>
       </section>
 
