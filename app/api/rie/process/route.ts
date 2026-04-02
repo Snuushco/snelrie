@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { generateRie } from "@/lib/ai/pipeline";
 import { prisma } from "@/lib/db";
 import { triggerDripSequence } from "@/lib/drip-engine";
+import { onLeadSignup } from "@/lib/nurture/hooks";
 
 // Pro plan allows up to 120s proxy timeout
 export const maxDuration = 120;
@@ -67,6 +68,15 @@ export async function POST(req: NextRequest) {
               bedrijfsnaam: completedReport.bedrijfsnaam,
               branche: completedReport.branche,
             }).catch((err: unknown) => console.error("[rie/process] Failed to trigger drip:", err));
+
+            // Trigger lead nurture sequence (hb-041)
+            onLeadSignup(completedReport.userId, completedReport.user.email, {
+              bedrijfsnaam: completedReport.bedrijfsnaam,
+              branche: completedReport.branche,
+              naam: completedReport.user.naam || undefined,
+              reportUrl: `https://www.snelrie.nl/rapport/${reportId}`,
+              risksFound: Array.isArray((completedReport.generatedContent as any)?.risicos) ? (completedReport.generatedContent as any).risicos.length : 8,
+            }).catch((err: unknown) => console.error("[rie/process] Failed to trigger nurture:", err));
           }
         } catch (error) {
           clearInterval(heartbeat);

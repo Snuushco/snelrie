@@ -72,6 +72,7 @@ model User {
   branding     BrandingConfig?
   subscription Subscription?
   apiKeys      ApiKey[]
+  nurtureEvents LeadNurtureEvent[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -309,6 +310,37 @@ model ApiKey {
 
   @@index([key])
   @@index([userId])
+}
+
+// ── Lead Nurture Events (hb-041) ──────────────────────────────────────
+
+enum NurtureEventType {
+  SIGNUP
+  DEMO_REQUEST
+  PRICING_ABANDON
+  TRIAL_EXPIRY
+}
+
+model LeadNurtureEvent {
+  id           String           @id @default(cuid())
+  userId       String
+  user         User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  email        String
+  eventType    NurtureEventType
+  triggeredAt  DateTime         @default(now())
+  nextEmailDue DateTime?
+  emailsSent   Int              @default(0)
+  lastEmailAt  DateTime?
+  suppressed   Boolean          @default(false) // GDPR unsubscribe
+  abVariant    String?          // "a" or "b" for subject line A/B test
+  metadata     Json?            // Extra context (reportId, branche, etc.)
+  convertedAt  DateTime?        // Track if lead converted (paid)
+
+  @@index([userId])
+  @@index([eventType])
+  @@index([suppressed])
+  @@index([nextEmailDue])
+  @@index([email])
 }
 
 // ── Compliance Checklist Items ────────────────────────────────────────

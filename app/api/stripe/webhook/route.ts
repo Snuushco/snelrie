@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import { generateRie } from "@/lib/ai/pipeline";
 import { enforceCommitmentOnUpdate } from "@/lib/stripe-commitment";
 import { triggerDripSequence, cancelDripSequence } from "@/lib/drip-engine";
+import { onConversion } from "@/lib/nurture/hooks";
 
 export async function POST(req: NextRequest) {
   const body = await req.text();
@@ -160,6 +161,8 @@ async function handleSubscriptionCheckout(session: any) {
     // Cancel free scan and account created drips — they subscribed!
     cancelDripSequence(userId, "FREE_SCAN_COMPLETED").catch(() => {});
     cancelDripSequence(userId, "ACCOUNT_CREATED").catch(() => {});
+    // Mark nurture events as converted (hb-041)
+    onConversion(userId).catch(() => {});
     // Start onboarding drip
     triggerDripSequence("SUBSCRIPTION_ACTIVE", userId, subUser.email, {
       naam: subUser.naam || undefined,

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="x-apple-disable-message-reformatting">
+  <title>{{subject}}</title>
+  <style>
+    /* Reset */
+    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+    body { margin: 0; padding: 0; width: 100% !important; height: 100% !important; background-color: #f4f5f7; }
+    
+    /* Typography */
+    body, td, p { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    
+    /* Responsive */
+    @media only screen and (max-width: 600px) {
+      .email-container { width: 100% !important; max-width: 100% !important; }
+      .fluid { max-width: 100% !important; height: auto !important; }
+      .stack-column { display: block !important; width: 100% !important; max-width: 100% !important; }
+      .center-on-narrow { text-align: center !important; display: block !important; margin-left: auto !important; margin-right: auto !important; float: none !important; }
+      .padding-mobile { padding-left: 20px !important; padding-right: 20px !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background-color:#f4f5f7;">
+  <!-- Preheader (hidden text for inbox preview) -->
+  <div style="display:none; font-size:1px; color:#f4f5f7; line-height:1px; max-height:0px; max-width:0px; opacity:0; overflow:hidden;">
+    {{preheader}}
+  </div>
+
+  <center style="width:100%; background-color:#f4f5f7;">
+    <!-- Email wrapper -->
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="margin:auto;" class="email-container">
+      
+      <!-- Logo Header -->
+      <tr>
+        <td style="padding:30px 40px 20px; text-align:center;" class="padding-mobile">
+          <img src="{{logo_url}}" alt="{{brand_name}}" width="160" style="width:160px; max-width:160px; height:auto;">
+        </td>
+      </tr>
+
+      <!-- Main Content Card -->
+      <tr>
+        <td style="padding:0 20px;">
+          <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#ffffff; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+            
+            <!-- Content -->
+            <tr>
+              <td style="padding:40px 40px 30px; font-size:16px; line-height:26px; color:#2d3748;" class="padding-mobile">
+                {{content}}
+              </td>
+            </tr>
+
+            <!-- Primary CTA -->
+            <tr>
+              <td style="padding:0 40px 20px; text-align:center;" class="padding-mobile">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:auto;">
+                  <tr>
+                    <td style="border-radius:8px; background-color:{{cta_color}};">
+                      <a href="{{cta_url}}" target="_blank" style="display:inline-block; padding:14px 32px; font-size:16px; font-weight:600; color:#ffffff; text-decoration:none; border-radius:8px;">{{cta_text}}</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Secondary CTA (optional) -->
+            {{#secondary_cta}}
+            <tr>
+              <td style="padding:0 40px 30px; text-align:center;" class="padding-mobile">
+                <a href="{{secondary_cta_url}}" target="_blank" style="font-size:14px; color:{{cta_color}}; text-decoration:underline;">{{secondary_cta_text}}</a>
+              </td>
+            </tr>
+            {{/secondary_cta}}
+
+            <!-- Divider -->
+            <tr>
+              <td style="padding:0 40px;">
+                <hr style="border:none; border-top:1px solid #e2e8f0; margin:0;">
+              </td>
+            </tr>
+
+            <!-- P.S. section (optional) -->
+            {{#ps_text}}
+            <tr>
+              <td style="padding:20px 40px 30px; font-size:14px; line-height:22px; color:#718096; font-style:italic;" class="padding-mobile">
+                {{ps_text}}
+              </td>
+            </tr>
+            {{/ps_text}}
+
+          </table>
+        </td>
+      </tr>
+
+      <!-- Footer -->
+      <tr>
+        <td style="padding:30px 40px; text-align:center; font-size:12px; line-height:18px; color:#a0aec0;" class="padding-mobile">
+          <p style="margin:0 0 8px;">{{brand_name}} — {{brand_tagline}}</p>
+          <p style="margin:0 0 8px;">{{brand_address}}</p>
+          <p style="margin:0 0 16px;">
+            <a href="{{website_url}}" style="color:#a0aec0; text-decoration:underline;">Website</a>
+            &nbsp;|&nbsp;
+            <a href="{{unsubscribe_url}}" style="color:#a0aec0; text-decoration:underline;">Uitschrijven</a>
+          </p>
+          <p style="margin:0; font-size:11px; color:#cbd5e0;">
+            Je ontvangt deze email omdat je je hebt aangemeld bij {{brand_name}}.<br>
+            © {{year}} {{brand_name}}. Alle rechten voorbehouden.
+          </p>
+        </td>
+      </tr>
+
+    </table>
+  </center>
+</body>
+</html>

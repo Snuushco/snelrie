@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/db";
 import { triggerDripSequence } from "@/lib/drip-engine";
+import { onLeadSignup } from "@/lib/nurture/hooks";
 
 export async function POST(req: NextRequest) {
   try {
@@ -88,6 +89,11 @@ export async function POST(req: NextRequest) {
     // Trigger Trial Started drip sequence (day 3, 7, 12 reminders)
     triggerDripSequence("TRIAL_STARTED", newUser.id, normalizedEmail, { naam: naam || undefined }).catch((err) =>
       console.error("[register] Failed to trigger trial drip:", err)
+    );
+
+    // Trigger lead nurture sequence (hb-041: T+0/3/5/7/14)
+    onLeadSignup(newUser.id, normalizedEmail, { naam: naam || undefined }).catch((err) =>
+      console.error("[register] Failed to trigger nurture:", err)
     );
 
     return NextResponse.json({
