@@ -555,22 +555,43 @@ export default function ResultaatPage() {
             </div>
           )}
 
-          {/* Fallback: referral opportunity zonder toetsing verplichting */}
-          {!report.toetsingVerplicht && report.referralOpportunity && (
-            <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 mt-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-2">
-                Liever een complete RI&E met locatiebezoek?
-              </h3>
-              <p className="text-gray-700 mb-4">
-                Onze partner Riebuddy helpt u verder met persoonlijke begeleiding en locatiebezoek waar nodig.
-              </p>
-              <button
-                onClick={handleRiebuddyReferral}
-                disabled={referralLoading || referralSent}
-                className="inline-flex items-center gap-2 bg-white text-brand-700 border border-brand-300 px-5 py-3 rounded-lg font-semibold hover:bg-brand-50 transition disabled:opacity-50"
-              >
-                {referralLoading ? 'Versturen...' : referralSent ? 'Aanvraag verzonden' : 'Laat mij hierover benaderen'}
-              </button>
+          {/* Pad 2: Optionele toetsing — bij elk rapport (ook als niet verplicht) */}
+          {!report.toetsingVerplicht && !referralSent && (
+            <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mt-6">
+              <div className="flex items-start gap-3">
+                <Shield className="h-6 w-6 text-blue-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">
+                    Wil je jouw RI&E officieel laten toetsen?
+                  </h3>
+                  <p className="text-gray-700 mb-3">
+                    Een getoetste RI&E geeft extra zekerheid en is bij sommige opdrachtgevers of verzekeraars vereist. Onze partner <strong>Riebuddy</strong> toetst jouw RI&E op locatie via gecertificeerde kerndeskundigen.
+                  </p>
+                  <ul className="text-sm text-gray-600 mb-4 space-y-1">
+                    <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">✓</span>Professionele toetsing door gecertificeerde kerndeskundige</li>
+                    <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">✓</span>Locatiebezoek en persoonlijke begeleiding</li>
+                    <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">✓</span>Volledige arbodienstverlening mogelijk (verzuim, PMO/PAGO)</li>
+                  </ul>
+                  <button
+                    onClick={handleRiebuddyReferral}
+                    disabled={referralLoading || referralSent}
+                    className="inline-flex items-center gap-2 bg-blue-600 text-white px-5 py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50"
+                  >
+                    {referralLoading ? 'Versturen...' : 'Ja, laat Riebuddy mij benaderen'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+          {!report.toetsingVerplicht && referralSent && (
+            <div className="bg-green-50 border border-green-200 rounded-2xl p-6 mt-6">
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="h-6 w-6 text-green-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">Aanvraag verzonden</h3>
+                  <p className="text-gray-700">We hebben je gegevens doorgestuurd naar Riebuddy. Zij nemen binnen 2 werkdagen contact met je op voor een vrijblijvend gesprek over toetsing.</p>
+                </div>
+              </div>
             </div>
           )}
 
