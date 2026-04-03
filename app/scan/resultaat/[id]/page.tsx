@@ -33,6 +33,9 @@ type Report = {
   generatedContent: any;
   samenvatting: string | null;
   hasPaid: boolean;
+  referralOpportunity?: boolean;
+  partnerCode?: string | null;
+  heeftArbodienst?: boolean | null;
 };
 
 const prioriteitKleur: Record<string, string> = {
@@ -48,6 +51,8 @@ export default function ResultaatPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [referralLoading, setReferralLoading] = useState(false);
+  const [referralSent, setReferralSent] = useState(false);
   const resultViewTracked = useRef(false);
 
   // Track scan_result_view when report is done
@@ -112,6 +117,24 @@ export default function ResultaatPage() {
   const handleDownloadPdf = async () => {
     if (report) trackPdfDownload(report.id, report.tier);
     window.open(`/api/pdf/${id}`, "_blank");
+  };
+
+  const handleRiebuddyReferral = async () => {
+    if (!report || referralLoading || referralSent) return;
+    setReferralLoading(true);
+    try {
+      const res = await fetch('/api/referrals/riebuddy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reportId: report.id }),
+      });
+      if (!res.ok) throw new Error('Referral trigger mislukt');
+      setReferralSent(true);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setReferralLoading(false);
+    }
   };
 
   if (loading || (report && (report.status === "GENERATING" || report.status === "PENDING"))) {
@@ -487,6 +510,27 @@ export default function ResultaatPage() {
                   <Loader2 className="h-4 w-4 animate-spin" />
                   Doorsturen naar betaalpagina...
                 </p>
+              )}
+            </div>
+          )}
+
+          {!hasPaid && report.referralOpportunity && (
+            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 mt-6">
+              <h3 className="text-lg font-bold text-gray-900 mb-2">
+                Liever een complete RI&E met locatiebezoek?
+              </h3>
+              <p className="text-gray-700 mb-4">
+                Onze partner Riebuddy helpt u verder met persoonlijke begeleiding en locatiebezoek waar nodig.
+              </p>
+              <button
+                onClick={handleRiebuddyReferral}
+                disabled={referralLoading || referralSent}
+                className="inline-flex items-center gap-2 bg-white text-brand-700 border border-brand-300 px-5 py-3 rounded-lg font-semibold hover:bg-brand-50 transition disabled:opacity-50"
+              >
+                {referralLoading ? 'Versturen...' : referralSent ? 'Aanvraag verzonden' : 'Laat mij hierover benaderen'}
+              </button>
+              {report.partnerCode && (
+                <p className="mt-3 text-xs text-gray-500">Partnercode: {report.partnerCode}</p>
               )}
             </div>
           )}

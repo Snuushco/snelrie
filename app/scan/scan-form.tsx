@@ -177,6 +177,7 @@ type FormData = {
   aantalMedewerkers: string;
   email: string;
   naam?: string;
+  heeftArbodienst?: string;
   [key: string]: string | undefined;
 };
 
@@ -186,6 +187,10 @@ export default function ScanForm() {
   const preselectedTier = searchParams.get("tier") || "GRATIS";
   const preselectedSector = searchParams.get("sector") || "";
   const preselectedBranche = SECTOR_TO_BRANCHE[preselectedSector] || "";
+  const partnerCode = searchParams.get("partner_code") || "";
+  const utmSource = searchParams.get("utm_source") || "";
+  const utmMedium = searchParams.get("utm_medium") || "";
+  const utmCampaign = searchParams.get("utm_campaign") || "";
 
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<FormData>({
@@ -193,6 +198,7 @@ export default function ScanForm() {
     aantalMedewerkers: "",
     email: "",
     naam: "",
+    heeftArbodienst: "nee",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -235,7 +241,7 @@ export default function ScanForm() {
       case 1:
         return form.branche && form.aantalMedewerkers;
       case 2:
-        return true;
+        return Boolean(form.heeftArbodienst);
       case 3:
         return form.email && form.email.includes("@");
       default:
@@ -266,6 +272,11 @@ export default function ScanForm() {
           buitenwerk: form.buitenwerk || "nee",
           nachtwerk: form.nachtwerk || "nee",
           alleenWerken: form.alleenWerken || "nee",
+          heeftArbodienst: form.heeftArbodienst || "nee",
+          partnerCode,
+          utmSource,
+          utmMedium,
+          utmCampaign,
           bhvAanwezig: "nee",
           preventiemedewerker: "nee",
           eerderRie: "nee",
@@ -477,6 +488,34 @@ export default function ScanForm() {
                   </div>
                 </div>
               ))}
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Heeft u een arbodienst?
+                </label>
+                <div className="flex gap-4">
+                  {["ja", "nee"].map((val) => (
+                    <label
+                      key={val}
+                      className={`flex-1 text-center py-3 rounded-lg border cursor-pointer transition font-medium ${
+                        (form.heeftArbodienst || "nee") === val
+                          ? "border-brand-500 bg-brand-50 text-brand-700"
+                          : "border-gray-200 text-gray-600 hover:border-gray-300"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="heeftArbodienst"
+                        value={val}
+                        checked={(form.heeftArbodienst || "nee") === val}
+                        onChange={(e) => updateField("heeftArbodienst", e.target.value)}
+                        className="sr-only"
+                      />
+                      {val === "ja" ? "Ja" : "Nee"}
+                    </label>
+                  ))}
+                </div>
+              </div>
             </div>
 
           </div>

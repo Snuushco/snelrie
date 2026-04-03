@@ -77,6 +77,8 @@ export async function GET(
     signedAt: s.signedAt,
   }));
 
+  const intakeData = (report.intakeData as any) || {};
+
   return NextResponse.json({
     id: report.id,
     bedrijfsnaam: report.bedrijfsnaam,
@@ -86,6 +88,9 @@ export async function GET(
     generatedContent: filteredContent,
     samenvatting: report.samenvatting,
     hasPaid,
+    referralOpportunity: Boolean(intakeData.referralOpportunity),
+    partnerCode: intakeData.partnerCode || null,
+    heeftArbodienst: intakeData.heeftArbodienst ?? null,
     signatures: signatureSummary,
     verificationCode: report.verificationCode || null,
   });

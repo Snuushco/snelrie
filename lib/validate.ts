@@ -84,6 +84,11 @@ export const generateRieSchema = z.object({
   buitenwerk: z.string().max(10).optional(),
   nachtwerk: z.string().max(10).optional(),
   alleenWerken: z.string().max(10).optional(),
+  heeftArbodienst: z.string().max(10).optional(),
+  partnerCode: z.string().max(100).optional().transform((v) => (v ? stripHtml(v) : v)),
+  utmSource: z.string().max(100).optional().transform((v) => (v ? stripHtml(v) : v)),
+  utmMedium: z.string().max(100).optional().transform((v) => (v ? stripHtml(v) : v)),
+  utmCampaign: z.string().max(100).optional().transform((v) => (v ? stripHtml(v) : v)),
 });
 
 export const checkoutSchema = z.object({
