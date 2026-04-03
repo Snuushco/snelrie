@@ -1,0 +1,26 @@
+{
+  "agent_id": "mara",
+  "files": {
+    "C:\\Users\\GuusB\\snelrie\\agent-ops-runtime\\events\\mara\\2026\\04\\03\\events-mara-20260403-07.jsonl": {
+      "first_timestamp": "2026-04-03T07:55:44.421Z",
+      "last_timestamp": "2026-04-03T07:55:44.421Z",
+      "event_count": 1,
+      "archival_status": "hot",
+      "checksum": "aa4039d266663b6050f363225b9d53ce12f078d3ab2382e289c1f575039d05c9"
+    },
+    "C:\\Users\\GuusB\\snelrie\\agent-ops-runtime\\events\\mara\\2026\\04\\03\\events-mara-20260403-08.jsonl": {
+      "first_timestamp": "2026-04-03T08:03:55.758Z",
+      "last_timestamp": "2026-04-03T08:05:50.344Z",
+      "event_count": 2,
+      "archival_status": "hot",
+      "checksum": "82f87f265680415b96ec5bb8d3c535b94b61dd233f0d33ec75df0e5e0b02061c"
+    },
+    "C:\\Users\\GuusB\\snelrie\\agent-ops-runtime\\events\\mara\\2026\\04\\03\\events-mara-20260403-10.jsonl": {
+      "first_timestamp": "2026-04-03T10:24:24.445Z",
+      "last_timestamp": "2026-04-03T10:26:06.346Z",
+      "event_count": 2,
+      "archival_status": "hot",
+      "checksum": "b861da4dc0c827bc3f6a9694773edff04cc078d6dc9b7f041e2be3de1ee169f3"
+    }
+  }
+}

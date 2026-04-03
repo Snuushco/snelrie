@@ -1,0 +1,1 @@
+{"event_id":"c3707b20-cfd4-4933-b0e7-4bd0031a45a3","timestamp":"2026-04-03T07:55:44.421Z","event_type":"agent.heartbeat","task_id":"runtime-test-task","agent_id":"mara","status_before":null,"status_after":"ready","approval_state":"auto_approved","correlation_id":"runtime-test","priority":"normal"}

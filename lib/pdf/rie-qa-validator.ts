@@ -21,14 +21,14 @@ const GARBLED_PATTERNS = [
   /Ã[\x80-\xBF]/,     // Double-encoded 2-byte UTF-8 (C3 xx)
   /Â[\x80-\xBF]/,     // Double-encoded continuation byte prefix
   /â€["\u201C\u201D\u2022\u2013\u2014]/,  // Triple-byte mojibake remnants
-  /Ã¯/,               // ï double-encoded
-  /Ã«/,               // ë double-encoded
-  /Ã¶/,               // ö double-encoded
-  /Ã¼/,               // ü double-encoded
-  /Ã©/,               // é double-encoded
-  /Ã¨/,               // è double-encoded
+  /ï/,               // ï double-encoded
+  /ë/,               // ë double-encoded
+  /ö/,               // ö double-encoded
+  /ü/,               // ü double-encoded
+  /é/,               // é double-encoded
+  /è/,               // è double-encoded
   /Ã¢/,               // â double-encoded
-  /â‚¬/,               // € triple-encoded
+  /€/,               // € triple-encoded
   /â€"/,               // — triple-encoded
   /Ã‚/,               // Double-encoded Â
   /\u0090/,           // Control character (CP-1252 artifact)

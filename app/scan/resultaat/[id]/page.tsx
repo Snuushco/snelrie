@@ -473,36 +473,36 @@ export default function ResultaatPage() {
           {showBlur && (
             <div className="bg-gradient-to-r from-brand-600 to-brand-700 rounded-2xl p-8 text-white text-center">
               <h2 className="text-2xl font-bold mb-3">
-                Ontgrendel uw volledige RI&E
+                Ontgrendel je volledige RI&E
               </h2>
               <p className="text-brand-100 mb-4 max-w-xl mx-auto">
-                U heeft {risicos.length} risico's in uw bedrijf. Krijg toegang tot
+                Je hebt {risicos.length} risico's in je bedrijf. Krijg toegang tot
                 alle risico's, maatregelen en een professioneel PDF-rapport.
               </p>
               <p className="text-brand-200 text-sm mb-6 font-medium">
-                87% van de bedrijven in uw branche heeft minimaal 3 hoge risico's die direct aandacht vereisen
+                87% van de bedrijven in jouw branche heeft minimaal 3 hoge risico's die direct aandacht vereisen
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button
-                  onClick={() => handleCheckout("BASIS")}
+                  onClick={() => handleCheckout("STARTER")}
                   disabled={checkoutLoading}
                   className="bg-white text-brand-600 px-6 py-3 rounded-lg font-semibold hover:bg-brand-50 transition disabled:opacity-50"
                 >
-                  Basis — €99
+                  Starter — €19/mnd
                 </button>
                 <button
                   onClick={() => handleCheckout("PROFESSIONAL")}
                   disabled={checkoutLoading}
                   className="bg-white text-brand-600 px-6 py-3 rounded-lg font-semibold hover:bg-brand-50 transition disabled:opacity-50 ring-2 ring-white/50"
                 >
-                  Professional — €249 ⭐
+                  Professional — €49/mnd ⭐
                 </button>
                 <button
                   onClick={() => handleCheckout("ENTERPRISE")}
                   disabled={checkoutLoading}
                   className="bg-white/10 text-white border border-white/30 px-6 py-3 rounded-lg font-semibold hover:bg-white/20 transition disabled:opacity-50"
                 >
-                  Enterprise — €499
+                  Enterprise — €129/mnd
                 </button>
               </div>
               {checkoutLoading && (
