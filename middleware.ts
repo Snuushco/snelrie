@@ -15,6 +15,11 @@ export default withAuth(
           return !!token;
         }
 
+        // Admin routes vereisen authenticatie
+        if (path.startsWith("/admin")) {
+          return !!token;
+        }
+
         // Alle andere routes zijn publiek
         return true;
       },
@@ -26,5 +31,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: ["/dashboard/:path*", "/admin/:path*"],
 };

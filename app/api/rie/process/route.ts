@@ -3,6 +3,7 @@ import { generateRie } from "@/lib/ai/pipeline";
 import { prisma } from "@/lib/db";
 import { triggerDripSequence } from "@/lib/drip-engine";
 import { onLeadSignup } from "@/lib/nurture/hooks";
+import { createRiebuddyReferral, checkToetsingRequired } from "@/lib/referrals/riebuddy";
 
 // Pro plan allows up to 120s proxy timeout
 export const maxDuration = 120;
@@ -77,6 +78,15 @@ export async function POST(req: NextRequest) {
               reportUrl: `https://www.snelrie.nl/rapport/${reportId}`,
               risksFound: Array.isArray((completedReport.generatedContent as any)?.risicos) ? (completedReport.generatedContent as any).risicos.length : 8,
             }).catch((err: unknown) => console.error("[rie/process] Failed to trigger nurture:", err));
+
+            // Auto-create Riebuddy referral if toetsing is required
+            const intakeData = (completedReport.intakeData as any) || {};
+            const toetsing = checkToetsingRequired(intakeData);
+            if (toetsing.required) {
+              createRiebuddyReferral(reportId).catch((err: unknown) =>
+                console.error("[rie/process] Failed to create Riebuddy referral:", err)
+              );
+            }
           }
         } catch (error) {
           clearInterval(heartbeat);

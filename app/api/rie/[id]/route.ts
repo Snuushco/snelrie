@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { checkToetsingRequired } from "@/lib/referrals/riebuddy";
 
 // Tier content limits for server-side filtering
 const TIER_LIMITS: Record<string, { risicos: number; maatregelenPerRisico: number; pva: boolean; wettelijk: boolean }> = {
@@ -78,6 +79,7 @@ export async function GET(
   }));
 
   const intakeData = (report.intakeData as any) || {};
+  const toetsing = checkToetsingRequired(intakeData);
 
   return NextResponse.json({
     id: report.id,
@@ -91,6 +93,8 @@ export async function GET(
     referralOpportunity: Boolean(intakeData.referralOpportunity),
     partnerCode: intakeData.partnerCode || null,
     heeftArbodienst: intakeData.heeftArbodienst ?? null,
+    toetsingVerplicht: toetsing.required,
+    toetsingRedenen: toetsing.reasons,
     signatures: signatureSummary,
     verificationCode: report.verificationCode || null,
   });

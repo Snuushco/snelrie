@@ -184,6 +184,7 @@ model RieReport {
   payments        Payment[]
   signLinks       SignLink[]
   complianceChecks ComplianceCheck[]
+  riebuddyReferrals RiebuddyReferral[]
 
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
@@ -240,6 +241,39 @@ model EmailEvent {
   @@index([type])
   @@index([messageId])
   @@index([createdAt])
+}
+
+// ── Riebuddy Referrals ────────────────────────────────────────────────
+
+enum RiebuddyReferralStatus {
+  REFERRED
+  CONTACTED
+  CONVERTED
+  LOST
+}
+
+model RiebuddyReferral {
+  id              String                  @id @default(cuid())
+  reportId        String
+  report          RieReport               @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  userId          String
+  companyName     String
+  branche         String
+  employeeCount   Int
+  contactName     String
+  contactEmail    String
+  referredAt      DateTime                @default(now())
+  status          RiebuddyReferralStatus  @default(REFERRED)
+  riebuddyResponse String?               @db.Text
+  firstYearRevenue Decimal?              @db.Decimal(10, 2)
+  commissionAmount Decimal?              @db.Decimal(10, 2)
+  commissionPaid  Boolean                 @default(false)
+  notes           String?                 @db.Text
+
+  @@index([reportId])
+  @@index([userId])
+  @@index([status])
+  @@index([referredAt])
 }
 
 // ── Email Drip Sequences ──────────────────────────────────────────────

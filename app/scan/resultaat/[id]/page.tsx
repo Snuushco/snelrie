@@ -36,6 +36,8 @@ type Report = {
   referralOpportunity?: boolean;
   partnerCode?: string | null;
   heeftArbodienst?: boolean | null;
+  toetsingVerplicht?: boolean;
+  toetsingRedenen?: string[];
 };
 
 const prioriteitKleur: Record<string, string> = {
@@ -514,8 +516,48 @@ export default function ResultaatPage() {
             </div>
           )}
 
-          {!hasPaid && report.referralOpportunity && (
-            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 mt-6">
+          {/* Toetsing verplichting melding */}
+          {report.toetsingVerplicht && (
+            <div className="bg-amber-50 border-l-4 border-amber-500 rounded-r-2xl p-6 mt-6">
+              <div className="flex items-start gap-3">
+                <AlertTriangle className="h-6 w-6 text-amber-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">
+                    Toetsing verplicht voor uw bedrijf
+                  </h3>
+                  <p className="text-gray-700 mb-3">
+                    Uw bedrijf is wettelijk verplicht de RI&E te laten toetsen door een gecertificeerde kerndeskundige. Onze partner <strong>Riebuddy</strong> kan dit voor u verzorgen.
+                  </p>
+                  {report.toetsingRedenen && report.toetsingRedenen.length > 0 && (
+                    <ul className="text-sm text-gray-600 mb-4 space-y-1">
+                      {report.toetsingRedenen.map((reden, i) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <span className="text-amber-500 mt-0.5">•</span>
+                          {reden}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <button
+                    onClick={handleRiebuddyReferral}
+                    disabled={referralLoading || referralSent}
+                    className="inline-flex items-center gap-2 bg-brand-600 text-white px-5 py-3 rounded-lg font-semibold hover:bg-brand-700 transition disabled:opacity-50"
+                  >
+                    {referralLoading ? 'Versturen...' : referralSent ? '✓ Aanvraag verzonden — Riebuddy neemt contact op' : 'Ja, laat Riebuddy mij benaderen'}
+                  </button>
+                  {referralSent && (
+                    <p className="mt-3 text-sm text-green-700">
+                      We hebben uw gegevens doorgestuurd naar Riebuddy. Zij nemen binnen 2 werkdagen contact met u op.
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Fallback: referral opportunity zonder toetsing verplichting */}
+          {!report.toetsingVerplicht && report.referralOpportunity && (
+            <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 mt-6">
               <h3 className="text-lg font-bold text-gray-900 mb-2">
                 Liever een complete RI&E met locatiebezoek?
               </h3>
@@ -529,9 +571,6 @@ export default function ResultaatPage() {
               >
                 {referralLoading ? 'Versturen...' : referralSent ? 'Aanvraag verzonden' : 'Laat mij hierover benaderen'}
               </button>
-              {report.partnerCode && (
-                <p className="mt-3 text-xs text-gray-500">Partnercode: {report.partnerCode}</p>
-              )}
             </div>
           )}
 
