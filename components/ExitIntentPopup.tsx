@@ -124,15 +124,15 @@ export default function ExitIntentPopup() {
             <Shield className="h-7 w-7 text-brand-600" />
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Wacht! Start uw gratis RI&E scan voordat u gaat
+            Wacht! Check gratis je RI&E-risico's voordat je gaat
           </h2>
           <p className="text-gray-600 mb-6">
-            Geen account nodig. Resultaat direct beschikbaar.
+            Geen account nodig. Direct resultaat. Speciaal voor kleine ondernemers.
           </p>
           <Link
             href="/scan"
             className="block w-full rounded-xl bg-brand-600 px-6 py-3.5 text-base font-semibold text-white shadow-lg hover:bg-brand-700 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 text-center"
-            onClick={() => trackEvent("exit_intent_clicked")}
+            onClick={() => { trackEvent("exit_intent_clicked"); handleDismiss(); }}
           >
             Start gratis scan →
           </Link>
