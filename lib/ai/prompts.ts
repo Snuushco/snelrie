@@ -17,13 +17,21 @@ ${kennisbank.risicoCategorieën?.map((c: any) => `- ${c.naam || c.categorie}: ${
 BEDRIJFSGEGEVENS:
 - Bedrijfsnaam: ${intakeData.bedrijfsnaam}
 - Branche: ${intakeData.branche}
-- Aantal medewerkers: ${intakeData.aantalMedewerkers}
+- Aantal medewerkers: ${intakeData.aantalMedewerkersBereik || (intakeData.aantalMedewerkers <= 5 ? '1-5' : intakeData.aantalMedewerkers <= 15 ? '6-15' : intakeData.aantalMedewerkers <= 25 ? '16-25' : intakeData.aantalMedewerkers <= 50 ? '25-50' : '50+')}
 - Aantal locaties: ${intakeData.aantalLocaties || 1}
 - BHV aanwezig: ${intakeData.bhvAanwezig ? 'Ja' : 'Nee'}
 - Aantal BHV'ers: ${intakeData.aantalBhvers || 'Onbekend'}
 - Preventiemedewerker: ${intakeData.preventiemedewerker ? 'Ja' : 'Nee'}
 - Eerder RI&E gedaan: ${intakeData.eerderRie ? 'Ja' : 'Nee'}
-- Werktijden: ${intakeData.werktijden || 'Reguliere kantoortijden'}
+
+WERKPLEKKENMERKEN:
+- Gevaarlijke stoffen: ${intakeData.werkplek?.gevaarlijkeStoffen ? 'Ja' : 'Nee'}
+- Beeldschermwerk: ${intakeData.werkplek?.beeldschermwerk ? 'Ja' : 'Nee'}
+- Fysiek zwaar werk: ${intakeData.werkplek?.fysiekWerk ? 'Ja' : 'Nee'}
+- Buitenwerk: ${intakeData.werkplek?.buitenwerk ? 'Ja' : 'Nee'}
+- Nacht-/onregelmatige diensten: ${intakeData.werkplek?.nachtwerk ? 'Ja' : 'Nee'}
+- Alleen werken: ${intakeData.werkplek?.alleenWerken ? 'Ja' : 'Nee'}
+- Heeft arbodienst: ${intakeData.heeftArbodienst ? 'Ja' : 'Nee'}
 - Bijzonderheden: ${intakeData.bijzonderheden || 'Geen'}`;
 }
 

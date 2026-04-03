@@ -262,6 +262,7 @@ export default function ScanForm() {
           bedrijfsnaam: form.branche + "-bedrijf",
           branche: form.branche,
           aantalMedewerkers: parseInt(form.aantalMedewerkers),
+          aantalMedewerkersBereik: MEDEWERKER_RANGES.find(r => r.value === form.aantalMedewerkers)?.label || form.aantalMedewerkers,
           aantalLocaties: 1,
           tier: preselectedTier,
           email: form.email,
