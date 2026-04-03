@@ -5,32 +5,32 @@ export const variantConfig = {
     className: 'ab-control',
     label: 'Control',
     hero: {
-      header: 'Je RI&E in minuten,',
-      headerHighlight: 'niet weken',
+      header: 'Eerste werknemer? Regel je RI&E',
+      headerHighlight: 'in 10 minuten',
       subtext:
-        'AI-gestuurde Risico-Inventarisatie & Evaluatie. Branchespecifiek, professioneel, en direct klaar. Voldoe aan de Arbowet zonder weken te wachten op een adviseur.',
+        'Als je personeel aanneemt, is een RI&E verplicht. Geen duur adviesbureau nodig — SnelRIE maakt het simpel, snel en betaalbaar. Vanaf €19/mnd.',
       cta: 'Start Gratis Scan',
     },
     usps: {
-      title: 'Waarom bedrijven kiezen voor SnelRIE',
+      title: 'Waarom kleine ondernemers kiezen voor SnelRIE',
       items: [
         {
-          title: 'AI-gestuurd',
-          desc: 'Onze AI analyseert uw bedrijfssituatie en genereert een gepersonaliseerde RI&E op basis van de laatste arbocatalogi en wetgeving.',
+          title: 'Simpel en snel',
+          desc: 'Geen ingewikkelde vragenlijsten of weken wachten. Vul een korte intake in en je RI&E is klaar.',
         },
         {
-          title: 'Branchespecifiek',
-          desc: 'Geen generiek verhaal. Uw RI&E is afgestemd op de specifieke risico\'s en maatregelen van uw branche.',
+          title: 'Op maat voor jouw branche',
+          desc: 'Of je nu in de bouw, horeca, zorg of retail werkt — je krijgt een RI&E die past bij jouw risico\'s.',
         },
         {
-          title: 'Klaar in minuten',
-          desc: 'Traditioneel duurt een RI&E weken en kost het duizenden euro\'s. Bij SnelRIE heeft u binnen 5 minuten een professioneel rapport.',
+          title: 'Vanaf €19/mnd',
+          desc: 'Een adviseur kost al snel €1.500+. Bij SnelRIE heb je een professioneel rapport voor een fractie van die prijs.',
         },
       ],
     },
     bottomCta: {
-      title: 'Klaar om uw RI&E op te stellen?',
-      text: 'Begin met een gratis scan en ontdek de grootste risico\'s in uw bedrijf. In 5 minuten klaar.',
+      title: 'RI&E verplicht? Regel het nu.',
+      text: 'Begin met een gratis scan en ontdek in 5 minuten de grootste risico\'s in jouw bedrijf.',
       button: 'Start Nu — Gratis',
     },
   },

@@ -480,7 +480,7 @@ export default async function HomePage({
           {!sector && (
             <div className="mt-8 flex justify-center">
               <div className="inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 bg-brand-50 border border-brand-100 rounded-full px-6 py-2.5 text-sm text-gray-700">
-                <span className="font-semibold text-brand-700">Vertrouwd door 1.200+ MKB-bedrijven</span>
+                <span className="font-semibold text-brand-700">Vertrouwd door 1.200+ kleine ondernemers</span>
                 <span className="text-gray-300">|</span>
                 <span className="flex items-center gap-1">
                   <span className="text-amber-400">â˜…â˜…â˜…â˜…â˜…</span>
