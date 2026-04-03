@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import {
   Shield,
   FileText,
@@ -29,7 +29,7 @@ type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 const pricingTiers = [
   {
     name: "Gratis Scan",
-    price: "€0",
+    price: "â‚¬0",
     description: "Ontdek je grootste risico's",
     features: [
       "3 risico's zichtbaar",
@@ -45,7 +45,7 @@ const pricingTiers = [
   },
   {
     name: "Starter",
-    price: "€19",
+    price: "â‚¬19",
     description: "Volledige RI&E voor kleine bedrijven",
     features: [
       "Volledige risico-inventarisatie",
@@ -61,7 +61,7 @@ const pricingTiers = [
   },
   {
     name: "Professional",
-    price: "€49",
+    price: "â‚¬49",
     description: "RI&E + Plan van Aanpak",
     features: [
       "Alles van Starter",
@@ -78,7 +78,7 @@ const pricingTiers = [
   },
   {
     name: "Enterprise",
-    price: "€129",
+    price: "â‚¬129",
     description: "Onbeperkt voor grotere organisaties",
     features: [
       "Alles van Professional",
@@ -102,7 +102,7 @@ const genericFaqs = [
   },
   {
     q: "Wat is het verschil met een traditionele RI&E?",
-    a: "Een traditionele RI&E wordt uitgevoerd door een externe arbodeskundige en kost €500 tot €5.000+. Dat duurt vaak weken. SnelRIE gebruikt AI om in minuten een branchespecifieke RI&E te genereren, op basis van dezelfde wettelijke kaders en arbocatalogi. Vanaf €19 per maand heeft u toegang, of kies een eenmalig rapport vanaf €249.",
+    a: "Een traditionele RI&E wordt uitgevoerd door een externe arbodeskundige en kost â‚¬500 tot â‚¬5.000+. Dat duurt vaak weken. SnelRIE gebruikt AI om in minuten een branchespecifieke RI&E te genereren, op basis van dezelfde wettelijke kaders en arbocatalogi. Vanaf â‚¬19 per maand heeft u toegang, of kies een eenmalig rapport vanaf â‚¬249.",
   },
   {
     q: "Is deze RI&E rechtsgeldig?",
@@ -114,7 +114,7 @@ const genericFaqs = [
   },
   {
     q: "Welke branches worden ondersteund?",
-    a: "SnelRIE ondersteunt 20 branches: beveiliging, horeca, bouw, kinderopvang, schoonmaak, detailhandel, transport, zorg, kantoor & ICT, onderwijs, landbouw, industrie, automotive, installatietechniek, kappers & beauty, vastgoed, financiële dienstverlening, recreatie & evenementen, overheid & non-profit, en overig. Onze AI past de RI&E automatisch aan op uw branche en bijbehorende arbocatalogus.",
+    a: "SnelRIE ondersteunt 20 branches: beveiliging, horeca, bouw, kinderopvang, schoonmaak, detailhandel, transport, zorg, kantoor & ICT, onderwijs, landbouw, industrie, automotive, installatietechniek, kappers & beauty, vastgoed, financiÃ«le dienstverlening, recreatie & evenementen, overheid & non-profit, en overig. Onze AI past de RI&E automatisch aan op uw branche en bijbehorende arbocatalogus.",
   },
   {
     q: "Wat zit er in het Plan van Aanpak?",
@@ -160,7 +160,7 @@ const sectorConfig: Record<
       header: "Uw RI&E voor bouw- en installatiewerk",
       highlight: "zonder weken wachten op een adviseur",
       subtext:
-        "Krijg in minuten een branchespecifieke RI&E voor hoogtewerk, buitenwerk, gevaarlijke stoffen en wisselende projectlocaties. Ideaal voor aannemers en installatiebedrijven die snel overzicht willen vóór de volgende klusstart.",
+        "Krijg in minuten een branchespecifieke RI&E voor hoogtewerk, buitenwerk, gevaarlijke stoffen en wisselende projectlocaties. Ideaal voor aannemers en installatiebedrijven die snel overzicht willen vÃ³Ã³r de volgende klusstart.",
       cta: "Start gratis bouw-RI&E",
     },
     stats: [
@@ -169,7 +169,7 @@ const sectorConfig: Record<
       { value: "Stoffen", label: "verf, lijmen, oplosmiddelen" },
       { value: "<5 min", label: "tot eerste risico-overzicht" },
     ],
-    risks: ["hoogtewerk en valgevaar", "gevaarlijke stoffen en stofbelasting", "wisselende projectlocaties en coördinatie"],
+    risks: ["hoogtewerk en valgevaar", "gevaarlijke stoffen en stofbelasting", "wisselende projectlocaties en coÃ¶rdinatie"],
     proofTitle: "Gebouwd voor bedrijven waar veiligheid per project verschuift",
     proofText:
       "Dezelfde intake die werkt voor een kantoorpand is te vlak voor bouw en installatie. Daarom legt deze variant extra nadruk op hoogtewerk, buitenwerk, tijdelijke werkplekken en praktische maatregelen die direct in een Plan van Aanpak passen.",
@@ -183,11 +183,11 @@ const sectorConfig: Record<
       eyebrow: "Veel bouwbedrijven actualiseren pas na een incident of auditvraag.",
       title: "Check nu waar uw bouw-RI&E dun of verouderd is",
       text: "U hoeft niet meteen het hele dossier te herbouwen. Start met een gratis scan en zie direct welke risicoblokken extra aandacht vragen.",
-      button: "Start gratis bouwscan →",
+      button: "Start gratis bouwscan â†’",
     },
     bottom: {
       title: "Zet uw bouw-RI&E vandaag nog scherper.",
-      text: "Begin gratis en ontdek binnen minuten waar hoogtewerk, buitenwerk en projectwissels extra risico creëren.",
+      text: "Begin gratis en ontdek binnen minuten waar hoogtewerk, buitenwerk en projectwissels extra risico creÃ«ren.",
       button: "Start gratis bouw-RI&E",
     },
     faq: {
@@ -196,7 +196,7 @@ const sectorConfig: Record<
     },
     trustPoints: [
       "Voorgeselecteerde risico's voor hoogtewerk, stoffen en buitenwerk",
-      "Geschikt als snelle herijking vóór nieuwe klusstart of auditvraag",
+      "Geschikt als snelle herijking vÃ³Ã³r nieuwe klusstart of auditvraag",
       "Doorgifte naar scanflow met bouw-context actief",
     ],
     socialProof: {
@@ -219,7 +219,7 @@ const sectorConfig: Record<
       { value: "Chauffeurs", label: "alleen op pad of op wisselende routes" },
       { value: "Laadperron", label: "fysieke belasting en verkeersbewegingen" },
       { value: "Nachtwerk", label: "onregelmatige diensten en vermoeidheid" },
-      { value: "Vanaf €19/mnd", label: "of eenmalig vanaf €249" },
+      { value: "Vanaf â‚¬19/mnd", label: "of eenmalig vanaf â‚¬249" },
     ],
     risks: ["alleen werken op route of terrein", "laden/lossen en fysieke belasting", "nachtdiensten en vermoeidheid"],
     proofTitle: "Gemaakt voor operatie, niet alleen voor papier",
@@ -235,7 +235,7 @@ const sectorConfig: Record<
       eyebrow: "Veel logistieke bedrijven hebben wel toolboxen, maar geen actuele RI&E die de hele operatie dekt.",
       title: "Zie direct waar uw transport-RI&E achterloopt op de praktijk",
       text: "Start gratis en ontdek of juist chauffeurs, laden/lossen of diensten het grootste gat in uw huidige aanpak vormen.",
-      button: "Start gratis transportscan →",
+      button: "Start gratis transportscan â†’",
     },
     bottom: {
       title: "Maak uw transport-RI&E operationeel bruikbaar.",
@@ -248,11 +248,11 @@ const sectorConfig: Record<
     },
     trustPoints: [
       "Gericht op chauffeurs, loods, laadperron en nachtdiensten",
-      "Helpt losse toolboxen vertalen naar één RI&E-overzicht",
+      "Helpt losse toolboxen vertalen naar Ã©Ã©n RI&E-overzicht",
       "Lage instap: gratis scan, daarna upgrade naar volledig Plan van Aanpak",
     ],
     socialProof: {
-      quote: "Transportbedrijven hebben vaak wél veiligheidsafspraken, maar geen compact totaalbeeld voor route, loods en planning tegelijk.",
+      quote: "Transportbedrijven hebben vaak wÃ©l veiligheidsafspraken, maar geen compact totaalbeeld voor route, loods en planning tegelijk.",
       source: "SnelRIE transportpropositie",
     },
   },
@@ -276,7 +276,7 @@ const sectorConfig: Record<
     risks: ["hete vloeistoffen en gladde vloeren", "tillen, duwen en piekbelasting", "avond- en nachtdiensten"],
     proofTitle: "Voor hospitalitybedrijven waar de werkvloer elke dag anders voelt",
     proofText:
-      "Restaurant, hotel en eventlocaties combineren vaak meerdere werksoorten in één RI&E. Deze variant helpt dat sneller concreet te maken, zonder te blijven hangen in alleen een keukenchecklist.",
+      "Restaurant, hotel en eventlocaties combineren vaak meerdere werksoorten in Ã©Ã©n RI&E. Deze variant helpt dat sneller concreet te maken, zonder te blijven hangen in alleen een keukenchecklist.",
     howItWorks: [
       { title: "Kies horeca", desc: "We zetten direct standaard aannames klaar voor fysieke belasting, schoonmaakmiddelen en avondwerk." },
       { title: "Controleer 3 werksituaties", desc: "Met een paar ja/nee-keuzes past de scan zich aan op keuken, bediening of hospitality-omgeving." },
@@ -287,7 +287,7 @@ const sectorConfig: Record<
       eyebrow: "Piekdrukte maskeert vaak structurele RI&E-gaten.",
       title: "Check vandaag nog uw horeca-risico's",
       text: "Van keuken tot housekeeping: start gratis en zie waar uw huidige veiligheidsaanpak waarschijnlijk te generiek of te oud is.",
-      button: "Start gratis horecascan →",
+      button: "Start gratis horecascan â†’",
     },
     bottom: {
       title: "Maak uw horeca-RI&E concreet en actueel.",
@@ -296,7 +296,7 @@ const sectorConfig: Record<
     },
     faq: {
       q: "Past dit ook bij combinaties van restaurant, hotel en events?",
-      a: "Ja. Dat is precies waar deze variant op inspeelt. SnelRIE helpt meerdere werksoorten in één overzicht te vangen, zodat uw RI&E niet blijft steken in alleen algemene horecamaatregelen.",
+      a: "Ja. Dat is precies waar deze variant op inspeelt. SnelRIE helpt meerdere werksoorten in Ã©Ã©n overzicht te vangen, zodat uw RI&E niet blijft steken in alleen algemene horecamaatregelen.",
     },
     trustPoints: [
       "Specifiek voor keuken, bediening, housekeeping en events",
@@ -304,7 +304,7 @@ const sectorConfig: Record<
       "Goede instap voor hotels en restaurants met meerdere werksoorten",
     ],
     socialProof: {
-      quote: "Hospitalitylocaties combineren keuken, housekeeping, events en avondwerk. Daarvoor is één generiek sjabloon meestal te mager.",
+      quote: "Hospitalitylocaties combineren keuken, housekeeping, events en avondwerk. Daarvoor is Ã©Ã©n generiek sjabloon meestal te mager.",
       source: "SnelRIE horecapropositie",
     },
   },
@@ -336,14 +336,14 @@ const sectorConfig: Record<
       { title: "Werk door naar volledig rapport", desc: "Upgrade voor een RI&E en Plan van Aanpak dat u intern kunt gebruiken of laten toetsen." },
     ],
     midCta: {
-      eyebrow: "Veel winkels hebben wel werkafspraken, maar geen actuele RI&E die winkelvloer én logistiek samenpakt.",
+      eyebrow: "Veel winkels hebben wel werkafspraken, maar geen actuele RI&E die winkelvloer Ã©n logistiek samenpakt.",
       title: "Zie waar uw retail-RI&E nu te generiek is",
       text: "Start gratis en ontdek direct of tillen, bevoorrading of alleen werken extra aandacht vraagt in uw huidige aanpak.",
-      button: "Start gratis retailscan →",
+      button: "Start gratis retailscan â†’",
     },
     bottom: {
       title: "Maak uw retail-RI&E vandaag praktischer.",
-      text: "Start gratis en ontdek binnen minuten waar winkelvloer, magazijn en piekdrukte extra risico creëren.",
+      text: "Start gratis en ontdek binnen minuten waar winkelvloer, magazijn en piekdrukte extra risico creÃ«ren.",
       button: "Start gratis retail-RI&E",
     },
     faq: {
@@ -356,31 +356,31 @@ const sectorConfig: Record<
       "Direct inzetbaar als sectorspecifieke landingsvariant",
     ],
     socialProof: {
-      quote: "Retailbedrijven hebben vaak geen gebrek aan procedures, maar wel aan één actuele RI&E die winkelvloer en logistiek samenpakt.",
+      quote: "Retailbedrijven hebben vaak geen gebrek aan procedures, maar wel aan Ã©Ã©n actuele RI&E die winkelvloer en logistiek samenpakt.",
       source: "SnelRIE retailpropositie",
     },
   },
   zorg: {
     label: "Zorg & care",
-    intro: "Voor zorginstellingen, verpleeghuizen, GGZ, klinieken en zorgteams met tillen, nachtdiensten en cliëntcontact.",
+    intro: "Voor zorginstellingen, verpleeghuizen, GGZ, klinieken en zorgteams met tillen, nachtdiensten en cliÃ«ntcontact.",
     hero: {
       badge: "Zorg-RI&E's moeten rekening houden met fysieke belasting, nachtdiensten, agressie en werken met medische middelen.",
       header: "Uw RI&E voor zorg en care",
-      highlight: "met focus op werkvloer, diensten en cliëntveiligheid",
+      highlight: "met focus op werkvloer, diensten en cliÃ«ntveiligheid",
       subtext:
         "Breng in minuten de grootste RI&E-risico's in kaart voor zorgteams. Inclusief tillen en verplaatsen, nachtdiensten, biologisch materiaal, agressie en werkdruk. Ideaal als snelle nulmeting of actualisatie.",
       cta: "Start gratis zorg-RI&E",
     },
     stats: [
-      { value: "Tillen", label: "patiënten, bedden en hulpmiddelen" },
+      { value: "Tillen", label: "patiÃ«nten, bedden en hulpmiddelen" },
       { value: "Diensten", label: "nacht, weekend en onregelmaat" },
-      { value: "Cliëntcontact", label: "agressie, PSA en belastbaarheid" },
-      { value: "Vanaf €19/mnd", label: "of eenmalig vanaf €249" },
+      { value: "CliÃ«ntcontact", label: "agressie, PSA en belastbaarheid" },
+      { value: "Vanaf â‚¬19/mnd", label: "of eenmalig vanaf â‚¬249" },
     ],
     risks: ["tillen en fysieke belasting", "nachtdiensten en vermoeidheid", "medicatie, biologisch materiaal en agressie"],
     proofTitle: "Gemaakt voor zorgorganisaties waar veiligheid en belastbaarheid samenkomen",
     proofText:
-      "Zorg vraagt om meer dan een standaard checklist. Deze variant stuurt direct op tillen, diensten, cliëntcontact en middelengebruik zodat u sneller ziet waar uw actuele RI&E versterking nodig heeft.",
+      "Zorg vraagt om meer dan een standaard checklist. Deze variant stuurt direct op tillen, diensten, cliÃ«ntcontact en middelengebruik zodat u sneller ziet waar uw actuele RI&E versterking nodig heeft.",
     howItWorks: [
       { title: "Kies zorg", desc: "De scan activeert direct de juiste uitgangspunten voor tillen, diensten en medische werkomgeving." },
       { title: "Controleer 3 praktijksituaties", desc: "Met korte keuzes past de intake zich aan op fysieke belasting, nachtdiensten en middelengebruik." },
@@ -391,11 +391,11 @@ const sectorConfig: Record<
       eyebrow: "In zorg sluipen RI&E-gaten vaak in werkdruk, tillen en onregelmatige diensten.",
       title: "Check waar uw zorg-RI&E nu te oud of te algemeen is",
       text: "Start gratis en ontdek direct of fysieke belasting, PSA of diensten meer aandacht nodig hebben in uw huidige RI&E.",
-      button: "Start gratis zorgscan →",
+      button: "Start gratis zorgscan â†’",
     },
     bottom: {
       title: "Maak uw zorg-RI&E sneller concreet.",
-      text: "Begin gratis en toets in minuten waar werkvloer, diensten en cliëntcontact extra risico opleveren.",
+      text: "Begin gratis en toets in minuten waar werkvloer, diensten en cliÃ«ntcontact extra risico opleveren.",
       button: "Start gratis zorg-RI&E",
     },
     faq: {
@@ -476,18 +476,18 @@ export default async function HomePage({
             SectorIcon={SectorIcon}
             sectorHref={sectorHref}
           />
-          {/* Trust Bar — CRO Phase 1 */}
+          {/* Trust Bar â€” CRO Phase 1 */}
           {!sector && (
             <div className="mt-8 flex justify-center">
               <div className="inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 bg-brand-50 border border-brand-100 rounded-full px-6 py-2.5 text-sm text-gray-700">
                 <span className="font-semibold text-brand-700">Vertrouwd door 1.200+ MKB-bedrijven</span>
                 <span className="text-gray-300">|</span>
                 <span className="flex items-center gap-1">
-                  <span className="text-amber-400">★★★★★</span>
+                  <span className="text-amber-400">â˜…â˜…â˜…â˜…â˜…</span>
                   <span className="font-medium">4.8/5</span>
                 </span>
                 <span className="text-gray-300">|</span>
-                <span className="text-gray-500">Bouw • Zorg • Horeca • Transport • Retail</span>
+                <span className="text-gray-500">Bouw â€¢ Zorg â€¢ Horeca â€¢ Transport â€¢ Retail</span>
               </div>
             </div>
           )}
@@ -513,7 +513,7 @@ export default async function HomePage({
               <>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-5 w-5 text-green-500" />
-                  Vanaf €19/mnd
+                  Vanaf â‚¬19/mnd
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-5 w-5 text-green-500" />
@@ -536,7 +536,7 @@ export default async function HomePage({
                   <span className="font-semibold text-gray-900">127+</span>
                 </div>
                 <span>RI&E scans deze maand</span>
-                <span className="mx-2 text-gray-300">·</span>
+                <span className="mx-2 text-gray-300">Â·</span>
                 <div className="flex items-center gap-0.5">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
@@ -546,14 +546,14 @@ export default async function HomePage({
               </div>
               <div className="max-w-lg bg-white/70 backdrop-blur-sm rounded-xl border border-gray-200/60 px-6 py-4">
                 <p className="text-sm text-gray-700 italic leading-relaxed">
-                  &ldquo;Binnen 10 minuten had ik een complete RI&E. Scheelt mij €1.500 en weken wachten op een adviseur.&rdquo;
+                  &ldquo;Binnen 10 minuten had ik een complete RI&E. Scheelt mij â‚¬1.500 en weken wachten op een adviseur.&rdquo;
                 </p>
                 <div className="mt-2 flex items-center gap-2">
                   <div className="w-7 h-7 rounded-full bg-brand-100 flex items-center justify-center text-xs font-bold text-brand-700">
                     JV
                   </div>
                   <div className="text-xs text-gray-500">
-                    <span className="font-medium text-gray-700">J. de Vries</span> — Aannemer, 12 medewerkers
+                    <span className="font-medium text-gray-700">J. de Vries</span> â€” Aannemer, 12 medewerkers
                   </div>
                 </div>
               </div>
@@ -621,7 +621,7 @@ export default async function HomePage({
                     </div>
                     <h2 className="text-lg font-semibold text-gray-900">{item.label}</h2>
                     <p className="text-sm text-gray-600 mt-2">{item.intro}</p>
-                    <div className="mt-4 text-sm font-medium text-brand-700">Bekijk sectorpagina →</div>
+                    <div className="mt-4 text-sm font-medium text-brand-700">Bekijk sectorpagina â†’</div>
                   </Link>
                 );
               })}
@@ -787,10 +787,10 @@ export default async function HomePage({
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-4">Kies het abonnement dat bij u past</h2>
           <p className="text-center text-gray-600 mb-4 max-w-2xl mx-auto">
-            Start met een gratis scan. Upgrade wanneer u wilt — maandelijks opzegbaar.
+            Start met een gratis scan. Upgrade wanneer u wilt â€” maandelijks opzegbaar.
           </p>
           <p className="text-center text-sm font-medium text-brand-700 mb-12 max-w-2xl mx-auto">
-            Eén rapport kost €249. Een heel jaar onbeperkt kost €179.
+            EÃ©n rapport kost â‚¬249. Een heel jaar onbeperkt kost â‚¬179.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {pricingTiers.map((tier) => (
@@ -851,23 +851,23 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* Urgency Section — CRO Phase 1: Arbeidsinspectie compliance */}
+      {/* Urgency Section â€” CRO Phase 1: Arbeidsinspectie compliance */}
       <section className="py-12 px-4 sm:px-6 lg:px-8 bg-amber-50 border-y border-amber-200">
         <div className="max-w-3xl mx-auto text-center">
           <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">
-            ⚠️ Wist je dat?
+            âš ï¸ Wist je dat?
           </h3>
           <p className="text-base sm:text-lg text-amber-900 leading-relaxed mb-2">
             De Arbeidsinspectie controleerde in 2025 meer dan <strong>14.000 bedrijven</strong>.
           </p>
           <p className="text-base sm:text-lg text-amber-900 leading-relaxed mb-6">
-            Boetes voor een ontbrekende RI&amp;E: tot <strong>€4.500 per overtreding</strong>.
+            Boetes voor een ontbrekende RI&amp;E: tot <strong>â‚¬4.500 per overtreding</strong>.
           </p>
           <Link
             href="/scan"
             className="inline-flex items-center gap-2 bg-brand-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-brand-700 transition shadow-md"
           >
-            Zorg dat jouw bedrijf compliant is → Start Gratis RI&amp;E Scan
+            Zorg dat jouw bedrijf compliant is â†’ Start Gratis RI&amp;E Scan
           </Link>
         </div>
       </section>
@@ -922,20 +922,20 @@ export default async function HomePage({
               href="/blog"
               className="hidden sm:inline-flex items-center gap-1.5 text-brand-600 font-medium hover:text-brand-700 transition text-sm"
             >
-              Alle artikelen →
+              Alle artikelen â†’
             </Link>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
                 title: "RI&E kosten 2026: wat betaal je en hoe kan het goedkoper?",
-                description: "Actuele prijzen voor MKB (€400 - €5.000+) en 5 slimme manieren om te besparen.",
+                description: "Actuele prijzen voor MKB (â‚¬400 - â‚¬5.000+) en 5 slimme manieren om te besparen.",
                 href: "/blog/rie-kosten-2026-wat-betaal-je-en-hoe-goedkoper",
                 date: "12 maart 2026",
               },
               {
                 title: "Boete bij geen RI&E: wat riskeert u?",
-                description: "De Arbeidsinspectie deelt boetes van €4.500+ uit. Zo voorkomt u problemen.",
+                description: "De Arbeidsinspectie deelt boetes van â‚¬4.500+ uit. Zo voorkomt u problemen.",
                 href: "/blog/boete-geen-rie-arbeidsinspectie-handhaving",
                 date: "9 maart 2026",
               },
@@ -963,7 +963,7 @@ export default async function HomePage({
             href="/blog"
             className="sm:hidden mt-6 inline-flex items-center gap-1.5 text-brand-600 font-medium text-sm"
           >
-            Alle artikelen →
+            Alle artikelen â†’
           </Link>
         </div>
       </section>
@@ -992,9 +992,9 @@ export default async function HomePage({
             </a>
           </div>
           <div className="text-sm text-center md:text-right">
-            <p>© {new Date().getFullYear()} SnelRIE — onderdeel van Praesidion Holding B.V.</p>
-            <p className="text-gray-500 text-xs mt-1">KvK: 97640794 · BTW: NL868152237B01</p>
-            <p className="text-gray-500 text-xs mt-0.5">Tel: 046 240 2401 · info@snelrie.nl</p>
+            <p>Â© {new Date().getFullYear()} SnelRIE â€” onderdeel van Praesidion Holding B.V.</p>
+            <p className="text-gray-500 text-xs mt-1">KvK: 97640794 Â· BTW: NL868152237B01</p>
+            <p className="text-gray-500 text-xs mt-0.5">Contact: info@snelrie.nl</p>
           </div>
         </div>
       </footer>
