@@ -38,32 +38,32 @@ export const variantConfig = {
     className: 'ab-benefit',
     label: 'Benefit-Focus',
     hero: {
-      header: 'Uw professionele RI&E voor €99 —',
-      headerHighlight: 'klaar terwijl u koffie zet',
+      header: 'Personeel in dienst? Je RI&E voor €19/mnd —',
+      headerHighlight: 'klaar terwijl je koffie zet',
       subtext:
-        'Andere bedrijven betalen €2.000+ en wachten weken. U vult 5 minuten een formulier in en downloadt direct een branchespecifiek, wettelijk onderbouwd rapport.',
+        'Een adviseur kost €1.500+. Bij SnelRIE vul je een kort formulier in en heb je direct een professioneel rapport. Speciaal voor kleine ondernemers en ZZP\'ers met personeel.',
       cta: 'Gratis Risico-Check Starten →',
     },
     usps: {
-      title: 'Wat u krijgt',
+      title: 'Wat je krijgt',
       items: [
         {
-          title: '€1.900+ bespaard',
-          desc: 'Professionele RI&E voor een fractie van de adviseurskosten.',
+          title: 'Vanaf €19/mnd',
+          desc: 'Professionele RI&E zonder dure adviseur. Perfect voor kleine bedrijven.',
         },
         {
-          title: 'Vandaag nog compliant',
-          desc: 'Geen wachttijd, geen afspraken, geen gedoe.',
+          title: 'Vandaag nog geregeld',
+          desc: 'Geen wachttijd, geen afspraken, geen gedoe. Gewoon invullen en klaar.',
         },
         {
-          title: 'Op maat voor uw branche',
-          desc: 'AI combineert uw situatie met de actuele arbocatalogus.',
+          title: 'Op maat voor jouw branche',
+          desc: 'AI past de RI&E aan op jouw sector en risico\'s.',
         },
       ],
     },
     bottomCta: {
-      title: 'Meer dan 95% van MKB\'ers mist verplichte risico\'s.',
-      text: 'Check de uwe gratis.',
+      title: 'De meeste kleine ondernemers missen verplichte risico\'s.',
+      text: 'Check die van jou gratis.',
       button: 'Gratis Risico-Check Starten →',
     },
   },
@@ -72,14 +72,14 @@ export const variantConfig = {
     label: 'Pain-Point',
     hero: {
       badge: 'Inspectie SZW verscherpt controles — RI&E-eisen aangescherpt per 2026',
-      header: 'Geen RI&E? De Inspectie SZW deelt boetes',
-      headerHighlight: 'tot €13.500 uit.',
+      header: 'Geen RI&E? Ook kleine bedrijven krijgen boetes',
+      headerHighlight: 'tot €13.500.',
       subtext:
-        'De Inspectie SZW verscherpt controles in 2026: gevaarlijke stoffen en psychosociale belasting moeten nu expliciet in je RI&E. Voorkom boetes en aansprakelijkheid — stel uw RI&E vandaag nog op.',
-      cta: 'Check Nu Of U Compliant Bent →',
+        'De Inspectie SZW controleert steeds vaker, ook bij bedrijven met maar een paar medewerkers. Heb je personeel? Dan is een RI&E verplicht. Regel het in 10 minuten vanaf €19/mnd.',
+      cta: 'Check Nu Of Je Compliant Bent →',
     },
     usps: {
-      title: 'Waarom u dit niet kunt uitstellen',
+      title: 'Waarom je dit niet kunt uitstellen',
       items: [
         {
           title: 'Boetes tot €13.500',
@@ -87,18 +87,18 @@ export const variantConfig = {
         },
         {
           title: 'Persoonlijk aansprakelijk',
-          desc: 'Bij een bedrijfsongeval zonder RI&E draait ú op voor de schade.',
+          desc: 'Bij een bedrijfsongeval zonder RI&E draai jij op voor de schade.',
         },
         {
           title: 'In 5 minuten opgelost',
-          desc: 'Geen excuus meer. Uw RI&E is sneller klaar dan de papierwinkel van een boete.',
+          desc: 'Geen excuus meer. Je RI&E is sneller klaar dan de papierwinkel van een boete.',
         },
       ],
     },
     bottomCta: {
       title: 'Wacht niet op een controle.',
-      text: 'Start nu uw gratis risico-scan.',
-      button: 'Check Nu Of U Compliant Bent →',
+      text: 'Start nu je gratis risico-scan.',
+      button: 'Check Nu Of Je Compliant Bent →',
     },
   },
 } as const;
