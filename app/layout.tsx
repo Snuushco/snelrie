@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { GoogleAdsConversion } from "@/components/GoogleAdsConversion";
 import SessionProvider from "@/components/SessionProvider";
@@ -57,6 +58,7 @@ export default function RootLayout({
           <GoogleAdsConversion />
           {children}
           <ExitIntentPopup />
+          <Analytics />
         </SessionProvider>
       </body>
     </html>
