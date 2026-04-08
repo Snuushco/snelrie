@@ -1,10 +1,12 @@
 ---
 title: "RI&E Updaten: Hoe Vaak Is Verplicht en Wanneer Moet Het?"
+slug: "rie-hoe-vaak-updaten-frequentie"
 description: "Hoe vaak moet een RI&E worden bijgewerkt? Ontdek de wettelijke vereisten, wanneer een update verplicht is en hoe SnelRIE dit voor MKB automatisch regelt."
-slug: rie-hoe-vaak-updaten-frequentie
-date: 2026-04-07
-author: SnelRIE Redactie
-tags: [rie, arbowet, mkb, update, frequentie]
+date: "2026-04-07"
+author: "SnelRIE Redactie"
+keywords: ["RI&E updaten", "hoe vaak RI&E bijwerken", "RI&E actualiseren", "RI&E frequentie", "RI&E update verplicht", "Arbowet RI&E actueel", "RI&E herziening", "RI&E jaarlijks", "Plan van Aanpak actualiseren", "RI&E MKB"]
+ogImage: "https://snelrie.nl/og/rie-hoe-vaak-updaten-frequentie.png"
+tags: ["RI&E", "Arbowet", "MKB", "update", "frequentie"]
 ---
 
 # RI&E Updaten: Hoe Vaak Is Verplicht en Wanneer Moet Het?
