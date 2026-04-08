@@ -30,7 +30,7 @@ export function getAllPosts(): BlogPost[] {
       return {
         slug: data.slug || fileName.replace(/\.md$/, ""),
         title: data.title,
-        description: data.description,
+        description: data.description || data.meta_description || "",
         date: data.date,
         dateModified: data.dateModified || undefined,
         author: data.author,

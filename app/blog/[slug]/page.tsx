@@ -33,7 +33,7 @@ export async function generateMetadata({
       authors: [post.author],
       images: [
         post.ogImage ||
-          `https://snelrie.nl/og?title=${encodeURIComponent(post.title)}&description=${encodeURIComponent(post.description.slice(0, 120))}`,
+          `https://snelrie.nl/og?title=${encodeURIComponent(post.title)}&description=${encodeURIComponent((post.description || '').slice(0, 120))}`,
       ],
     },
     twitter: {
@@ -42,7 +42,7 @@ export async function generateMetadata({
       description: post.description,
       images: [
         post.ogImage ||
-          `https://snelrie.nl/og?title=${encodeURIComponent(post.title)}&description=${encodeURIComponent(post.description.slice(0, 120))}`,
+          `https://snelrie.nl/og?title=${encodeURIComponent(post.title)}&description=${encodeURIComponent((post.description || '').slice(0, 120))}`,
       ],
     },
   };
@@ -61,7 +61,7 @@ export default async function BlogPostPage({
 
   const articleImage =
     post.ogImage ||
-    `https://snelrie.nl/og?title=${encodeURIComponent(post.title)}&description=${encodeURIComponent(post.description.slice(0, 120))}`;
+    `https://snelrie.nl/og?title=${encodeURIComponent(post.title)}&description=${encodeURIComponent((post.description || '').slice(0, 120))}`;
 
   const jsonLd = {
     "@context": "https://schema.org",
